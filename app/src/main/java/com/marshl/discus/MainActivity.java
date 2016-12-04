@@ -1,25 +1,31 @@
 package com.marshl.discus;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;;
+import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity //implements android.app.ActionBar.OnNavigationListener
+{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,14 +59,68 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            //doMySearch(query);
+        }
+
+        setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
+
+        /*actionBar = this.getActionBar();
+
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        actionBar.setNavigationMode(android.app.ActionBar.NAVIGATION_MODE_LIST);
+        navSpinner = new ArrayList<SpinnerNavItem>();
+        navSpinner.add(new SpinnerNavItem("Frozen", 2014));
+        navSpinner.add(new SpinnerNavItem("Van Helsing", 2004));
+        navSpinner.add(new SpinnerNavItem("Star Wars", 1979));
+        adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
+        actionBar.setListNavigationCallbacks(adapter, this);*/
     }
 
+    /*private android.app.ActionBar actionBar;
+    private ArrayList<SpinnerNavItem> navSpinner;
+    private TitleNavigationAdapter adapter;
+*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+
+        /*SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView)menu.findItem(R.id.menu_search).getActionView();
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);*/
+
+        /*
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) findViewById(R.id.searchView);
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
+        searchView.setSearchableInfo(searchableInfo);
+        searchView.setIconifiedByDefault(true);
+        */
+
+/*
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
+        searchView.setSearchableInfo(searchableInfo);
+        //searchView.setIconifiedByDefault(true);
+        return true*/
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -70,9 +130,13 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_search:
+                this.onSearchRequested();
+                Log.d("Hello", "World");
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -132,21 +196,33 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "My Titles";
                 case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
+                    return "All Titles";
             }
             return null;
         }
     }
+
+    @Override
+    public boolean onSearchRequested() {
+        Log.d("MainActivity", "onSearchRequested");
+        Bundle appData = new Bundle();
+        startSearch(null, false, appData, false);
+        return super.onSearchRequested();
+    }
+/*
+    @Override
+    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        return false;
+    }
+*/
 }
