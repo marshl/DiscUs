@@ -67,58 +67,18 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
         }
 
         setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
-
-        /*actionBar = this.getActionBar();
-
-        actionBar.setDisplayShowTitleEnabled(false);
-
-        actionBar.setNavigationMode(android.app.ActionBar.NAVIGATION_MODE_LIST);
-        navSpinner = new ArrayList<SpinnerNavItem>();
-        navSpinner.add(new SpinnerNavItem("Frozen", 2014));
-        navSpinner.add(new SpinnerNavItem("Van Helsing", 2004));
-        navSpinner.add(new SpinnerNavItem("Star Wars", 1979));
-        adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
-        actionBar.setListNavigationCallbacks(adapter, this);*/
     }
-
-    /*private android.app.ActionBar actionBar;
-    private ArrayList<SpinnerNavItem> navSpinner;
-    private TitleNavigationAdapter adapter;
-*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        /*SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView)menu.findItem(R.id.menu_search).getActionView();
-
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);*/
-
-        /*
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) findViewById(R.id.searchView);
-        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
-        searchView.setSearchableInfo(searchableInfo);
-        searchView.setIconifiedByDefault(true);
-        */
-
-/*
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
-        searchView.setSearchableInfo(searchableInfo);
-        //searchView.setIconifiedByDefault(true);
-        return true*/
-
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
                 .getActionView();
         searchView.setSearchableInfo(searchManager
                 .getSearchableInfo(getComponentName()));
-
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -219,10 +179,4 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
         startSearch(null, false, appData, false);
         return super.onSearchRequested();
     }
-/*
-    @Override
-    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        return false;
-    }
-*/
 }
