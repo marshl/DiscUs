@@ -63,10 +63,26 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.d("MainActivity", "ACTION_SEARCH triggered");
             //doMySearch(query);
         }
 
         setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+
+            Log.d("MainActivity", "ACTION_SEARCH triggered");
+        }
     }
 
     @Override
