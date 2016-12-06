@@ -26,8 +26,5 @@
         </activity>
 
 
-        <activity android:name=".SearchResultsActivity">
-
-        </activity>
     </application>
 </manifest>
