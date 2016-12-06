@@ -35,7 +35,7 @@ public class SearchResultsActivity extends Activity {
         //actionBar.setDisplayHomeAsUpEnabled(true);
 
         txtQuery = (TextView) findViewById(R.id.txtQuery);
-
+        Log.d("foo", "bar");
         handleIntent(getIntent());
     }
 
@@ -58,9 +58,10 @@ public class SearchResultsActivity extends Activity {
              * 2. Making webrequest and displaying the data
              * For now we just display the query only
              */
-            txtQuery.setText("Search Query: " + query);
+            txtQuery.setText("Search query: " + query);
 
-            new getResultTask().execute(query);
+            getResultTask task = new getResultTask();
+            task.execute(query);
         }
 
     }
@@ -70,6 +71,7 @@ public class SearchResultsActivity extends Activity {
 
         protected List<Title> doInBackground(String... query) {
 
+            Log.d("SearchResultsActivity", "Connecting...");
             HttpURLConnection urlConnection = null;
             try {
                 URL url = new URL("http://www.imdb.com/xml/find?json=1&nr=1&tt=on&q=lost");
@@ -79,9 +81,11 @@ public class SearchResultsActivity extends Activity {
                 return this.readResultStream(stream);
             } catch (MalformedURLException ex) {
                 Log.e("SearchResultsActivity", ex.toString());
+                this.exception = ex;
                 return null;
             } catch (IOException ex) {
                 Log.e("SearchResultsActivty", ex.toString());
+                this.exception = ex;
                 return null;
             } finally {
                 if (urlConnection != null) {
@@ -109,12 +113,15 @@ public class SearchResultsActivity extends Activity {
 
             while (jsonReader.hasNext()) {
                 String name = jsonReader.nextName();
+                Log.d("Name", name);
                 if (name.equals("title_popular") || name.equals("title_exact")) {
                     jsonReader.beginArray();
 
                     while (jsonReader.hasNext()) {
+                        Log.d("Starting", "Title");
                         Title title = parseTitle(jsonReader);
                         titleList.add(title);
+                        Log.d("Title", title.name);
                     }
 
                     jsonReader.endArray();
@@ -122,51 +129,37 @@ public class SearchResultsActivity extends Activity {
             }
 
             jsonReader.endObject();
+            for (Title title : titleList) {
+                Log.d("TEST", title.name);
+            }
             return titleList;
         }
-
-        private Title parseTitle(JsonReader jsonReader) throws IOException
-        {
-            Title title = new Title();
-            jsonReader.beginObject();
-            while (jsonReader.hasNext()) {
-                String titleName = jsonReader.nextName();
-                switch(titleName){
-                    case "id":
-                        title.id = jsonReader.nextString();
-                        break;
-                    case "title":
-                        title.title = jsonReader.nextString();
-                        break;
-                    case "name":
-                        title.name = jsonReader.nextString();
-                        break;
-                    case "title_description":
-                        title.title_description = jsonReader.nextString();
-                        break;
-                    case "episode_title":
-                        title.episode_title = jsonReader.nextString();
-                        break;
-                    case "description":
-                        title.description = jsonReader.nextString();
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Unknown name " + titleName);
-                }
-            }
-            jsonReader.endObject();
-            return title;
-        }
-
     }
 
-    private class Title {
-        public String id;
-        public String title;
-        public String name;
-        public String title_description;
-        public String episode_title;
-        public String description;
+    private static Title parseTitle(JsonReader jsonReader) throws IOException {
+        Title t = new Title();
+        jsonReader.beginObject();
+        while (jsonReader.hasNext()) {
+            String titleName = jsonReader.nextName();
+            String stringValue = jsonReader.nextString();
+            Log.d(titleName, stringValue);
+            if ("id".equals(titleName)) {
+                t.id = stringValue;
+            } else if ("title".equals(titleName)) {
+                t.title = stringValue;
+            } else if ("name".equals(titleName)) {
+                t.name = stringValue;
+            } else if ("title_description".equals(titleName)) {
+                t.title_description = stringValue;
+            } else if ("episode_title".equals(titleName)) {
+                t.episode_title = stringValue;
+            } else if ("description".equals(titleName)) {
+                t.description = stringValue;
+            }
+        }
+
+        jsonReader.endObject();
+        return t;
     }
 
 }
