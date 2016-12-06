@@ -66,10 +66,10 @@ public class SearchResultsActivity extends Activity {
 
     }
 
-    private class getResultTask extends AsyncTask<String, Integer, List<Title>> {
+    private class getResultTask extends AsyncTask<String, Integer, List<Media>> {
         private Exception exception;
 
-        protected List<Title> doInBackground(String... query) {
+        protected List<Media> doInBackground(String... query) {
 
             Log.d("SearchResultsActivity", "Connecting...");
             HttpURLConnection urlConnection = null;
@@ -99,15 +99,15 @@ public class SearchResultsActivity extends Activity {
         }
 
 
-        protected void onPostExecute(List<Title> result) {
+        protected void onPostExecute(List<Media> result) {
 
         }
 
-        private List<Title> readResultStream(InputStream stream) throws IOException {
+        private List<Media> readResultStream(InputStream stream) throws IOException {
             InputStreamReader reader = new InputStreamReader(stream, "utf-8");
             JsonReader jsonReader = new JsonReader(reader);
 
-            List<Title> titleList = new ArrayList<>();
+            List<Media> mediaList = new ArrayList<>();
 
             jsonReader.beginObject();
 
@@ -119,9 +119,9 @@ public class SearchResultsActivity extends Activity {
 
                     while (jsonReader.hasNext()) {
                         Log.d("Starting", "Title");
-                        Title title = parseTitle(jsonReader);
-                        titleList.add(title);
-                        Log.d("Title", title.name);
+                        Media media = parseTitle(jsonReader);
+                        mediaList.add(media);
+                        Log.d("Title", media.name);
                     }
 
                     jsonReader.endArray();
@@ -129,37 +129,37 @@ public class SearchResultsActivity extends Activity {
             }
 
             jsonReader.endObject();
-            for (Title title : titleList) {
-                Log.d("TEST", title.name);
+            for (Media media : mediaList) {
+                Log.d("TEST", media.name);
             }
-            return titleList;
+            return mediaList;
         }
     }
 
-    private static Title parseTitle(JsonReader jsonReader) throws IOException {
-        Title t = new Title();
+    private static Media parseTitle(JsonReader jsonReader) throws IOException {
+        Media media = new Media();
         jsonReader.beginObject();
         while (jsonReader.hasNext()) {
             String titleName = jsonReader.nextName();
             String stringValue = jsonReader.nextString();
             Log.d(titleName, stringValue);
             if ("id".equals(titleName)) {
-                t.id = stringValue;
+                media.id = stringValue;
             } else if ("title".equals(titleName)) {
-                t.title = stringValue;
+                media.title = stringValue;
             } else if ("name".equals(titleName)) {
-                t.name = stringValue;
+                media.name = stringValue;
             } else if ("title_description".equals(titleName)) {
-                t.title_description = stringValue;
+                media.title_description = stringValue;
             } else if ("episode_title".equals(titleName)) {
-                t.episode_title = stringValue;
+                media.episode_title = stringValue;
             } else if ("description".equals(titleName)) {
-                t.description = stringValue;
+                media.description = stringValue;
             }
         }
 
         jsonReader.endObject();
-        return t;
+        return media;
     }
 
 }

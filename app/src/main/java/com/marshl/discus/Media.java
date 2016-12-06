@@ -1,6 +1,6 @@
 package com.marshl.discus;
 
-public class Title {
+public class Media {
     public String id;
     public String title;
     public String name;
