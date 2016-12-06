@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-
-            Log.d("MainActivity", "ACTION_SEARCH triggered");
+            getResultTask task = new getResultTask();
+            task.execute(query);
         }
     }
 
