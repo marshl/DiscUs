@@ -1,6 +1,5 @@
 package com.marshl.discus;
 
-import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
@@ -14,13 +13,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Liam on 6/12/2016.
- */
-public class getResultTask extends AsyncTask<String, Integer, List<Media>> {
-    private Exception exception;
+public class MediaSearch {
+    private String queryString;
 
-    protected List<Media> doInBackground(String... query) {
+    public MediaSearch(String query) {
+        this.queryString = query;
+    }
+
+    public List<Media> runSearch() throws IOException{
 
         Log.d("SearchResultsActivity", "Connecting...");
         HttpURLConnection urlConnection = null;
@@ -28,30 +28,18 @@ public class getResultTask extends AsyncTask<String, Integer, List<Media>> {
             URL url = new URL("http://www.imdb.com/xml/find?json=1&nr=1&tt=on&q=lost");
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
-            //readStream(stream);
             return this.readResultStream(stream);
         } catch (MalformedURLException ex) {
             Log.e("SearchResultsActivity", ex.toString());
-            this.exception = ex;
-            return null;
+            throw ex;
         } catch (IOException ex) {
             Log.e("SearchResultsActivty", ex.toString());
-            this.exception = ex;
-            return null;
+            throw ex;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
         }
-    }
-
-    protected void onProgressUpdate(Integer... progress) {
-
-    }
-
-
-    protected void onPostExecute(List<Media> result) {
-
     }
 
     private List<Media> readResultStream(InputStream stream) throws IOException {
