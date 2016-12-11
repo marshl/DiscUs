@@ -81,17 +81,17 @@ public class MediaSearch {
             String stringValue = URLDecoder.decode(jsonReader.nextString(), "utf-8");
             //Log.d(titleName, stringValue);
             if ("id".equals(titleName)) {
-                media.id = stringValue;
+                media.setId(stringValue);
             } else if ("title".equals(titleName)) {
-                media.title = stringValue;
+                media.setTitle(stringValue);
             } else if ("name".equals(titleName)) {
-                media.name = stringValue;
+                media.setName(stringValue);
             } else if ("title_description".equals(titleName)) {
-                media.title_description = stringValue;
+                media.setTitleDescription(stringValue);
             } else if ("episode_title".equals(titleName)) {
-                media.episode_title = stringValue;
+                media.setEpisodeTitle(stringValue);
             } else if ("description".equals(titleName)) {
-                media.description = stringValue;
+                media.setDescription(stringValue);
             }
         }
 
