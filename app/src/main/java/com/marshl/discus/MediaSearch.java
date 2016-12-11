@@ -12,6 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URLEncoder;
+import java.net.URLDecoder;
 
 public class MediaSearch {
     private String queryString;
@@ -20,18 +22,17 @@ public class MediaSearch {
         this.queryString = query;
     }
 
-    public List<Media> runSearch() throws IOException{
+    public List<Media> runSearch() throws IOException {
 
         Log.d("SearchResultsActivity", "Connecting...");
         HttpURLConnection urlConnection = null;
         try {
-            URL url = new URL("http://www.imdb.com/xml/find?json=1&nr=1&tt=on&q=lost");
+            String encodedQuery = "http://www.imdb.com/xml/find?json=1&nr=1&tt=on&i=on&q=" + URLEncoder.encode(this.queryString, "utf-8");
+            Log.d("MediaSearch", "Url is: " + encodedQuery);
+            URL url = new URL(encodedQuery);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
             return this.readResultStream(stream);
-        } catch (MalformedURLException ex) {
-            Log.e("SearchResultsActivity", ex.toString());
-            throw ex;
         } catch (IOException ex) {
             Log.e("SearchResultsActivty", ex.toString());
             throw ex;
@@ -52,15 +53,16 @@ public class MediaSearch {
 
         while (jsonReader.hasNext()) {
             String name = jsonReader.nextName();
-            Log.d("Name", name);
-            if (name.equals("title_popular") || name.equals("title_exact")) {
+            //Log.d("Name", name);
+            //if (name.equals("title_popular") || name.equals("title_exact") || name.equals("title_substring"))
+            {
                 jsonReader.beginArray();
 
                 while (jsonReader.hasNext()) {
-                    Log.d("Starting", "Title");
+                    //Log.d("Starting", "Title");
                     Media media = parseTitle(jsonReader);
                     mediaList.add(media);
-                    Log.d("Title", media.name);
+                    //Log.d("Title", media.name);
                 }
 
                 jsonReader.endArray();
@@ -68,9 +70,6 @@ public class MediaSearch {
         }
 
         jsonReader.endObject();
-        for (Media media : mediaList) {
-            Log.d("TEST", media.name);
-        }
         return mediaList;
     }
 
@@ -79,8 +78,8 @@ public class MediaSearch {
         jsonReader.beginObject();
         while (jsonReader.hasNext()) {
             String titleName = jsonReader.nextName();
-            String stringValue = jsonReader.nextString();
-            Log.d(titleName, stringValue);
+            String stringValue = URLDecoder.decode(jsonReader.nextString(), "utf-8");
+            //Log.d(titleName, stringValue);
             if ("id".equals(titleName)) {
                 media.id = stringValue;
             } else if ("title".equals(titleName)) {

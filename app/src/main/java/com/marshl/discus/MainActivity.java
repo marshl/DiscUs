@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
             } catch (Exception ex) {
                 this.exception = ex;
                 this.mediaList = null;
+                throw new RuntimeException("An error occurred when attempting to perform a search ", ex);
             }
 
             return this.mediaList;
@@ -225,8 +226,8 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
 
         @Override
         protected void onPostExecute(List<Media> result) {
-            ListView resultList = (ListView) findViewById(R.id.result_list);
-            Log.d("MainActicity", "We're here!");
+            ListView resultView = (ListView) findViewById(R.id.result_list);
+            resultView.setAdapter(new MediaResultAdapter(MainActivity.this, result));
 
             super.onPostExecute(result);
         }

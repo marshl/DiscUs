@@ -6,13 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
+import android.widget.TextView;
+
+import java.util.List;
 
 public class MediaResultAdapter implements ListAdapter {
     private Activity context;
 
-    public MediaResultAdapter(Activity context)
-    {
+    private List<Media> mediaList;
+
+    public MediaResultAdapter(Activity context, List<Media> mediaList) {
         this.context = context;
+        this.mediaList = mediaList;
     }
 
     @Override
@@ -29,17 +34,17 @@ public class MediaResultAdapter implements ListAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return this.mediaList.size();
     }
 
     @Override
-    public Object getItem(int _position) {
-        return null;
+    public Object getItem(int position) {
+        return this.mediaList.get(position);
     }
 
     @Override
-    public long getItemId(int _position) {
-        return _position;
+    public long getItemId(int position) {
+        return (long) position;
     }
 
     @Override
@@ -49,13 +54,16 @@ public class MediaResultAdapter implements ListAdapter {
     }
 
     @Override
-    public View getView(int _position, View _convertView, ViewGroup _parent) {
-        if (_convertView == null) {
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
             LayoutInflater layoutInflater = this.context.getLayoutInflater();
-            //_convertView = layoutInflater.inflate(R.layout.station_list_item, _parent, false);
+            convertView = layoutInflater.inflate(R.layout.fragment_media_list_item, parent, false);
         }
 
-        return _convertView;
+        Media media = this.mediaList.get(position);
+        TextView titleTextView = (TextView)convertView.findViewById(R.id.media_list_item_title);
+        titleTextView.setText(media.title + " " + media.title_description);
+        return convertView;
     }
 
     @Override
@@ -70,16 +78,16 @@ public class MediaResultAdapter implements ListAdapter {
 
     @Override
     public boolean isEmpty() {
-        return true;
+        return this.mediaList.isEmpty();
     }
 
     @Override
     public boolean areAllItemsEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled(int position) {
-        return false;
+        return true;
     }
 }
