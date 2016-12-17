@@ -78,7 +78,8 @@ public class MediaSearch {
         jsonReader.beginObject();
         while (jsonReader.hasNext()) {
             String titleName = jsonReader.nextName();
-            String stringValue = URLDecoder.decode(jsonReader.nextString(), "utf-8");
+            String stringValue = jsonReader.nextString();
+            stringValue = org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4(stringValue);
             //Log.d(titleName, stringValue);
             if ("id".equals(titleName)) {
                 media.setId(stringValue);
