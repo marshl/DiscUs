@@ -56,8 +56,8 @@ public class Media {
         Pattern pattern = Pattern.compile("([0-9?]+)(.*), +<a href='.+?'>(.+?)</a>");
         Matcher matcher = pattern.matcher(description);
         if (matcher.find()) {
-            this.type = matcher.group(2).trim();
             this.year = matcher.group(1);
+            this.setType(matcher.group(2).trim());
             this.director = matcher.group(3).trim();
         }
     }
@@ -74,5 +74,42 @@ public class Media {
         return this.director;
     }
 
+    private void setType(String type) {
 
+        this.type = type;
+
+        // This has to be done in a particular order
+        // so that "TV Documentary Shorts" are categorised as documentaries, for example
+        if (this.type.toLowerCase().contains("game")) {
+            this.category = MediaCategory.Game;
+        } else if (this.type.toLowerCase().contains("documentary")) {
+            this.category = MediaCategory.Documentary;
+        } else if (this.type.toLowerCase().contains("movie")) {
+            this.category = MediaCategory.Film;
+        } else if (this.type.toLowerCase().contains("tv")) {
+            this.category = MediaCategory.Television;
+        } else if (this.type.toLowerCase().contains("video")) {
+            this.category = MediaCategory.Video;
+        } else if (this.type.toLowerCase().contains("soundtrack")) {
+            this.category = MediaCategory.Music;
+        } else {
+            this.category = MediaCategory.Film;
+        }
+    }
+
+    private MediaCategory category = MediaCategory.Unknown;
+
+    public MediaCategory getCategory() {
+        return this.category;
+    }
+
+    public enum MediaCategory {
+        Game,
+        Television,
+        Film,
+        Music,
+        Video,
+        Documentary,
+        Unknown
+    }
 }
