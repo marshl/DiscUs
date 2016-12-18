@@ -7,7 +7,6 @@ public class Media {
     private String id;
     private String title;
     private String name;
-    private String titleDescription;
     private String episodeTitle;
     private String description;
 
@@ -37,14 +36,6 @@ public class Media {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getTitleDescription() {
-        return this.titleDescription;
-    }
-
-    public void setTitleDescription(String title_description) {
-        this.titleDescription = title_description;
     }
 
     public String getEpisodeTitle() {

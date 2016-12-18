@@ -88,7 +88,7 @@ public class MediaSearch {
             } else if ("name".equals(titleName)) {
                 media.setName(stringValue);
             } else if ("title_description".equals(titleName)) {
-                media.setTitleDescription(stringValue);
+                // title_description is a duplicate of description, do nothing
             } else if ("episode_title".equals(titleName)) {
                 media.setEpisodeTitle(stringValue);
             } else if ("description".equals(titleName)) {

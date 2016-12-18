@@ -62,7 +62,7 @@ public class MediaResultAdapter implements ListAdapter {
 
         Media media = this.mediaList.get(position);
         TextView titleTextView = (TextView)convertView.findViewById(R.id.media_list_item_title);
-        titleTextView.setText(media.getTitle() + " " + media.getTitleDescription());
+        titleTextView.setText(media.getTitle() + " " + media.getType() + " " + media.getYear() + " " + media.getDirector());
         return convertView;
     }
 
