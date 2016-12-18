@@ -10,7 +10,7 @@ public class Media {
     private String episodeTitle;
     private String description;
 
-    private int year;
+    private String year;
     private String type;
     private String director;
 
@@ -53,16 +53,16 @@ public class Media {
     public void setDescription(String description) {
         this.description = description;
 
-        Pattern pattern = Pattern.compile("([0-9]+)(.*), +<a href='.+?'>(.+?)</a>");
+        Pattern pattern = Pattern.compile("([0-9?]+)(.*), +<a href='.+?'>(.+?)</a>");
         Matcher matcher = pattern.matcher(description);
         if (matcher.find()) {
-            this.year = Integer.parseInt(matcher.group(1));
             this.type = matcher.group(2).trim();
+            this.year = matcher.group(1);
             this.director = matcher.group(3).trim();
         }
     }
 
-    public int getYear() {
+    public String getYear() {
         return this.year;
     }
 
