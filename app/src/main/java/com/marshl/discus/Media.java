@@ -62,7 +62,7 @@ public class Media {
     public void setDescription(String description) {
         this.description = description;
 
-        Pattern pattern = Pattern.compile("([0-9]+)(.+?), +<a href='.+?'>(.+?)</a>");
+        Pattern pattern = Pattern.compile("([0-9]+)(.*), +<a href='.+?'>(.+?)</a>");
         Matcher matcher = pattern.matcher(description);
         if (matcher.find()) {
             this.year = Integer.parseInt(matcher.group(1));
