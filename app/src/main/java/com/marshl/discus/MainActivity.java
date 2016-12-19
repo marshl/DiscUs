@@ -1,8 +1,10 @@
 package com.marshl.discus;
 
 import android.app.SearchManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -233,12 +235,6 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
             } else {
                 ListView resultView = (ListView) findViewById(R.id.result_list);
                 resultView.setAdapter(new MediaResultAdapter(MainActivity.this, result));
-                resultView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
             }
             super.onPostExecute(result);
         }

@@ -2,6 +2,7 @@ package com.marshl.discus;
 
 import android.app.Activity;
 import android.database.DataSetObserver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,7 @@ public class MediaResultAdapter implements ListAdapter {
             convertView = layoutInflater.inflate(R.layout.fragment_media_list_item, parent, false);
         }
 
-        Media media = this.mediaList.get(position);
+        final Media media = this.mediaList.get(position);
         TextView titleTextView = (TextView) convertView.findViewById(R.id.media_list_item_title);
         titleTextView.setText(media.getTitle() + " " + media.getType() + " " + media.getYear() + " " + media.getDirector());
 
@@ -92,6 +93,15 @@ public class MediaResultAdapter implements ListAdapter {
         }
 
         iconImageView.setImageResource(drawableId);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("MediaResultsAdapter", "Inserting new record for " + media.getTitle());
+                MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(context);
+                dbHelper.insertMediaRecord(media);
+            }
+        });
 
         return convertView;
     }
