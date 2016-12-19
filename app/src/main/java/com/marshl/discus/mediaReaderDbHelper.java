@@ -11,8 +11,7 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
     private static final String COMMA_SEP = ", ";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + MediaReaderContract.MediaEntry.TABLE_NAME + " (" +
-                    MediaReaderContract.MediaEntry.COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
-                    MediaReaderContract.MediaEntry.COLUMN_NAME_REFERENCE + TEXT_TYPE + COMMA_SEP +
+                    MediaReaderContract.MediaEntry.COLUMN_NAME_REFERENCE + TEXT_TYPE + " PRIMARY KEY" + COMMA_SEP +
                     MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     MediaReaderContract.MediaEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     MediaReaderContract.MediaEntry.COLUMN_NAME_EPISODE_TITLE + TEXT_TYPE + COMMA_SEP +
@@ -47,7 +46,7 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public long insertMediaRecord(Media media) {
+    public void insertMediaRecord(Media media) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -61,7 +60,6 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_TYPE, media.getType());
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_DIRECTOR, media.getDirector());
 
-        long newRowId = db.insert(MediaReaderContract.MediaEntry.TABLE_NAME, null, values);
-        return newRowId;
+        db.insert(MediaReaderContract.MediaEntry.TABLE_NAME, null, values);
     }
 }
