@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -61,8 +62,37 @@ public class MediaResultAdapter implements ListAdapter {
         }
 
         Media media = this.mediaList.get(position);
-        TextView titleTextView = (TextView)convertView.findViewById(R.id.media_list_item_title);
+        TextView titleTextView = (TextView) convertView.findViewById(R.id.media_list_item_title);
         titleTextView.setText(media.getTitle() + " " + media.getType() + " " + media.getYear() + " " + media.getDirector());
+
+        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.media_list_item_icon);
+
+        int drawableId = -1;
+        switch (media.getCategory()) {
+            case Documentary:
+                drawableId = R.drawable.ic_documentary;
+                break;
+            case Television:
+                drawableId = R.drawable.ic_television;
+                break;
+            case Game:
+                drawableId = R.drawable.ic_game;
+                break;
+            case Film:
+                drawableId = R.drawable.ic_film;
+                break;
+            case Music:
+                drawableId = R.drawable.ic_music;
+                break;
+            case Video:
+                drawableId = R.drawable.ic_video;
+                break;
+            default:
+                drawableId = R.drawable.ic_unknown;
+        }
+
+        iconImageView.setImageResource(drawableId);
+
         return convertView;
     }
 
