@@ -8,12 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.net.URLEncoder;
-import java.net.URLDecoder;
 
 public class MediaSearch {
     private String queryString;
@@ -82,7 +80,7 @@ public class MediaSearch {
             stringValue = org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4(stringValue);
             //Log.d(titleName, stringValue);
             if ("id".equals(titleName)) {
-                media.setId(stringValue);
+                media.setReference(stringValue);
             } else if ("title".equals(titleName)) {
                 media.setTitle(stringValue);
             } else if ("name".equals(titleName)) {

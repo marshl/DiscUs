@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Media {
-    private String id;
+    private String reference;
     private String title;
     private String name;
     private String episodeTitle;
@@ -14,12 +14,12 @@ public class Media {
     private String type;
     private String director;
 
-    public String getId() {
-        return this.id;
+    public String getReference() {
+        return this.reference;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public String getTitle() {
