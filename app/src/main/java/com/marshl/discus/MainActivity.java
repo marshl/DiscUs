@@ -20,9 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.List;
 
 ;
@@ -213,7 +212,6 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
             } catch (Exception ex) {
                 this.exception = ex;
                 this.mediaList = null;
-                throw new RuntimeException("An error occurred when attempting to perform a search ", ex);
             }
 
             return this.mediaList;
@@ -226,9 +224,22 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
 
         @Override
         protected void onPostExecute(List<Media> result) {
-            ListView resultView = (ListView) findViewById(R.id.result_list);
-            resultView.setAdapter(new MediaResultAdapter(MainActivity.this, result));
 
+            if (this.exception != null) {
+                Toast toast = Toast.makeText(MainActivity.this,
+                        "An error occurred when retrieving the results: " + exception.getMessage(),
+                        Toast.LENGTH_LONG);
+                toast.show();
+            } else {
+                ListView resultView = (ListView) findViewById(R.id.result_list);
+                resultView.setAdapter(new MediaResultAdapter(MainActivity.this, result));
+                resultView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+            }
             super.onPostExecute(result);
         }
 
