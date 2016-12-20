@@ -2,8 +2,10 @@ package com.marshl.discus;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class MediaReaderDbHelper extends SQLiteOpenHelper {
 
@@ -61,5 +63,32 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_DIRECTOR, media.getDirector());
 
         db.insert(MediaReaderContract.MediaEntry.TABLE_NAME, null, values);
+
+    public boolean isMediaSavedToDatabase(String reference) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String[] projection = {
+                MediaReaderContract.MediaEntry.COLUMN_NAME_REFERENCE,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE
+        };
+
+        String selection = MediaReaderContract.MediaEntry.COLUMN_NAME_REFERENCE + " = ?";
+        String[] selectionArgs = {reference};
+
+        String sortOrder = MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE + " DESC";
+
+        Cursor c = db.query(
+                MediaReaderContract.MediaEntry.TABLE_NAME,                     // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        int rowCount = c.getCount();
+        c.close();
+        return rowCount > 0;
     }
 }
