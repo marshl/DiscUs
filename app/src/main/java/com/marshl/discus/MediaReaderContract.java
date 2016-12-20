@@ -12,7 +12,6 @@ public final class MediaReaderContract {
     public static class MediaEntry implements BaseColumns {
         public static final String TABLE_NAME = "media";
 
-        public static final String COLUMN_NAME_ID = "id";
         public static final String COLUMN_NAME_REFERENCE = "reference";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_NAME = "name";
