@@ -13,6 +13,7 @@ public class Media {
     private String year;
     private String type;
     private String director;
+    private MediaCategory category = MediaCategory.Unknown;
 
     public String getReference() {
         return this.reference;
@@ -70,10 +71,6 @@ public class Media {
         return this.type;
     }
 
-    public String getDirector() {
-        return this.director;
-    }
-
     private void setType(String type) {
 
         this.type = type;
@@ -97,7 +94,9 @@ public class Media {
         }
     }
 
-    private MediaCategory category = MediaCategory.Unknown;
+    public String getDirector() {
+        return this.director;
+    }
 
     public MediaCategory getCategory() {
         return this.category;
