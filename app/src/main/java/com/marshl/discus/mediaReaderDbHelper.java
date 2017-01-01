@@ -53,7 +53,6 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_REFERENCE, media.getReference());
-        values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_NAME, media.getName());
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE, media.getTitle());
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_NAME, media.getName());
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_EPISODE_TITLE, media.getEpisodeTitle());
