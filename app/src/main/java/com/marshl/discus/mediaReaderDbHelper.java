@@ -5,10 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class MediaReaderDbHelper extends SQLiteOpenHelper {
 
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "MediaReader.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ", ";
     private static final String SQL_CREATE_ENTRIES =
@@ -22,12 +23,8 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
                     MediaReaderContract.MediaEntry.COLUMN_NAME_TYPE + TEXT_TYPE + COMMA_SEP +
                     MediaReaderContract.MediaEntry.COLUMN_NAME_DIRECTOR + TEXT_TYPE +
                     " )";
-
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + MediaReaderContract.MediaEntry.TABLE_NAME;
-
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "MediaReader.db";
 
     public MediaReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
