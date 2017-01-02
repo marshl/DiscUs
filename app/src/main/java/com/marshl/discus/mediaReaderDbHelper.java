@@ -52,7 +52,7 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_REFERENCE, media.getReference());
+        /*values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_REFERENCE, media.getReference());
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE, media.getTitle());
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_NAME, media.getName());
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_EPISODE_TITLE, media.getEpisodeTitle());
@@ -60,8 +60,12 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_YEAR, media.getYear());
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_TYPE, media.getType());
         values.put(MediaReaderContract.MediaEntry.COLUMN_NAME_DIRECTOR, media.getDirector());
-
+*/
+        //TODO: Switch value setters
         db.insert(MediaReaderContract.MediaEntry.TABLE_NAME, null, values);
+
+        //Log.d("MediaResultDbHelper", "Media " + (isMediaSavedToDatabase(media.getReference()) ? "is" : "isn't") + " saved to database");
+    }
 
     public boolean isMediaSavedToDatabase(String reference) {
         SQLiteDatabase db = getReadableDatabase();

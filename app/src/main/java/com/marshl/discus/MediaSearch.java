@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.net.URLEncoder;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class MediaSearch {
     private String queryString;
@@ -25,7 +26,7 @@ public class MediaSearch {
         Log.d("SearchResultsActivity", "Connecting...");
         HttpURLConnection urlConnection = null;
         try {
-            String encodedQuery = "http://www.imdb.com/xml/find?json=1&nr=1&tt=on&i=on&q=" + URLEncoder.encode(this.queryString, "utf-8");
+            String encodedQuery = "http://www.omdbapi.com/?plot=full&r=json&s=" + URLEncoder.encode(this.queryString, "utf-8");
             Log.d("MediaSearch", "Url is: " + encodedQuery);
             URL url = new URL(encodedQuery);
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -51,19 +52,31 @@ public class MediaSearch {
 
         while (jsonReader.hasNext()) {
             String name = jsonReader.nextName();
-            //Log.d("Name", name);
-            //if (name.equals("title_popular") || name.equals("title_exact") || name.equals("title_substring"))
+            Log.d("Name", name);
+
+            switch(name)
             {
-                jsonReader.beginArray();
+                case "Search":
 
-                while (jsonReader.hasNext()) {
-                    //Log.d("Starting", "Title");
-                    Media media = parseTitle(jsonReader);
-                    mediaList.add(media);
-                    //Log.d("Title", media.name);
-                }
+                    jsonReader.beginArray();
 
-                jsonReader.endArray();
+                    while (jsonReader.hasNext()) {
+                        Media media = MediaSearch.parseTitle(jsonReader);
+                        mediaList.add(media);
+                    }
+
+                    jsonReader.endArray();
+                    break;
+                case "totalResults":
+                    String resultCount = jsonReader.nextString();
+                    Log.d("MediaSearch", resultCount);
+                    break;
+                case "Response":
+                    String response = jsonReader.nextString();
+                    Log.d("MediaSearch", response);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Unknown element name " + name);
             }
         }
 
@@ -75,23 +88,32 @@ public class MediaSearch {
         Media media = new Media();
         jsonReader.beginObject();
         while (jsonReader.hasNext()) {
-            String titleName = jsonReader.nextName();
+            String nameValue = jsonReader.nextName();
             String stringValue = jsonReader.nextString();
-            stringValue = org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4(stringValue);
-            //Log.d(titleName, stringValue);
-            if ("id".equals(titleName)) {
-                media.setReference(stringValue);
-            } else if ("title".equals(titleName)) {
-                media.setTitle(stringValue);
-            } else if ("name".equals(titleName)) {
-                media.setName(stringValue);
-            } else if ("title_description".equals(titleName)) {
-                // title_description is a duplicate of description, do nothing
-            } else if ("episode_title".equals(titleName)) {
-                media.setEpisodeTitle(stringValue);
-            } else if ("description".equals(titleName)) {
-                media.setDescription(stringValue);
+            stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
+
+            switch(nameValue) {
+                case "Title":
+                    media.setTitle(stringValue);
+                    break;
+                case "Year":
+                    int year = Integer.parseInt(stringValue);
+                    media.setYear(year);
+                    break;
+                case "imdbID":
+                    media.setImdbId(stringValue);
+                    break;
+                case "Type":
+                    media.setType(stringValue);
+                    break;
+                case "Poster":
+                    media.setPosterUrl(stringValue);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Unknown element value " + nameValue + ": " + stringValue);
             }
+
+            Log.d(nameValue, stringValue);
         }
 
         jsonReader.endObject();

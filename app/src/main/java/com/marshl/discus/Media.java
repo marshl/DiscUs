@@ -1,114 +1,181 @@
 package com.marshl.discus;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Date;
 
 public class Media {
-    private String reference;
+
     private String title;
-    private String name;
-    private String episodeTitle;
-    private String description;
-
-    private String year;
-    private String type;
+    private int year;
+    private String contentRating;
+    private Date releaseDate;
+    private int durationMinutes;
+    private String genres;
     private String director;
-    private MediaCategory category = MediaCategory.Unknown;
+    private String writer;
+    private String actors;
+    private String plot;
+    private String languages;
+    private String country;
+    private String awards;
+    private String posterUrl;
+    private int metascore;
+    private float imdbRating;
+    private int imdbVotes;
+    private String imdbId;
+    private String type;
 
-    public String getReference() {
-        return this.reference;
+    public String getType() {
+        return type;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getImdbVotes() {
+        return imdbVotes;
+    }
+
+    public void setImdbVotes(int imdbVotes) {
+        this.imdbVotes = imdbVotes;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEpisodeTitle() {
-        return this.episodeTitle;
-    }
-
-    public void setEpisodeTitle(String episodeTitle) {
-        this.episodeTitle = episodeTitle;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-
-        Pattern pattern = Pattern.compile("([0-9?]+)(.*), +<a href='.+?'>(.+?)</a>");
-        Matcher matcher = pattern.matcher(description);
-        if (matcher.find()) {
-            this.year = matcher.group(1);
-            this.setType(matcher.group(2).trim());
-            this.director = matcher.group(3).trim();
-        }
-    }
-
-    public String getYear() {
+    public int getYear() {
         return this.year;
     }
 
-    public String getType() {
-        return this.type;
+    public void setYear(int year) {
+        this.year = year;
     }
 
-    private void setType(String type) {
+    public String getContentRating() {
+        return this.contentRating;
+    }
 
-        this.type = type;
+    public void setContentRating(String contentRating) {
+        this.contentRating = contentRating;
+    }
 
-        // This has to be done in a particular order
-        // so that "TV Documentary Shorts" are categorised as documentaries, for example
-        if (this.type.toLowerCase().contains("game")) {
-            this.category = MediaCategory.Game;
-        } else if (this.type.toLowerCase().contains("documentary")) {
-            this.category = MediaCategory.Documentary;
-        } else if (this.type.toLowerCase().contains("movie")) {
-            this.category = MediaCategory.Film;
-        } else if (this.type.toLowerCase().contains("tv")) {
-            this.category = MediaCategory.Television;
-        } else if (this.type.toLowerCase().contains("video")) {
-            this.category = MediaCategory.Video;
-        } else if (this.type.toLowerCase().contains("soundtrack")) {
-            this.category = MediaCategory.Music;
-        } else {
-            this.category = MediaCategory.Film;
-        }
+    public Date getReleaseDate() {
+        return this.releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public int getDurationMinutes() {
+        return this.durationMinutes;
+    }
+
+    public void setDurationMinutes(int durationMinutes) {
+        this.durationMinutes = durationMinutes;
+    }
+
+    public String getGenres() {
+        return this.genres;
+    }
+
+    public void setGenres(String genres) {
+        this.genres = genres;
     }
 
     public String getDirector() {
         return this.director;
     }
 
-    public MediaCategory getCategory() {
-        return this.category;
+    public void setDirector(String directory) {
+        this.director = directory;
     }
 
-    public enum MediaCategory {
-        Game,
-        Television,
-        Film,
-        Music,
-        Video,
-        Documentary,
-        Unknown
+    public String getWriter() {
+        return this.writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getActors() {
+        return this.actors;
+    }
+
+    public void setActors(String actors) {
+        this.actors = actors;
+    }
+
+    public String getPlot() {
+        return this.plot;
+    }
+
+    public void setPlot(String plot) {
+        this.plot = plot;
+    }
+
+    public String getLanguages() {
+        return this.languages;
+    }
+
+    public void setLanguages(String languages) {
+        this.languages = languages;
+    }
+
+    public String getCountry() {
+        return this.country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getAwards() {
+        return this.awards;
+    }
+
+    public void setAwards(String awards) {
+        this.awards = awards;
+    }
+
+    public String getPosterUrl() {
+        return this.posterUrl;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
+    }
+
+    public int getMetascore() {
+        return this.metascore;
+    }
+
+    public void setMetascore(int metascore) {
+        this.metascore = metascore;
+    }
+
+    public float getImdbRating() {
+        return this.imdbRating;
+    }
+
+    public void setImdbRating(float imdbRating) {
+        this.imdbRating = imdbRating;
+    }
+
+    public String getImdbId() {
+        return this.imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
     }
 }

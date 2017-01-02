@@ -68,8 +68,8 @@ public class MediaResultAdapter implements ListAdapter {
 
         ImageView iconImageView = (ImageView) convertView.findViewById(R.id.media_list_item_icon);
 
-        int drawableId = -1;
-        switch (media.getCategory()) {
+        int drawableId = R.drawable.ic_unknown;
+        /*switch (media.getCategory()) {
             case Documentary:
                 drawableId = R.drawable.ic_documentary;
                 break;
@@ -91,7 +91,7 @@ public class MediaResultAdapter implements ListAdapter {
             default:
                 drawableId = R.drawable.ic_unknown;
         }
-
+*/
         iconImageView.setImageResource(drawableId);
 
         convertView.setOnClickListener(new View.OnClickListener() {
