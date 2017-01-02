@@ -69,29 +69,18 @@ public class MediaResultAdapter implements ListAdapter {
         ImageView iconImageView = (ImageView) convertView.findViewById(R.id.media_list_item_icon);
 
         int drawableId = R.drawable.ic_unknown;
-        /*switch (media.getCategory()) {
-            case Documentary:
-                drawableId = R.drawable.ic_documentary;
-                break;
-            case Television:
+        switch (media.getType()) {
+            case "series":
                 drawableId = R.drawable.ic_television;
                 break;
-            case Game:
+            case "game":
                 drawableId = R.drawable.ic_game;
                 break;
-            case Film:
+            case "movie":
                 drawableId = R.drawable.ic_film;
                 break;
-            case Music:
-                drawableId = R.drawable.ic_music;
-                break;
-            case Video:
-                drawableId = R.drawable.ic_video;
-                break;
-            default:
-                drawableId = R.drawable.ic_unknown;
         }
-*/
+
         iconImageView.setImageResource(drawableId);
 
         convertView.setOnClickListener(new View.OnClickListener() {
