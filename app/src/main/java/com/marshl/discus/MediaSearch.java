@@ -3,22 +3,58 @@ package com.marshl.discus;
 import android.util.JsonReader;
 import android.util.Log;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URLEncoder;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 public class MediaSearch {
     private String queryString;
 
     public MediaSearch(String query) {
         this.queryString = query;
+    }
+
+    private static Media parseTitle(JsonReader jsonReader) throws IOException {
+        Media media = new Media();
+        jsonReader.beginObject();
+        while (jsonReader.hasNext()) {
+            String nameValue = jsonReader.nextName();
+            String stringValue = jsonReader.nextString();
+            stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
+
+            switch (nameValue) {
+                case "Title":
+                    media.setTitle(stringValue);
+                    break;
+                case "Year":
+                    media.setYear(stringValue);
+                    break;
+                case "imdbID":
+                    media.setImdbId(stringValue);
+                    break;
+                case "Type":
+                    media.setType(stringValue);
+                    break;
+                case "Poster":
+                    media.setPosterUrl(stringValue);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Unknown element value " + nameValue + ": " + stringValue);
+            }
+
+            Log.d(nameValue, stringValue);
+        }
+
+        jsonReader.endObject();
+        return media;
     }
 
     public List<Media> runSearch() throws MediaSearchException {
@@ -54,8 +90,7 @@ public class MediaSearch {
             String name = jsonReader.nextName();
             Log.d("Name", name);
 
-            switch(name)
-            {
+            switch (name) {
                 case "Search":
 
                     jsonReader.beginArray();
@@ -85,41 +120,6 @@ public class MediaSearch {
 
         jsonReader.endObject();
         return mediaList;
-    }
-
-    private static Media parseTitle(JsonReader jsonReader) throws IOException {
-        Media media = new Media();
-        jsonReader.beginObject();
-        while (jsonReader.hasNext()) {
-            String nameValue = jsonReader.nextName();
-            String stringValue = jsonReader.nextString();
-            stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-
-            switch(nameValue) {
-                case "Title":
-                    media.setTitle(stringValue);
-                    break;
-                case "Year":
-                    media.setYear(stringValue);
-                    break;
-                case "imdbID":
-                    media.setImdbId(stringValue);
-                    break;
-                case "Type":
-                    media.setType(stringValue);
-                    break;
-                case "Poster":
-                    media.setPosterUrl(stringValue);
-                    break;
-                default:
-                    throw new UnsupportedOperationException("Unknown element value " + nameValue + ": " + stringValue);
-            }
-
-            Log.d(nameValue, stringValue);
-        }
-
-        jsonReader.endObject();
-        return media;
     }
 
 }
