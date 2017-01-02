@@ -1,10 +1,8 @@
 package com.marshl.discus;
 
 import android.app.SearchManager;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -123,6 +121,14 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onSearchRequested() {
+        Log.d("MainActivity", "onSearchRequested");
+        Bundle appData = new Bundle();
+        startSearch(null, false, appData, false);
+        return super.onSearchRequested();
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -191,14 +197,6 @@ public class MainActivity extends AppCompatActivity //implements android.app.Act
             }
             return null;
         }
-    }
-
-    @Override
-    public boolean onSearchRequested() {
-        Log.d("MainActivity", "onSearchRequested");
-        Bundle appData = new Bundle();
-        startSearch(null, false, appData, false);
-        return super.onSearchRequested();
     }
 
     public class MediaSearchTask extends AsyncTask<String, Integer, List<Media>> {
