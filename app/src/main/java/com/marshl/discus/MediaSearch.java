@@ -21,7 +21,7 @@ public class MediaSearch {
         this.queryString = query;
     }
 
-    public List<Media> runSearch() throws IOException {
+    public List<Media> runSearch() throws MediaSearchException {
 
         Log.d("SearchResultsActivity", "Connecting...");
         HttpURLConnection urlConnection = null;
@@ -34,7 +34,7 @@ public class MediaSearch {
             return this.readResultStream(stream);
         } catch (IOException ex) {
             Log.e("SearchResultsActivty", ex.toString());
-            throw ex;
+            throw new MediaSearchException(ex, ex.toString());
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -42,7 +42,7 @@ public class MediaSearch {
         }
     }
 
-    private List<Media> readResultStream(InputStream stream) throws IOException {
+    private List<Media> readResultStream(InputStream stream) throws IOException, MediaSearchException {
         InputStreamReader reader = new InputStreamReader(stream, "utf-8");
         JsonReader jsonReader = new JsonReader(reader);
 
@@ -75,6 +75,9 @@ public class MediaSearch {
                     String response = jsonReader.nextString();
                     Log.d("MediaSearch", response);
                     break;
+                case "Error":
+                    String errorMessage = jsonReader.nextString();
+                    throw new MediaSearchException(errorMessage);
                 default:
                     throw new UnsupportedOperationException("Unknown element name " + name);
             }
