@@ -8,8 +8,7 @@ public class MediaSearchException extends Exception {
         super(message);
     }
 
-    public MediaSearchException(Exception exception, String message)
-    {
+    public MediaSearchException(Exception exception, String message) {
         super(message, exception);
     }
 
