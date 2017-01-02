@@ -12,49 +12,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MediaSearch {
     private String queryString;
 
     public MediaSearch(String query) {
         this.queryString = query;
-    }
-
-    private static Media parseTitle(JsonReader jsonReader) throws IOException {
-        Media media = new Media();
-        jsonReader.beginObject();
-        while (jsonReader.hasNext()) {
-            String nameValue = jsonReader.nextName();
-            String stringValue = jsonReader.nextString();
-            stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-
-            switch (nameValue) {
-                case "Title":
-                    media.setTitle(stringValue);
-                    break;
-                case "Year":
-                    media.setYear(stringValue);
-                    break;
-                case "imdbID":
-                    media.setImdbId(stringValue);
-                    break;
-                case "Type":
-                    media.setType(stringValue);
-                    break;
-                case "Poster":
-                    media.setPosterUrl(stringValue);
-                    break;
-                default:
-                    throw new UnsupportedOperationException("Unknown element value " + nameValue + ": " + stringValue);
-            }
-
-            Log.d(nameValue, stringValue);
-        }
-
-        jsonReader.endObject();
-        return media;
     }
 
     public List<Media> runSearch() throws MediaSearchException {
@@ -68,8 +36,8 @@ public class MediaSearch {
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
             return this.readResultStream(stream);
-        } catch (IOException ex) {
-            Log.e("SearchResultsActivty", ex.toString());
+        } catch (IOException | ParseException ex) {
+            Log.e("runSearch", ex.toString());
             throw new MediaSearchException(ex, ex.toString());
         } finally {
             if (urlConnection != null) {
@@ -78,7 +46,21 @@ public class MediaSearch {
         }
     }
 
-    private List<Media> readResultStream(InputStream stream) throws IOException, MediaSearchException {
+    public Media lookupMediaWithId(String imdbId) throws MediaSearchException {
+        HttpURLConnection urlConnection = null;
+        try {
+            String encodedQuery = "http://www.omdbapi.com/?i=" + URLEncoder.encode(imdbId, "utf-8");
+            URL url = new URL(encodedQuery);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
+            return this.readLookupResultStream(stream);
+        } catch (IOException | ParseException ex) {
+            Log.e("lookupMediaWithId", ex.toString());
+            throw new MediaSearchException(ex, ex.toString());
+        }
+    }
+
+    private List<Media> readResultStream(InputStream stream) throws IOException, MediaSearchException, ParseException {
         InputStreamReader reader = new InputStreamReader(stream, "utf-8");
         JsonReader jsonReader = new JsonReader(reader);
 
@@ -96,7 +78,7 @@ public class MediaSearch {
                     jsonReader.beginArray();
 
                     while (jsonReader.hasNext()) {
-                        Media media = MediaSearch.parseTitle(jsonReader);
+                        Media media = this.parseTitle(jsonReader);
                         mediaList.add(media);
                     }
 
@@ -122,4 +104,98 @@ public class MediaSearch {
         return mediaList;
     }
 
+
+    private Media readLookupResultStream(InputStream stream) throws IOException, MediaSearchException, ParseException {
+        InputStreamReader reader = new InputStreamReader(stream, "utf-8");
+        JsonReader jsonReader = new JsonReader(reader);
+
+        jsonReader.beginObject();
+
+        if (!jsonReader.hasNext()) {
+            throw new MediaSearchException("No data was found in the stream");
+        }
+
+        Media media = this.parseTitle(jsonReader);
+        jsonReader.endObject();
+        return media;
+    }
+
+    private Media parseTitle(JsonReader jsonReader) throws IOException, ParseException {
+        Media media = new Media();
+        jsonReader.beginObject();
+        while (jsonReader.hasNext()) {
+            String nameValue = jsonReader.nextName();
+            String stringValue = jsonReader.nextString();
+            stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
+
+            switch (nameValue) {
+                case "Title":
+                    media.setTitle(stringValue);
+                    break;
+                case "Year":
+                    media.setYear(stringValue);
+                    break;
+                case "Rated":
+                    media.setContentRating(stringValue);
+                    break;
+                case "Released":
+                    SimpleDateFormat format = new SimpleDateFormat("dd MMM YYYY", Locale.ENGLISH);
+                    media.setReleaseDate(format.parse(stringValue));
+                    break;
+                case "Runtime":
+                    String minutes = stringValue.substring(0, stringValue.indexOf(' '));
+                    media.setDurationMinutes(Integer.parseInt(minutes));
+                    break;
+                case "Genre":
+                    media.setGenres(stringValue);
+                    break;
+                case "Director":
+                    media.setDirector(stringValue);
+                    break;
+                case "Writer":
+                    media.setWriter(stringValue);
+                    break;
+                case "Actors":
+                    media.setActors(stringValue);
+                    break;
+                case "Plot":
+                    media.setPlot(stringValue);
+                    break;
+                case "Language":
+                    media.setLanguages(stringValue);
+                    break;
+                case "Country":
+                    media.setCountry(stringValue);
+                    break;
+                case "Awards":
+                    media.setAwards(stringValue);
+                    break;
+                case "Poster":
+                    media.setPosterUrl(stringValue);
+                    break;
+                case "Metascore":
+                    int metascore = Integer.parseInt(stringValue);
+                    media.setMetascore(metascore);
+                    break;
+                case "imdbRating":
+                    float rating = Float.parseFloat(stringValue);
+                    media.setImdbRating(rating);
+                case "imdbID":
+                    media.setImdbId(stringValue);
+                    break;
+                case "Type":
+                    media.setType(stringValue);
+                    break;
+                case "Response":
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Unknown element value " + nameValue + ": " + stringValue);
+            }
+
+            Log.d(nameValue, stringValue);
+        }
+
+        jsonReader.endObject();
+        return media;
+    }
 }
