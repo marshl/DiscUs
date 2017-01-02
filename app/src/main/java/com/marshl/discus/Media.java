@@ -8,7 +8,7 @@ import java.util.Date;
 public class Media {
 
     private String title;
-    private int year;
+    private String year;
     private String contentRating;
     private Date releaseDate;
     private int durationMinutes;
@@ -51,11 +51,11 @@ public class Media {
         this.title = title;
     }
 
-    public int getYear() {
+    public String getYear() {
         return this.year;
     }
 
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
 

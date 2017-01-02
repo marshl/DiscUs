@@ -97,8 +97,7 @@ public class MediaSearch {
                     media.setTitle(stringValue);
                     break;
                 case "Year":
-                    int year = Integer.parseInt(stringValue);
-                    media.setYear(year);
+                    media.setYear(stringValue);
                     break;
                 case "imdbID":
                     media.setImdbId(stringValue);
