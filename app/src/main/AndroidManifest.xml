@@ -36,6 +36,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.marshl.discus.MainActivity" />
         </activity>
+        <activity android:name=".MediaSearchResults"></activity>
     </application>
 
 </manifest>
