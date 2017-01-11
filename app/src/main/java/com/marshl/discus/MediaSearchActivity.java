@@ -1,12 +1,17 @@
 package com.marshl.discus;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import static android.R.id.message;
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class MediaSearchActivity extends AppCompatActivity {
 
@@ -35,6 +40,10 @@ public class MediaSearchActivity extends AppCompatActivity {
     }
 
     private void performSearch(){
-
+        Intent intent = new Intent(this, MediaSearchResults.class);
+        EditText searchTextView = (EditText) findViewById(R.id.search_text);
+        String searchText = searchTextView.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, searchText);
+        startActivity(intent);
     }
 }
