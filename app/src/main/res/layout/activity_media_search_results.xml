@@ -10,4 +10,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.marshl.discus.MediaSearchResults">
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/media_result_list"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
