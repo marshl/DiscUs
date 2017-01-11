@@ -83,14 +83,14 @@ public class MediaResultAdapter implements ListAdapter {
 
         iconImageView.setImageResource(drawableId);
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+        /*convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("MediaResultsAdapter", "Inserting new record for " + media.getTitle());
                 MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(context);
                 dbHelper.insertMediaRecord(media);
             }
-        });
+        });*/
 
         return convertView;
     }
