@@ -4,6 +4,8 @@ import android.app.SearchManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,7 +23,21 @@ public class MediaSearchResults extends AppCompatActivity {
         String query = "foo";
         MediaSearchTask task = new MediaSearchTask();
         task.execute(query);
+
+        ListView resultList = (ListView)this.findViewById(R.id.media_result_list);
+        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Media media = (Media)parent.getAdapter().getItem(position);
+                MediaSearchResults.this.openMediaDetails(media);
+            }
+        });
     }
+
+    private void openMediaDetails(Media media){
+
+    }
+
 
     public class MediaSearchTask extends AsyncTask<String, Integer, List<Media>> {
         private Exception exception;
