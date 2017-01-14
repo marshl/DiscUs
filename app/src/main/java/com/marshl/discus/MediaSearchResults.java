@@ -1,6 +1,7 @@
 package com.marshl.discus;
 
 import android.app.SearchManager;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,9 +21,10 @@ public class MediaSearchResults extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_search_results);
 
-        String query = "foo";
+        Intent intent = this.getIntent();
+        SearchParameters params = intent.getParcelableExtra("params");
         MediaSearchTask task = new MediaSearchTask();
-        task.execute(query);
+        task.execute(params.getSearchText());
 
         ListView resultList = (ListView)this.findViewById(R.id.media_result_list);
         resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

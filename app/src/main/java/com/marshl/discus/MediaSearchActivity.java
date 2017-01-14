@@ -41,9 +41,14 @@ public class MediaSearchActivity extends AppCompatActivity {
 
     private void performSearch(){
         Intent intent = new Intent(this, MediaSearchResults.class);
+
+        SearchParameters params = new SearchParameters();
+
         EditText searchTextView = (EditText) findViewById(R.id.search_text);
         String searchText = searchTextView.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, searchText);
+        params.setSearchText(searchText);
+
+        intent.putExtra("params", params);
         startActivity(intent);
     }
 }
