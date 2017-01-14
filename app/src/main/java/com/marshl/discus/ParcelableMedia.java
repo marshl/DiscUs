@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class ParcelableMedia extends Media implements Parcelable {
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Media createFromParcel(Parcel in) {
+        public ParcelableMedia createFromParcel(Parcel in) {
             return new ParcelableMedia(in);
         }
 
