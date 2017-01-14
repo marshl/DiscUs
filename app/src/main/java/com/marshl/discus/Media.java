@@ -24,6 +24,30 @@ public class Media {
     private String imdbId;
     private String type;
 
+    public Media() {}
+
+    public Media(Media other){
+        this.title = other.title;
+        this.year = other.year;
+        this.contentRating = other.contentRating;
+        this.releaseDate = other.releaseDate;
+        this.durationMinutes = other.durationMinutes;
+        this.genres = other.genres;
+        this.director = other.director;
+        this.writer = other.writer;
+        this.actors = other.actors;
+        this.plot = other.plot;
+        this.languages = other.languages;
+        this.country = other.country;
+        this.awards = other.awards;
+        this.posterUrl = other.posterUrl;
+        this.metascore = other.metascore;
+        this.imdbRating = other.imdbRating;
+        this.imdbVotes = other.imdbVotes;
+        this.imdbId = other.imdbId;
+        this.type = other.type;
+    }
+
     public String getType() {
         return type;
     }

@@ -16,6 +16,10 @@ public class ParcelableMedia extends Media implements Parcelable {
         }
     };
 
+    public ParcelableMedia(Media media) {
+        super(media);
+    }
+
     public ParcelableMedia(Parcel in) {
         super();
 
