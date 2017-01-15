@@ -37,7 +37,9 @@ public class MediaSearchResults extends AppCompatActivity {
     }
 
     private void openMediaDetails(Media media){
-
+        Intent intent = new Intent(this, MediaDetails.class);
+        intent.putExtra("media", new ParcelableMedia(media));
+        this.startActivity(intent);
     }
 
 
