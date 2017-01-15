@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MediaDetails"
+            android:name=".MediaDetailActivity"
             android:label="@string/title_activity_media_details"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

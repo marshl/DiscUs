@@ -1,6 +1,5 @@
 package com.marshl.discus;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,7 +36,7 @@ public class MediaSearchResults extends AppCompatActivity {
     }
 
     private void openMediaDetails(Media media){
-        Intent intent = new Intent(this, MediaDetails.class);
+        Intent intent = new Intent(this, MediaDetailActivity.class);
         intent.putExtra("media", new ParcelableMedia(media));
         this.startActivity(intent);
     }
