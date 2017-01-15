@@ -52,7 +52,7 @@ public class ParcelableMedia extends Media implements Parcelable {
         parcel.writeString(this.getTitle());
         parcel.writeString(this.getYear());
         parcel.writeString(this.getContentRating());
-        parcel.writeLong(this.getReleaseDate().getTime());
+        parcel.writeLong(this.getReleaseDate() != null ? this.getReleaseDate().getTime() : 0);
         parcel.writeInt(this.getDurationMinutes());
         parcel.writeString(this.getGenres());
         parcel.writeString(this.getDirector());
