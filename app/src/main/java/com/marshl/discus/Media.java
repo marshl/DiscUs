@@ -18,9 +18,9 @@ public class Media {
     private String country;
     private String awards;
     private String posterUrl;
-    private int metascore;
-    private float imdbRating;
-    private int imdbVotes;
+    private Integer metascore;
+    private Float imdbRating;
+    private Integer imdbVotes;
     private String imdbId;
     private String type;
 
@@ -56,11 +56,11 @@ public class Media {
         this.type = type;
     }
 
-    public int getImdbVotes() {
+    public Integer getImdbVotes() {
         return imdbVotes;
     }
 
-    public void setImdbVotes(int imdbVotes) {
+    public void setImdbVotes(Integer imdbVotes) {
         this.imdbVotes = imdbVotes;
     }
 
@@ -96,7 +96,7 @@ public class Media {
         this.releaseDate = releaseDate;
     }
 
-    public int getDurationMinutes() {
+    public Integer getDurationMinutes() {
         return this.durationMinutes;
     }
 
@@ -176,7 +176,7 @@ public class Media {
         this.posterUrl = posterUrl;
     }
 
-    public int getMetascore() {
+    public Integer getMetascore() {
         return this.metascore;
     }
 
@@ -184,11 +184,11 @@ public class Media {
         this.metascore = metascore;
     }
 
-    public float getImdbRating() {
+    public Float getImdbRating() {
         return this.imdbRating;
     }
 
-    public void setImdbRating(float imdbRating) {
+    public void setImdbRating(Float imdbRating) {
         this.imdbRating = imdbRating;
     }
 

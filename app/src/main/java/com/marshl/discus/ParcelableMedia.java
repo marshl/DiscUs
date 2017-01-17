@@ -26,7 +26,9 @@ public class ParcelableMedia extends Media implements Parcelable {
         this.setTitle(in.readString());
         this.setYear(in.readString());
         this.setContentRating(in.readString());
-        this.setReleaseDate(new Date(in.readLong()));
+
+        long longDate = in.readLong();
+        this.setReleaseDate(longDate != -1 ? new Date(in.readLong()) : null);
         this.setDurationMinutes(in.readInt());
         this.setGenres(in.readString());
         this.setDirector(in.readString());
@@ -38,7 +40,8 @@ public class ParcelableMedia extends Media implements Parcelable {
         this.setPosterUrl(in.readString());
         this.setMetascore(in.readInt());
         this.setImdbRating(in.readFloat());
-        this.setImdbVotes(in.readInt());
+        int votes = in.readInt();
+        this.setImdbVotes(votes != -1 ? votes : null);
         this.setType(in.readString());
     }
 
@@ -52,7 +55,7 @@ public class ParcelableMedia extends Media implements Parcelable {
         parcel.writeString(this.getTitle());
         parcel.writeString(this.getYear());
         parcel.writeString(this.getContentRating());
-        parcel.writeLong(this.getReleaseDate() != null ? this.getReleaseDate().getTime() : 0);
+        parcel.writeLong(this.getReleaseDate() != null ? this.getReleaseDate().getTime() : -1);
         parcel.writeInt(this.getDurationMinutes());
         parcel.writeString(this.getGenres());
         parcel.writeString(this.getDirector());
@@ -65,7 +68,7 @@ public class ParcelableMedia extends Media implements Parcelable {
         parcel.writeString(this.getPosterUrl());
         parcel.writeInt(this.getMetascore());
         parcel.writeFloat(this.getImdbRating());
-        parcel.writeInt(this.getImdbVotes());
+        parcel.writeInt(this.getImdbVotes() != null ? this.getImdbVotes() : -1);
         parcel.writeString(this.getImdbId());
         parcel.writeString(this.getType());
     }
