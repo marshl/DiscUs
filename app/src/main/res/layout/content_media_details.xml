@@ -14,27 +14,10 @@
     tools:showIn="@layout/activity_media_details">
 
     <TextView
-        android:id="@+id/media_name_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="[Title Name]" />
-
-    <TextView
-        android:id="@+id/media_year_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/media_name_text_view"
-        android:text="[Year]" />
-
-    <TextView
         android:id="@+id/media_release_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/media_name_text_view"
         android:text="Released: " />
 
     <TextView
