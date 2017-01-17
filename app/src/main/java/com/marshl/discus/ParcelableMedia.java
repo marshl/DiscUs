@@ -28,7 +28,7 @@ public class ParcelableMedia extends Media implements Parcelable {
         this.setContentRating(in.readString());
 
         long longDate = in.readLong();
-        this.setReleaseDate(longDate != -1 ? new Date(in.readLong()) : null);
+        this.setReleaseDate(longDate != -1 ? new Date(longDate) : null);
         this.setDurationMinutes(in.readInt());
         this.setGenres(in.readString());
         this.setDirector(in.readString());
