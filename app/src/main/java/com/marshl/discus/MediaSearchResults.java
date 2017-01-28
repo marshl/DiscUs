@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -19,6 +20,10 @@ public class MediaSearchResults extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_search_results);
+
+        if(this.getActionBar() != null) {
+            this.getActionBar().setTitle("Results");
+        }
 
         Intent intent = this.getIntent();
         SearchParameters params = intent.getParcelableExtra("params");
@@ -36,9 +41,9 @@ public class MediaSearchResults extends AppCompatActivity {
     }
 
     private void openMediaDetails(Media media){
-        Intent intent = new Intent(this, MediaDetailActivity.class);
-        intent.putExtra("media", new ParcelableMedia(media));
-        this.startActivity(intent);
+
+        MediaLookupTask task = new MediaLookupTask();
+        task.execute(media.getImdbId());
     }
 
 
@@ -78,6 +83,49 @@ public class MediaSearchResults extends AppCompatActivity {
                 resultView.setAdapter(new MediaResultAdapter(MediaSearchResults.this, result));
             }
             super.onPostExecute(result);
+        }
+
+    }
+
+    public class MediaLookupTask extends AsyncTask<String, Integer, Media> {
+        private Exception exception;
+        private Media media;
+
+        @Override
+        protected Media doInBackground(String... imdbId) {
+
+            try {
+                MediaSearch searcher = new MediaSearch(null);
+                this.media = searcher.lookupMediaWithId(imdbId[0]);
+            } catch (Exception ex) {
+                this.exception = ex;
+                this.media = null;
+            }
+
+            Log.d("MediaSearchResults", "omg");
+            return this.media;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+        }
+
+        @Override
+        protected void onPostExecute(Media result) {
+
+            Log.d("MediaSearchResults", "It is done");
+            super.onPostExecute(result);
+            if (this.exception != null) {
+                Toast toast = Toast.makeText(MediaSearchResults.this,
+                        "An error occurred when retrieving the results: " + exception.getMessage(),
+                        Toast.LENGTH_LONG);
+                toast.show();
+            } else {
+                Intent intent = new Intent(MediaSearchResults.this, MediaDetailActivity.class);
+                intent.putExtra("media", new ParcelableMedia(media));
+                startActivity(intent);
+            }
         }
 
     }
