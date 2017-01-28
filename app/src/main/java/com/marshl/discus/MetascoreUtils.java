@@ -1,5 +1,7 @@
 package com.marshl.discus;
 
+import android.content.res.Resources;
+
 public class MetascoreUtils {
 
     private static final int UNFAVORABLE_COLOR = 0xFF0000;
@@ -7,7 +9,6 @@ public class MetascoreUtils {
     private static final int FAVORABLE_COLOR = 0x66CC33;
 
     private MetascoreUtils() {
-
     }
 
     public static int getMetascoreColor(int metascore, boolean isGame) {
@@ -31,31 +32,30 @@ public class MetascoreUtils {
         }
     }
 
-    public static String getMetaScoreMeaning(int metascore, boolean isGame)
-    {
+    public String getMetaScoreMeaning(int metascore, boolean isGame, Resources resources) {
         if (isGame) {
             if (metascore < 20) {
-                return "Overwhelming Dislike";
+                return resources.getString(R.string.metascore_overwhelming_dislike);
             } else if (metascore < 50) {
-                return "Generally Unfavorable Reviews";
+                return resources.getString(R.string.metascore_generally_unfavorable_reviews);
             } else if (metascore < 75) {
-                return "Mixed or Average Reviews";
+                return resources.getString(R.string.metascore_mixed_reviews);
             } else if (metascore < 90) {
-                return "Generally Favorable Reviews";
+                return resources.getString(R.string.metascore_generally_favorable_reviews);
             } else {
-                return "Universal Acclaim";
+                return resources.getString(R.string.metascore_universal_acclaim);
             }
         } else {
             if (metascore < 20) {
-                return "Overwhelming Dislike";
+                return resources.getString(R.string.metascore_overwhelming_dislike);
             } else if (metascore < 40) {
-                return "Generally Unfavorable Reviews";
+                return resources.getString(R.string.metascore_generally_unfavorable_reviews);
             } else if (metascore < 61) {
-                return "Mixed or Average Reviews";
+                return resources.getString(R.string.metascore_mixed_reviews);
             } else if (metascore < 81) {
-                return "Generally Favorable Reviews";
+                return resources.getString(R.string.metascore_generally_favorable_reviews);
             } else {
-                return "Universal Acclaim";
+                return resources.getString(R.string.metascore_universal_acclaim);
             }
         }
     }
