@@ -101,6 +101,7 @@ public class MediaSearch {
         }
 
         jsonReader.endObject();
+        jsonReader.close();
         return mediaList;
     }
 
@@ -109,23 +110,22 @@ public class MediaSearch {
         InputStreamReader reader = new InputStreamReader(stream, "utf-8");
         JsonReader jsonReader = new JsonReader(reader);
 
-        jsonReader.beginObject();
-
         if (!jsonReader.hasNext()) {
             throw new MediaSearchException("No data was found in the stream");
         }
 
         Media media = this.parseTitle(jsonReader);
-        jsonReader.endObject();
+        jsonReader.close();
         return media;
     }
 
-    private Media parseTitle(JsonReader jsonReader) throws IOException, ParseException {
+    private Media parseTitle(JsonReader jsonReader) throws IOException {
         Media media = new Media();
         jsonReader.beginObject();
         while (jsonReader.hasNext()) {
             String nameValue = jsonReader.nextName();
             String stringValue = jsonReader.nextString();
+            Log.d(nameValue, stringValue);
             stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
 
             switch (nameValue) {
@@ -139,8 +139,12 @@ public class MediaSearch {
                     media.setContentRating(stringValue);
                     break;
                 case "Released":
-                    SimpleDateFormat format = new SimpleDateFormat("dd MMM YYYY", Locale.ENGLISH);
-                    media.setReleaseDate(format.parse(stringValue));
+                    try {
+                        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+                        media.setReleaseDate(format.parse(stringValue));
+                    } catch (ParseException ex) {
+                        media.setReleaseDate(null);
+                    }
                     break;
                 case "Runtime":
                     String minutes = stringValue.substring(0, stringValue.indexOf(' '));
@@ -174,12 +178,29 @@ public class MediaSearch {
                     media.setPosterUrl(stringValue);
                     break;
                 case "Metascore":
-                    int metascore = Integer.parseInt(stringValue);
-                    media.setMetascore(metascore);
+                    try {
+                        int metascore = Integer.parseInt(stringValue);
+                        media.setMetascore(metascore);
+                    } catch (NumberFormatException ex) {
+                        media.setMetascore(0);
+                    }
                     break;
                 case "imdbRating":
-                    float rating = Float.parseFloat(stringValue);
-                    media.setImdbRating(rating);
+                    try {
+                        float rating = Float.parseFloat(stringValue);
+                        media.setImdbRating(rating);
+                    } catch (NumberFormatException ex) {
+                        media.setImdbRating(null);
+                    }
+                    break;
+                case "imdbVotes":
+                    try {
+                        int voteCount = Integer.parseInt(stringValue);
+                        media.setImdbVotes(voteCount);
+                    } catch (NumberFormatException ex) {
+                        media.setImdbVotes(null);
+                    }
+                    break;
                 case "imdbID":
                     media.setImdbId(stringValue);
                     break;
@@ -192,7 +213,7 @@ public class MediaSearch {
                     throw new UnsupportedOperationException("Unknown element value " + nameValue + ": " + stringValue);
             }
 
-            Log.d(nameValue, stringValue);
+            //Log.d(nameValue, stringValue);
         }
 
         jsonReader.endObject();
