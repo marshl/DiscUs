@@ -30,7 +30,8 @@ public class ParcelableMedia extends Media implements Parcelable {
         long longDate = in.readLong();
         this.setReleaseDate(longDate != -1 ? new Date(longDate) : null);
 
-        this.setDurationMinutes(in.readInt());
+        int duration = in.readInt();
+        this.setDurationMinutes(duration != -1 ? duration : null);
         this.setGenres(in.readString());
         this.setDirector(in.readString());
         this.setWriter(in.readString());
@@ -59,7 +60,7 @@ public class ParcelableMedia extends Media implements Parcelable {
         parcel.writeString(this.getYear());
         parcel.writeString(this.getContentRating());
         parcel.writeLong(this.getReleaseDate() != null ? this.getReleaseDate().getTime() : -1);
-        parcel.writeInt(this.getDurationMinutes());
+        parcel.writeInt(this.getDurationMinutes() != null ? this.getDurationMinutes() : -1);
         parcel.writeString(this.getGenres());
         parcel.writeString(this.getDirector());
         parcel.writeString(this.getWriter());
