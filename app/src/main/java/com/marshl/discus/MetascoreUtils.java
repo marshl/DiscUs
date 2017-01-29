@@ -4,9 +4,9 @@ import android.content.res.Resources;
 
 public class MetascoreUtils {
 
-    private static final int UNFAVORABLE_COLOR = 0xFF0000;
-    private static final int MIXED_COLOR = 0xFFCC33;
-    private static final int FAVORABLE_COLOR = 0x66CC33;
+    private static final int UNFAVORABLE_COLOR = 0xFFFF0000;
+    private static final int MIXED_COLOR = 0xFFFFCC33;
+    private static final int FAVORABLE_COLOR = 0xFF66CC33;
 
     private MetascoreUtils() {
     }
