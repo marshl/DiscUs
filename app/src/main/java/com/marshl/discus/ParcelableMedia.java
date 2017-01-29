@@ -29,6 +29,7 @@ public class ParcelableMedia extends Media implements Parcelable {
 
         long longDate = in.readLong();
         this.setReleaseDate(longDate != -1 ? new Date(longDate) : null);
+
         this.setDurationMinutes(in.readInt());
         this.setGenres(in.readString());
         this.setDirector(in.readString());
@@ -40,7 +41,8 @@ public class ParcelableMedia extends Media implements Parcelable {
         this.setAwards(in.readString());
         this.setPosterUrl(in.readString());
         this.setMetascore(in.readInt());
-        this.setImdbRating(in.readFloat());
+        float imdbRating = in.readFloat();
+        this.setImdbRating(imdbRating != -1 ? imdbRating : null);
         int votes = in.readInt();
         this.setImdbVotes(votes != -1 ? votes : null);
         this.setType(in.readString());
@@ -68,7 +70,7 @@ public class ParcelableMedia extends Media implements Parcelable {
         parcel.writeString(this.getAwards());
         parcel.writeString(this.getPosterUrl());
         parcel.writeInt(this.getMetascore());
-        parcel.writeFloat(this.getImdbRating());
+        parcel.writeFloat(this.getImdbRating() != null ? this.getImdbRating() : -1);
         parcel.writeInt(this.getImdbVotes() != null ? this.getImdbVotes() : -1);
         parcel.writeString(this.getImdbId());
         parcel.writeString(this.getType());
