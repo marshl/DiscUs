@@ -47,9 +47,11 @@ public class MediaSearch {
     }
 
     public Media lookupMediaWithId(String imdbId) throws MediaSearchException {
-        HttpURLConnection urlConnection = null;
+        Log.d("MediaSearch", "Looking up media with id " + imdbId);
+        HttpURLConnection urlConnection;
         try {
             String encodedQuery = "http://www.omdbapi.com/?i=" + URLEncoder.encode(imdbId, "utf-8");
+            Log.d("MediaSearch", "running query " + encodedQuery);
             URL url = new URL(encodedQuery);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
@@ -147,6 +149,11 @@ public class MediaSearch {
                     }
                     break;
                 case "Runtime":
+                    if(stringValue.length() == 0 || !stringValue.contains(" "))
+                    {
+                        media.setDurationMinutes(null);
+                        break;
+                    }
                     String minutes = stringValue.substring(0, stringValue.indexOf(' '));
                     media.setDurationMinutes(Integer.parseInt(minutes));
                     break;

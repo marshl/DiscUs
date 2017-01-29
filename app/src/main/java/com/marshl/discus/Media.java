@@ -8,7 +8,7 @@ public class Media {
     private String year;
     private String contentRating;
     private Date releaseDate;
-    private int durationMinutes;
+    private Integer durationMinutes;
     private String genres;
     private String director;
     private String writer;
@@ -100,7 +100,7 @@ public class Media {
         return this.durationMinutes;
     }
 
-    public void setDurationMinutes(int durationMinutes) {
+    public void setDurationMinutes(Integer durationMinutes) {
         this.durationMinutes = durationMinutes;
     }
 
