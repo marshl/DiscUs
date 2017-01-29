@@ -69,28 +69,33 @@
         android:layout_toEndOf="@+id/media_director_label"
         android:text="[Director]" />
 
-    <TextView
-        android:id="@+id/media_writer_label"
+    <LinearLayout
+        android:id="@+id/media_writer_layout"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/media_director_label"
-        android:text="Writers: " />
+        android:layout_below="@+id/media_director_label">
 
-    <TextView
-        android:id="@+id/media_writer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/media_writer_label"
-        android:layout_toEndOf="@+id/media_writer_label"
-        android:text="[Writier]" />
+        <TextView
+            android:id="@+id/media_writer_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Writers: " />
+
+        <TextView
+            android:id="@+id/media_writer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[Writier]" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/media_metascore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/media_writer_label"
+        android:layout_below="@+id/media_writer_layout"
         android:background="@android:color/holo_green_light"
         android:padding="5dp"
         android:text="55" />
@@ -117,7 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/media_writer_label"
+        android:layout_below="@+id/media_writer_layout"
         android:isIndicator="true"
         android:numStars="10"
         android:stepSize="0.5" />
