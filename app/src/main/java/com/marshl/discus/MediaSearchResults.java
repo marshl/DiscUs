@@ -1,5 +1,6 @@
 package com.marshl.discus;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ public class MediaSearchResults extends AppCompatActivity {
 
     private List<Media> mediaList;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,12 @@ public class MediaSearchResults extends AppCompatActivity {
         if(this.getActionBar() != null) {
             this.getActionBar().setTitle("Results");
         }
+
+        this.progressDialog = new ProgressDialog(this);
+        this.progressDialog.setTitle("Loading");
+        this.progressDialog.setMessage("Wait while loading...");
+        this.progressDialog.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        this.progressDialog.show();
 
         Intent intent = this.getIntent();
         SearchParameters params = intent.getParcelableExtra("params");
@@ -82,6 +91,8 @@ public class MediaSearchResults extends AppCompatActivity {
                 ListView resultView = (ListView) findViewById(R.id.media_result_list);
                 resultView.setAdapter(new MediaResultAdapter(MediaSearchResults.this, result));
             }
+            progressDialog.dismiss();
+
             super.onPostExecute(result);
         }
 
