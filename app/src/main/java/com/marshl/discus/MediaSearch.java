@@ -149,8 +149,7 @@ public class MediaSearch {
                     }
                     break;
                 case "Runtime":
-                    if(stringValue.length() == 0 || !stringValue.contains(" "))
-                    {
+                    if (stringValue.length() == 0 || !stringValue.contains(" ")) {
                         media.setDurationMinutes(null);
                         break;
                     }
@@ -202,7 +201,7 @@ public class MediaSearch {
                     break;
                 case "imdbVotes":
                     try {
-                        int voteCount = Integer.parseInt(stringValue);
+                        int voteCount = Integer.parseInt(stringValue.replace(",", ""));
                         media.setImdbVotes(voteCount);
                     } catch (NumberFormatException ex) {
                         media.setImdbVotes(null);
