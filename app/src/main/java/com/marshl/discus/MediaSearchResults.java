@@ -35,7 +35,7 @@ public class MediaSearchResults extends AppCompatActivity {
         this.progressDialog.show();
 
         Intent intent = this.getIntent();
-        SearchParameters params = intent.getParcelableExtra("params");
+        SearchParameters params = intent.getParcelableExtra(SearchParameters.SEARCH_PARAM_PARCEL_NAME);
         MediaSearchTask task = new MediaSearchTask();
         task.execute(params.getSearchText());
 

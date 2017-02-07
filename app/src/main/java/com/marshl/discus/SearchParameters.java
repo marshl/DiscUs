@@ -9,6 +9,8 @@ import android.os.Parcelable;
 
 public class SearchParameters implements Parcelable {
 
+    public static final String SEARCH_PARAM_PARCEL_NAME = "PARAMS";
+
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public SearchParameters createFromParcel(Parcel in) {
             return new SearchParameters(in);

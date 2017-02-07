@@ -48,7 +48,7 @@ public class MediaSearchActivity extends AppCompatActivity {
         String searchText = searchTextView.getText().toString();
         params.setSearchText(searchText);
 
-        intent.putExtra("params", params);
+        intent.putExtra(SearchParameters.SEARCH_PARAM_PARCEL_NAME, params);
         startActivity(intent);
     }
 }
