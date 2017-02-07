@@ -25,12 +25,12 @@ public class MediaSearchResults extends AppCompatActivity {
         setContentView(R.layout.activity_media_search_results);
 
         if(this.getActionBar() != null) {
-            this.getActionBar().setTitle("Results");
+            this.getActionBar().setTitle(R.string.title_activity_media_results);
         }
 
         this.progressDialog = new ProgressDialog(this);
-        this.progressDialog.setTitle("Loading");
-        this.progressDialog.setMessage("Wait while loading...");
+        this.progressDialog.setTitle(getString(R.string.search_progress_dialog_title));
+        this.progressDialog.setMessage(getString(R.string.search_progress_dialog_message));
         this.progressDialog.setCancelable(false); // disable dismiss by tapping outside of the dialog
         this.progressDialog.show();
 

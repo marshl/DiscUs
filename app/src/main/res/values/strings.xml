@@ -5,10 +5,13 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="action_search">Search</string>
     <string name="title_activity_media_details">MediaDetails</string>
-    <string name="title_activity_media_search">MediaSearchActivity</string>
+    <string name="title_activity_media_search">DiscUs</string>
     <string name="metascore_overwhelming_dislike">Overwhelming Dislike</string>
     <string name="metascore_generally_unfavorable_reviews">Generally Unfavorable Reviews</string>
     <string name="metascore_mixed_reviews">Mixed or Average Reviews</string>
     <string name="metascore_generally_favorable_reviews">Generally Favorable Reviews</string>
     <string name="metascore_universal_acclaim">Universal Acclaim</string>
+    <string name="search_progress_dialog_title">Searching</string>
+    <string name="search_progress_dialog_message">Please wait...</string>
+    <string name="title_activity_media_results">Results</string>
 </resources>
