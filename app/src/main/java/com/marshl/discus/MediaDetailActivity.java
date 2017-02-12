@@ -1,14 +1,14 @@
 package com.marshl.discus;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class MediaDetailActivity extends AppCompatActivity {
@@ -32,31 +32,52 @@ public class MediaDetailActivity extends AppCompatActivity {
             DateFormat formatter = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
             releaseDateView.setText(formatter.format(this.media.getReleaseDate()));
         } else {
-            TextView releaseDateLabel = (TextView)this.findViewById(R.id.media_release_label);
+            TextView releaseDateLabel = (TextView) this.findViewById(R.id.media_release_label);
             releaseDateLabel.setVisibility(View.GONE);
             releaseDateView.setVisibility(View.GONE);
         }
 
-        TextView contentRatingView = (TextView)this.findViewById(R.id.media_content_rating);
+        TextView contentRatingView = (TextView) this.findViewById(R.id.media_content_rating);
         contentRatingView.setText(this.media.getContentRating());
 
-        TextView genreView = (TextView)this.findViewById(R.id.media_genre);
+        TextView genreView = (TextView) this.findViewById(R.id.media_genre);
         genreView.setText(this.media.getGenres());
 
-        TextView plotView = (TextView)this.findViewById(R.id.media_plot);
+        TextView plotView = (TextView) this.findViewById(R.id.media_plot);
         plotView.setText(this.media.getPlot());
 
-        TextView directorView = (TextView)this.findViewById(R.id.media_director);
+        TextView directorView = (TextView) this.findViewById(R.id.media_director);
         directorView.setText(this.media.getDirector());
 
-        TextView writerView = (TextView)this.findViewById(R.id.media_writer);
+        TextView writerView = (TextView) this.findViewById(R.id.media_writer);
         writerView.setText(this.media.getWriter());
 
-        TextView metascoreView = (TextView)this.findViewById(R.id.media_metascore);
-        metascoreView.setText(String.format(Locale.getDefault(), "%d", this.media.getMetascore()));
+        TextView metascoreView = (TextView) this.findViewById(R.id.media_metascore);
+        if (media.getMetascore() != null) {
+            metascoreView.setText(String.format(Locale.getDefault(), "%d", this.media.getMetascore()));
 
-        int metascoreColor = MetascoreUtils.getMetascoreColor(this.media.getMetascore(), this.media.getType() != null && this.media.getType().equals("game"));
-        metascoreView.setBackgroundColor(metascoreColor);
-        Log.d("COLOR", "Score: " + Integer.toString(this.media.getMetascore()) + " " + String.format(Locale.getDefault(), "%d", this.media.getMetascore()));
+            int metascoreColor = MetascoreUtils.getMetascoreColor(this.media.getMetascore(), this.media.getType() != null && this.media.getType().equals("game"));
+            metascoreView.setBackgroundColor(metascoreColor);
+        } else {
+            metascoreView.setVisibility(View.GONE);
+        }
+
+        RatingBar imdbRatingBar = (RatingBar) this.findViewById(R.id.media_imdb_rating);
+        TextView imdbVotesView = (TextView) this.findViewById(R.id.media_imdb_votes);
+        if (this.media.getImdbRating() != null) {
+            imdbRatingBar.setRating(this.media.getImdbRating());
+
+            DecimalFormat formatter = new DecimalFormat("#,###");
+            imdbVotesView.setText("(" + formatter.format(this.media.getImdbVotes()) + ")");
+        } else {
+
+            imdbRatingBar.setVisibility(View.GONE);
+        }
+    }
+
+    public void onAddToLibraryClick(View view) {
+
+        MediaReaderDbHelper dbhelper = new MediaReaderDbHelper(this);
+        dbhelper.insertMediaRecord(this.media);
     }
 }
