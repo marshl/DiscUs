@@ -42,10 +42,13 @@ public class ParcelableMedia extends Media implements Parcelable {
         this.setAwards(in.readString());
         this.setPosterUrl(in.readString());
         this.setMetascore(in.readInt());
+
         float imdbRating = in.readFloat();
         this.setImdbRating(imdbRating != -1 ? imdbRating : null);
+
         int votes = in.readInt();
         this.setImdbVotes(votes != -1 ? votes : null);
+        this.setImdbId(in.readString());
         this.setType(in.readString());
     }
 
