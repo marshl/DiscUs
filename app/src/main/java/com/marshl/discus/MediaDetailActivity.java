@@ -53,13 +53,15 @@ public class MediaDetailActivity extends AppCompatActivity {
         writerView.setText(this.media.getWriter());
 
         TextView metascoreView = (TextView) this.findViewById(R.id.media_metascore);
-        if (media.getMetascore() != null) {
+        TextView metascoreLabelVew = (TextView)this.findViewById(R.id.media_metascore_label);
+        if (media.getMetascore() != null && media.getMetascore() != 0) {
             metascoreView.setText(String.format(Locale.getDefault(), "%d", this.media.getMetascore()));
 
             int metascoreColor = MetascoreUtils.getMetascoreColor(this.media.getMetascore(), this.media.getType() != null && this.media.getType().equals("game"));
             metascoreView.setBackgroundColor(metascoreColor);
         } else {
             metascoreView.setVisibility(View.GONE);
+            metascoreLabelVew.setVisibility(View.GONE);
         }
 
         RatingBar imdbRatingBar = (RatingBar) this.findViewById(R.id.media_imdb_rating);
