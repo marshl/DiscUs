@@ -1,6 +1,7 @@
 package com.marshl.discus;
 
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -21,7 +22,7 @@ public class MediaDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.media = this.getIntent().getParcelableExtra("media");
+        this.media = this.getIntent().getParcelableExtra(ParcelableMedia.MEDIA_PARCEL_NAME);
 
         setContentView(R.layout.activity_media_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

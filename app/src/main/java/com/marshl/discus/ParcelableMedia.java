@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import java.util.Date;
 
 public class ParcelableMedia extends Media implements Parcelable {
+
+    public static final String MEDIA_PARCEL_NAME = "media";
+
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public ParcelableMedia createFromParcel(Parcel in) {
             return new ParcelableMedia(in);

@@ -113,7 +113,6 @@ public class MediaSearchResults extends AppCompatActivity {
                 this.media = null;
             }
 
-            Log.d("MediaSearchResults", "omg");
             return this.media;
         }
 
@@ -125,7 +124,6 @@ public class MediaSearchResults extends AppCompatActivity {
         @Override
         protected void onPostExecute(Media result) {
 
-            Log.d("MediaSearchResults", "It is done");
             super.onPostExecute(result);
             if (this.exception != null) {
                 Toast toast = Toast.makeText(MediaSearchResults.this,
@@ -134,7 +132,7 @@ public class MediaSearchResults extends AppCompatActivity {
                 toast.show();
             } else {
                 Intent intent = new Intent(MediaSearchResults.this, MediaDetailActivity.class);
-                intent.putExtra("media", new ParcelableMedia(media));
+                intent.putExtra(ParcelableMedia.MEDIA_PARCEL_NAME, new ParcelableMedia(media));
                 startActivity(intent);
             }
         }
