@@ -6,7 +6,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -78,8 +80,14 @@ public class MediaDetailActivity extends AppCompatActivity {
     }
 
     public void onAddToLibraryClick(View view) {
-
-        MediaReaderDbHelper dbhelper = new MediaReaderDbHelper(this);
-        dbhelper.insertMediaRecord(this.media);
+        MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this);
+        try {
+            dbHelper.insertMediaRecord(this.media);
+        } catch (SQLException ex) {
+            Toast toast = Toast.makeText(this,
+                    "An error occurred when adding the media: " + ex.getMessage(),
+                    Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 }
