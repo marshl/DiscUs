@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MediaSearch {
+public class MediaSearcher {
     private String queryString;
 
-    public MediaSearch(String query) {
+    public MediaSearcher(String query) {
         this.queryString = query;
     }
 
@@ -31,7 +31,7 @@ public class MediaSearch {
         HttpURLConnection urlConnection = null;
         try {
             String encodedQuery = "http://www.omdbapi.com/?plot=full&r=json&s=" + URLEncoder.encode(this.queryString, "utf-8");
-            Log.d("MediaSearch", "Url is: " + encodedQuery);
+            Log.d("MediaSearcher", "Url is: " + encodedQuery);
             URL url = new URL(encodedQuery);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
@@ -47,11 +47,11 @@ public class MediaSearch {
     }
 
     public Media lookupMediaWithId(String imdbId) throws MediaSearchException {
-        Log.d("MediaSearch", "Looking up media with id " + imdbId);
+        Log.d("MediaSearcher", "Looking up media with id " + imdbId);
         HttpURLConnection urlConnection;
         try {
             String encodedQuery = "http://www.omdbapi.com/?i=" + URLEncoder.encode(imdbId, "utf-8");
-            Log.d("MediaSearch", "running query " + encodedQuery);
+            Log.d("MediaSearcher", "running query " + encodedQuery);
             URL url = new URL(encodedQuery);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
@@ -88,11 +88,11 @@ public class MediaSearch {
                     break;
                 case "totalResults":
                     String resultCount = jsonReader.nextString();
-                    Log.d("MediaSearch", resultCount);
+                    Log.d("MediaSearcher", resultCount);
                     break;
                 case "Response":
                     String response = jsonReader.nextString();
-                    Log.d("MediaSearch", response);
+                    Log.d("MediaSearcher", response);
                     break;
                 case "Error":
                     String errorMessage = jsonReader.nextString();

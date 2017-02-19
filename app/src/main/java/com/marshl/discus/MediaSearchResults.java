@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -64,8 +63,8 @@ public class MediaSearchResults extends AppCompatActivity {
         protected List<Media> doInBackground(String... query) {
 
             try {
-                MediaSearch mediaSearch = new MediaSearch(query[0]);
-                this.mediaList = mediaSearch.runSearch();
+                MediaSearcher mediaSearcher = new MediaSearcher(query[0]);
+                this.mediaList = mediaSearcher.runSearch();
             } catch (Exception ex) {
                 this.exception = ex;
                 this.mediaList = null;
@@ -106,7 +105,7 @@ public class MediaSearchResults extends AppCompatActivity {
         protected Media doInBackground(String... imdbId) {
 
             try {
-                MediaSearch searcher = new MediaSearch(null);
+                MediaSearcher searcher = new MediaSearcher(null);
                 this.media = searcher.lookupMediaWithId(imdbId[0]);
             } catch (Exception ex) {
                 this.exception = ex;
