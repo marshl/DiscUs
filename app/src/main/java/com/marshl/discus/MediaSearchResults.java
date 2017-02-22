@@ -36,7 +36,7 @@ public class MediaSearchResults extends AppCompatActivity {
         Intent intent = this.getIntent();
         SearchParameters params = intent.getParcelableExtra(SearchParameters.SEARCH_PARAM_PARCEL_NAME);
         MediaSearchTask task = new MediaSearchTask();
-        task.execute(params.getSearchText());
+        task.execute(params);
 
         ListView resultList = (ListView)this.findViewById(R.id.media_result_list);
         resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -55,15 +55,15 @@ public class MediaSearchResults extends AppCompatActivity {
     }
 
 
-    public class MediaSearchTask extends AsyncTask<String, Integer, List<Media>> {
+    public class MediaSearchTask extends AsyncTask<SearchParameters, Integer, List<Media>> {
         private Exception exception;
         private List<Media> mediaList;
 
         @Override
-        protected List<Media> doInBackground(String... query) {
+        protected List<Media> doInBackground(SearchParameters... params) {
 
             try {
-                MediaSearcher mediaSearcher = new MediaSearcher(query[0]);
+                MediaSearcher mediaSearcher = new MediaSearcher(params[0], MediaSearchResults.this);
                 this.mediaList = mediaSearcher.runSearch();
             } catch (Exception ex) {
                 this.exception = ex;
@@ -105,7 +105,7 @@ public class MediaSearchResults extends AppCompatActivity {
         protected Media doInBackground(String... imdbId) {
 
             try {
-                MediaSearcher searcher = new MediaSearcher(null);
+                MediaSearcher searcher = new MediaSearcher(null, MediaSearchResults.this);
                 this.media = searcher.lookupMediaWithId(imdbId[0]);
             } catch (Exception ex) {
                 this.exception = ex;

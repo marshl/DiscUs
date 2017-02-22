@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE;
 
@@ -70,5 +72,51 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
         int rowCount = c.getCount();
         c.close();
         return rowCount > 0;
+    }
+
+    public List<Media> runMediaSearch(SearchParameters params) {
+        if (params.getSearchType() != SearchParameters.SearchType.USER_OWNED) {
+            throw new IllegalArgumentException("Search parameters must have search type of USER_OWNED");
+        }
+
+        List<Media> results = new ArrayList<Media>();
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String[] projection = {
+                MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_ID,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_YEAR,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_TYPE,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_POSTER_URL,
+        };
+
+        String selection = "LOWER(" + MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE + ") REGEXP LOWER(?)";
+        String[] selectionArgs = {"\\b" + params.getSearchText() + "\\b"};
+
+        String sortOrder = MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE;
+
+        Cursor cur = db.query(
+                MediaReaderContract.MediaEntry.TABLE_NAME,                     // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        while (cur.moveToNext()) {
+            Media media = new Media();
+            media.setImdbId(cur.getString(0));
+            media.setTitle(cur.getString(1));
+            media.setYear(cur.getString(2));
+            media.setType(cur.getString(3));
+            media.setPosterUrl(cur.getString(4));
+            results.add(media);
+        }
+        cur.close();
+
+        return results;
     }
 }

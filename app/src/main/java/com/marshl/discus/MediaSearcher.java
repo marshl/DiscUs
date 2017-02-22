@@ -1,5 +1,6 @@
 package com.marshl.discus;
 
+import android.app.Activity;
 import android.util.JsonReader;
 import android.util.Log;
 
@@ -19,18 +20,38 @@ import java.util.List;
 import java.util.Locale;
 
 public class MediaSearcher {
-    private String queryString;
+    private SearchParameters searchParams;
+    private Activity context;
 
-    public MediaSearcher(String query) {
-        this.queryString = query;
+    public MediaSearcher(SearchParameters params, Activity context) {
+        this.searchParams = params;
+        this.context = context;
     }
 
     public List<Media> runSearch() throws MediaSearchException {
 
+        List<Media> results;
+
+        switch (this.searchParams.getSearchType()) {
+            case BOTH:
+            case NOT_USER_OWNED:
+                results = this.runApiSearch();
+                break;
+            case USER_OWNED:
+                results = this.runDatabaseSearch();
+                break;
+            default:
+                throw new IllegalStateException("Unknown search type " + this.searchParams.getSearchType());
+        }
+
+        return results;
+    }
+
+    private List<Media> runApiSearch() throws MediaSearchException {
         Log.d("SearchResultsActivity", "Connecting...");
         HttpURLConnection urlConnection = null;
         try {
-            String encodedQuery = "http://www.omdbapi.com/?plot=full&r=json&s=" + URLEncoder.encode(this.queryString, "utf-8");
+            String encodedQuery = "http://www.omdbapi.com/?plot=full&r=json&s=" + URLEncoder.encode(this.searchParams.getSearchText(), "utf-8");
             Log.d("MediaSearcher", "Url is: " + encodedQuery);
             URL url = new URL(encodedQuery);
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -44,6 +65,13 @@ public class MediaSearcher {
                 urlConnection.disconnect();
             }
         }
+    }
+
+    private List<Media> runDatabaseSearch() {
+        MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this.context);
+        List<Media> results = dbHelper.runMediaSearch(this.searchParams);
+
+        return results;
     }
 
     public Media lookupMediaWithId(String imdbId) throws MediaSearchException {
@@ -218,8 +246,6 @@ public class MediaSearcher {
                 default:
                     throw new UnsupportedOperationException("Unknown element value " + nameValue + ": " + stringValue);
             }
-
-            //Log.d(nameValue, stringValue);
         }
 
         jsonReader.endObject();
