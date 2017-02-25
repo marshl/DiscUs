@@ -3,6 +3,7 @@
     package="com.marshl.discus">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,8 +14,7 @@
         <activity
             android:name=".MediaDetailActivity"
             android:label="@string/title_activity_media_details"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MediaSearchResults" />
         <activity
             android:name=".MediaSearchActivity"
