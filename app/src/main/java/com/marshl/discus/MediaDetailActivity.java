@@ -81,6 +81,9 @@ public class MediaDetailActivity extends AppCompatActivity {
     }
 
     public void onAddToLibraryClick(View view) {
+
+        this.media.setOwnershipStatus(Media.OwnershipType.OWNED);
+
         MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this);
         try {
             dbHelper.insertMediaRecord(this.media);
