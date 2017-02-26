@@ -183,7 +183,9 @@ public class MediaSearcher {
                     media.setYear(stringValue);
                     break;
                 case "Rated":
-                    media.setContentRating(stringValue);
+                    if(!stringValue.equals("N/A")) {
+                        media.setContentRating(stringValue);
+                    }
                     break;
                 case "Released":
                     try {
