@@ -53,6 +53,9 @@ public class ParcelableMedia extends Media implements Parcelable {
         this.setImdbVotes(votes != -1 ? votes : null);
         this.setImdbId(in.readString());
         this.setType(in.readString());
+
+        int ownershipStatus = in.readInt();
+        this.setOwnershipStatus(Media.OwnershipType.values()[ownershipStatus]);
     }
 
     @Override
@@ -81,5 +84,6 @@ public class ParcelableMedia extends Media implements Parcelable {
         parcel.writeInt(this.getImdbVotes() != null ? this.getImdbVotes() : -1);
         parcel.writeString(this.getImdbId());
         parcel.writeString(this.getType());
+        parcel.writeInt(this.getOwnershipStatus().ordinal());
     }
 }

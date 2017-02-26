@@ -24,9 +24,12 @@ public class Media {
     private String imdbId;
     private String type;
 
-    public Media() {}
+    private OwnershipType ownershipStatus = OwnershipType.NOT_OWNED;
 
-    public Media(Media other){
+    public Media() {
+    }
+
+    public Media(Media other) {
         this.title = other.title;
         this.year = other.year;
         this.contentRating = other.contentRating;
@@ -46,6 +49,7 @@ public class Media {
         this.imdbVotes = other.imdbVotes;
         this.imdbId = other.imdbId;
         this.type = other.type;
+        this.ownershipStatus = other.ownershipStatus;
     }
 
     public String getType() {
@@ -180,7 +184,7 @@ public class Media {
         return this.metascore;
     }
 
-    public void setMetascore(int metascore) {
+    public void setMetascore(Integer metascore) {
         this.metascore = metascore;
     }
 
@@ -199,4 +203,19 @@ public class Media {
     public void setImdbId(String imdbId) {
         this.imdbId = imdbId;
     }
+
+    public OwnershipType getOwnershipStatus() {
+        return ownershipStatus;
+    }
+
+    public void setOwnershipStatus(OwnershipType ownershipStatus) {
+        this.ownershipStatus = ownershipStatus;
+    }
+
+    public enum OwnershipType {
+        NOT_OWNED,
+        OWNED,
+        ON_WISHLIST,
+    }
+
 }
