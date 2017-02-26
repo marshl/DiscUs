@@ -36,7 +36,7 @@ public class MediaSearchActivity extends AppCompatActivity implements NetworkSta
         this.ownedSearchRadioButton = (RadioButton) this.findViewById(R.id.ownership_owned_radio);
         this.anySearchRadioButton = (RadioButton) this.findViewById(R.id.ownership_both_radio);
         this.unownedSearchRadioButton = (RadioButton) this.findViewById(R.id.ownership_not_owned_radio);
-        this.ownershipRadioGroup = (RadioGroup)this.findViewById(R.id.ownership_radio_group);
+        this.ownershipRadioGroup = (RadioGroup) this.findViewById(R.id.ownership_radio_group);
         this.searchTextView = (EditText) findViewById(R.id.search_text);
 
         this.searchTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -73,6 +73,15 @@ public class MediaSearchActivity extends AppCompatActivity implements NetworkSta
     }
 
     private void performSearch() {
+
+        if (!Connectivity.isConnected(this) && this.ownershipRadioGroup.getCheckedRadioButtonId() != R.id.ownership_owned_radio) {
+            Toast toast = Toast.makeText(this,
+                    "You have to connect to the internet to search for media you don't own",
+                    Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
         Intent intent = new Intent(this, MediaSearchResults.class);
 
         SearchParameters params = new SearchParameters();
