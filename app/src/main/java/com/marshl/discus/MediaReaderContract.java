@@ -20,6 +20,7 @@ import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_PLOT;
 import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_POSTER_URL;
 import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_RELEASE_DATE;
 import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE;
+import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_TOTAL_SEASONS;
 import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_TYPE;
 import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_WRITER;
 import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_YEAR;
@@ -51,6 +52,7 @@ public final class MediaReaderContract {
         values.put(COLUMN_NAME_IMDB_ID, media.getImdbId());
         values.put(COLUMN_NAME_TYPE, media.getType());
         values.put(COLUMN_NAME_OWNERSHIP_STATUS, media.getOwnershipStatus().ordinal());
+        values.put(COLUMN_NAME_TOTAL_SEASONS, media.getTotalSeasons());
 
         return values;
     }
@@ -78,6 +80,7 @@ public final class MediaReaderContract {
         public static final String COLUMN_NAME_IMDB_ID = "imdb_id";
         public static final String COLUMN_NAME_TYPE = "type";
         public static final String COLUMN_NAME_OWNERSHIP_STATUS = "ownership";
+        public static final String COLUMN_NAME_TOTAL_SEASONS = "total_seasons";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +
@@ -100,7 +103,8 @@ public final class MediaReaderContract {
                         COLUMN_NAME_IMDB_RATING + " REAL, " +
                         COLUMN_NAME_IMDB_VOTES + " INTEGER, " +
                         COLUMN_NAME_TYPE + " TEXT, " +
-                        COLUMN_NAME_OWNERSHIP_STATUS + " INTEGER, " +
+                        COLUMN_NAME_OWNERSHIP_STATUS + " INTEGER NOT NULL, " +
+                        COLUMN_NAME_TOTAL_SEASONS + " INTEGER, " +
                         "UNIQUE (" + COLUMN_NAME_IMDB_ID + ") ON CONFLICT REPLACE" +
                         " )";
         private static final String SQL_DELETE_ENTRIES =

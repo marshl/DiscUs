@@ -255,6 +255,14 @@ public class MediaSearcher {
                 case "imdbID":
                     media.setImdbId(stringValue);
                     break;
+                case "totalSeasons":
+                    try {
+                        int voteCount = Integer.parseInt(stringValue);
+                        media.setTotalSeasons(voteCount);
+                    } catch (NumberFormatException ex) {
+                        media.setTotalSeasons(null);
+                    }
+                    break;
                 case "Type":
                     media.setType(stringValue);
                     break;

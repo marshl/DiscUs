@@ -56,6 +56,9 @@ public class ParcelableMedia extends Media implements Parcelable {
 
         int ownershipStatus = in.readInt();
         this.setOwnershipStatus(Media.OwnershipType.values()[ownershipStatus]);
+
+        int totalSeasons = in.readInt();
+        this.setTotalSeasons(totalSeasons == -1 ? null : totalSeasons);
     }
 
     @Override
@@ -85,5 +88,6 @@ public class ParcelableMedia extends Media implements Parcelable {
         parcel.writeString(this.getImdbId());
         parcel.writeString(this.getType());
         parcel.writeInt(this.getOwnershipStatus().ordinal());
+        parcel.writeInt(this.getTotalSeasons() != null ? this.getTotalSeasons() : -1);
     }
 }

@@ -23,6 +23,7 @@ public class Media {
     private Integer imdbVotes;
     private String imdbId;
     private String type;
+    private Integer totalSeasons;
 
     private OwnershipType ownershipStatus = OwnershipType.NOT_OWNED;
 
@@ -50,6 +51,7 @@ public class Media {
         this.imdbId = other.imdbId;
         this.type = other.type;
         this.ownershipStatus = other.ownershipStatus;
+        this.totalSeasons = other.totalSeasons;
     }
 
     public String getType() {
@@ -210,6 +212,14 @@ public class Media {
 
     public void setOwnershipStatus(OwnershipType ownershipStatus) {
         this.ownershipStatus = ownershipStatus;
+    }
+
+    public Integer getTotalSeasons() {
+        return this.totalSeasons;
+    }
+
+    public void setTotalSeasons(Integer totalSeasons) {
+        this.totalSeasons = totalSeasons;
     }
 
     public enum OwnershipType {
