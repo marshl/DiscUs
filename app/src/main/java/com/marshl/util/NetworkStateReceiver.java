@@ -9,8 +9,6 @@ import android.net.NetworkInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-//import static com.marshl.discus.MediaSearchActivity.CONNECTIVITY_ACTION_LOLLIPOP;
-
 /**
  * Created by Tommaso Resti (http://stackoverflow.com/questions/6169059/android-event-for-internet-connectivity-state-change)
  */
@@ -33,11 +31,7 @@ public class NetworkStateReceiver extends BroadcastReceiver {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = manager.getActiveNetworkInfo();
 
-        if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
-            connected = true;
-        } else {
-            connected = false;
-        }
+        connected = ni != null && ni.getState() == NetworkInfo.State.CONNECTED;
 
         notifyStateToAll();
     }
@@ -70,8 +64,8 @@ public class NetworkStateReceiver extends BroadcastReceiver {
     }
 
     public interface NetworkStateReceiverListener {
-        public void networkAvailable();
+        void networkAvailable();
 
-        public void networkUnavailable();
+        void networkUnavailable();
     }
 }
