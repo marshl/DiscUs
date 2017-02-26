@@ -10,38 +10,39 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import java.util.List;
-
 public class MediaResultAdapter implements ListAdapter {
     private Activity context;
 
-    private List<Media> mediaList;
+    private MediaSearcher searcher;
 
-    public MediaResultAdapter(Activity context, List<Media> mediaList) {
+    public MediaResultAdapter(Activity context, MediaSearcher searcher) {
         this.context = context;
-        this.mediaList = mediaList;
+        this.searcher = searcher;
     }
 
     @Override
     public void registerDataSetObserver(DataSetObserver observer) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void unregisterDataSetObserver(DataSetObserver observer) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public int getCount() {
-        return this.mediaList.size();
+        return this.searcher.getResultCount();
     }
 
     @Override
     public Object getItem(int position) {
-        return this.mediaList.get(position);
+        try {
+            return this.searcher.getMedia(position);
+        } catch (MediaSearchException ex) {
+            Log.e("MediaResultAdapter", ex.toString());
+            return null;
+        }
     }
 
     @Override
@@ -62,7 +63,7 @@ public class MediaResultAdapter implements ListAdapter {
             convertView = layoutInflater.inflate(R.layout.fragment_media_list_item, parent, false);
         }
 
-        final Media media = this.mediaList.get(position);
+        final Media media = (Media) this.getItem(position);
         TextView titleTextView = (TextView) convertView.findViewById(R.id.media_list_item_title);
         titleTextView.setText(media.getTitle() + " (" + media.getYear() + ")");
 
@@ -83,15 +84,6 @@ public class MediaResultAdapter implements ListAdapter {
 
         iconImageView.setImageResource(drawableId);
 
-        /*convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("MediaResultsAdapter", "Inserting new record for " + media.getTitle());
-                MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(context);
-                dbHelper.insertMediaRecord(media);
-            }
-        });*/
-
         return convertView;
     }
 
@@ -107,7 +99,7 @@ public class MediaResultAdapter implements ListAdapter {
 
     @Override
     public boolean isEmpty() {
-        return this.mediaList.isEmpty();
+        return this.getCount() != 0;
     }
 
     @Override

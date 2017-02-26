@@ -22,28 +22,58 @@ import java.util.Locale;
 
 import static com.marshl.discus.SearchParameters.SearchType.NOT_USER_OWNED;
 import static com.marshl.discus.SearchParameters.SearchType.USER_OWNED;
+import static java.lang.Integer.parseInt;
 
 public class MediaSearcher {
     private static final String URL_ENCODING = "utf-8";
+    private static final int API_RESULT_PAGE_LENGTH = 10;
     private SearchParameters searchParams;
     private Activity context;
+    private List<Media> mediaList;
+    private Integer resultCount;
+    private Integer lastFetchedPage;
 
     public MediaSearcher(SearchParameters params, Activity context) {
         this.searchParams = params;
         this.context = context;
     }
 
-    public List<Media> runSearch() throws MediaSearchException {
+    public int getResultCount() {
+        if (this.resultCount == null) {
+            throw new IllegalStateException("Cannot get result count until search has been performed");
+        }
 
-        List<Media> results;
+        return this.resultCount;
+    }
 
+    public Media getMedia(int position) throws MediaSearchException {
+        if (this.resultCount == null) {
+            throw new IllegalStateException("Cannot retrieve media until search has been performed");
+        }
+
+        if (position > this.resultCount) {
+            throw new IllegalArgumentException("Media position is too high: position=" + position + " resultCount=" + this.resultCount);
+        }
+
+        if (this.searchParams.getSearchType() == SearchParameters.SearchType.USER_OWNED) {
+            throw new IllegalStateException("Cannot find more results of a database-only search");
+        }
+
+        while (position >= this.mediaList.size()) {
+            this.runPagedSearch(this.lastFetchedPage + 1);
+        }
+
+        return this.mediaList.get(position);
+    }
+
+    public void runSearch() throws MediaSearchException {
         switch (this.searchParams.getSearchType()) {
             case BOTH:
             case NOT_USER_OWNED:
-                results = this.runApiSearch();
+                this.runApiSearch();
                 break;
             case USER_OWNED:
-                results = this.runDatabaseSearch();
+                this.runDatabaseSearch();
                 break;
             default:
                 throw new IllegalStateException("Unknown search type " + this.searchParams.getSearchType());
@@ -51,7 +81,7 @@ public class MediaSearcher {
 
         MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this.context);
 
-        for (Iterator<Media> iterator = results.iterator(); iterator.hasNext(); ) {
+        for (Iterator<Media> iterator = this.mediaList.iterator(); iterator.hasNext(); ) {
             Media media = iterator.next();
             media.setOwnershipStatus(dbHelper.getMediaOwnershipStatus(media.getImdbId()));
 
@@ -61,20 +91,24 @@ public class MediaSearcher {
                 iterator.remove();
             }
         }
-
-        return results;
     }
 
-    private List<Media> runApiSearch() throws MediaSearchException {
-        Log.d("SearchResultsActivity", "Connecting...");
+    private void runApiSearch() throws MediaSearchException {
+        this.mediaList = new ArrayList<>();
+        this.runPagedSearch(1);
+    }
+
+    private void runPagedSearch(int pageNumber) throws MediaSearchException {
+
+        this.lastFetchedPage = pageNumber;
         HttpURLConnection urlConnection = null;
         try {
-            String encodedQuery = "http://www.omdbapi.com/?plot=full&r=json&s=" + URLEncoder.encode(this.searchParams.getSearchText(), URL_ENCODING);
+            String encodedQuery = "http://www.omdbapi.com/?plot=full&r=json&s=" + URLEncoder.encode(this.searchParams.getSearchText(), URL_ENCODING) + "&page=" + pageNumber;
             Log.d("MediaSearcher", "Url is: " + encodedQuery);
             URL url = new URL(encodedQuery);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
-            return this.readResultStream(stream);
+            this.readResultStream(stream);
         } catch (IOException | ParseException ex) {
             throw new MediaSearchException(ex, ex.toString());
         } finally {
@@ -84,11 +118,11 @@ public class MediaSearcher {
         }
     }
 
-    private List<Media> runDatabaseSearch() {
-        MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this.context);
-        List<Media> results = dbHelper.runMediaSearch(this.searchParams);
 
-        return results;
+    private void runDatabaseSearch() {
+        MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this.context);
+        this.mediaList = dbHelper.runMediaSearch(this.searchParams);
+        this.resultCount = this.mediaList.size();
     }
 
     public Media lookupMediaWithId(String imdbId) throws MediaSearchException {
@@ -107,11 +141,9 @@ public class MediaSearcher {
         }
     }
 
-    private List<Media> readResultStream(InputStream stream) throws IOException, MediaSearchException, ParseException {
+    private void readResultStream(InputStream stream) throws IOException, MediaSearchException, ParseException {
         InputStreamReader reader = new InputStreamReader(stream, URL_ENCODING);
         JsonReader jsonReader = new JsonReader(reader);
-
-        List<Media> mediaList = new ArrayList<>();
 
         jsonReader.beginObject();
 
@@ -121,19 +153,17 @@ public class MediaSearcher {
 
             switch (name) {
                 case "Search":
-
                     jsonReader.beginArray();
 
                     while (jsonReader.hasNext()) {
                         Media media = this.parseTitle(jsonReader);
-                        mediaList.add(media);
+                        this.mediaList.add(media);
                     }
 
                     jsonReader.endArray();
                     break;
                 case "totalResults":
-                    String resultCount = jsonReader.nextString();
-                    Log.d("MediaSearcher", resultCount);
+                    this.resultCount = Integer.parseInt(jsonReader.nextString());
                     break;
                 case "Response":
                     String response = jsonReader.nextString();
@@ -149,7 +179,6 @@ public class MediaSearcher {
 
         jsonReader.endObject();
         jsonReader.close();
-        return mediaList;
     }
 
 
@@ -183,7 +212,7 @@ public class MediaSearcher {
                     media.setYear(stringValue);
                     break;
                 case "Rated":
-                    if(!stringValue.equals("N/A")) {
+                    if (!stringValue.equals("N/A")) {
                         media.setContentRating(stringValue);
                     }
                     break;
@@ -201,7 +230,7 @@ public class MediaSearcher {
                         break;
                     }
                     String minutes = stringValue.substring(0, stringValue.indexOf(' '));
-                    media.setDurationMinutes(Integer.parseInt(minutes));
+                    media.setDurationMinutes(parseInt(minutes));
                     break;
                 case "Genre":
                     media.setGenres(stringValue);
@@ -232,7 +261,7 @@ public class MediaSearcher {
                     break;
                 case "Metascore":
                     try {
-                        int metascore = Integer.parseInt(stringValue);
+                        int metascore = parseInt(stringValue);
                         media.setMetascore(metascore);
                     } catch (NumberFormatException ex) {
                         media.setMetascore(0);
@@ -248,7 +277,7 @@ public class MediaSearcher {
                     break;
                 case "imdbVotes":
                     try {
-                        int voteCount = Integer.parseInt(stringValue.replace(",", ""));
+                        int voteCount = parseInt(stringValue.replace(",", ""));
                         media.setImdbVotes(voteCount);
                     } catch (NumberFormatException ex) {
                         media.setImdbVotes(null);
@@ -259,7 +288,7 @@ public class MediaSearcher {
                     break;
                 case "totalSeasons":
                     try {
-                        int voteCount = Integer.parseInt(stringValue);
+                        int voteCount = parseInt(stringValue);
                         media.setTotalSeasons(voteCount);
                     } catch (NumberFormatException ex) {
                         media.setTotalSeasons(null);

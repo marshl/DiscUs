@@ -23,7 +23,7 @@ public class MediaSearchResults extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_search_results);
 
-        if(this.getActionBar() != null) {
+        if (this.getActionBar() != null) {
             this.getActionBar().setTitle(R.string.title_activity_media_results);
         }
 
@@ -38,39 +38,36 @@ public class MediaSearchResults extends AppCompatActivity {
         MediaSearchTask task = new MediaSearchTask();
         task.execute(params);
 
-        ListView resultList = (ListView)this.findViewById(R.id.media_result_list);
+        ListView resultList = (ListView) this.findViewById(R.id.media_result_list);
         resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Media media = (Media)parent.getAdapter().getItem(position);
+                Media media = (Media) parent.getAdapter().getItem(position);
                 MediaSearchResults.this.openMediaDetails(media);
             }
         });
     }
 
-    private void openMediaDetails(Media media){
-
+    private void openMediaDetails(Media media) {
         MediaLookupTask task = new MediaLookupTask();
         task.execute(media.getImdbId());
     }
 
 
-    public class MediaSearchTask extends AsyncTask<SearchParameters, Integer, List<Media>> {
+    public class MediaSearchTask extends AsyncTask<SearchParameters, Integer, MediaSearcher> {
         private Exception exception;
-        private List<Media> mediaList;
 
         @Override
-        protected List<Media> doInBackground(SearchParameters... params) {
+        protected MediaSearcher doInBackground(SearchParameters... params) {
 
             try {
                 MediaSearcher mediaSearcher = new MediaSearcher(params[0], MediaSearchResults.this);
-                this.mediaList = mediaSearcher.runSearch();
+                mediaSearcher.runSearch();
+                return mediaSearcher;
             } catch (Exception ex) {
                 this.exception = ex;
-                this.mediaList = null;
+                return null;
             }
-
-            return this.mediaList;
         }
 
         @Override
@@ -79,7 +76,7 @@ public class MediaSearchResults extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(List<Media> result) {
+        protected void onPostExecute(MediaSearcher searcher) {
 
             if (this.exception != null) {
                 Toast toast = Toast.makeText(MediaSearchResults.this,
@@ -88,11 +85,11 @@ public class MediaSearchResults extends AppCompatActivity {
                 toast.show();
             } else {
                 ListView resultView = (ListView) findViewById(R.id.media_result_list);
-                resultView.setAdapter(new MediaResultAdapter(MediaSearchResults.this, result));
+                resultView.setAdapter(new MediaResultAdapter(MediaSearchResults.this, searcher));
             }
-            progressDialog.dismiss();
 
-            super.onPostExecute(result);
+            progressDialog.dismiss();
+            super.onPostExecute(searcher);
         }
 
     }
