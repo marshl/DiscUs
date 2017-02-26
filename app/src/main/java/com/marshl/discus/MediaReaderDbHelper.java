@@ -10,11 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE;
-
 public class MediaReaderDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 23;
+    public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "MediaReader.db";
 
     private static final String SQL_DELETE_ENTRIES =
@@ -46,32 +44,35 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
         db.insertOrThrow(MediaReaderContract.MediaEntry.TABLE_NAME, null, values);
     }
 
-    public boolean isMediaSavedToDatabase(String reference) {
+    public Media.OwnershipType getMediaOwnershipStatus(String imdbId) {
         SQLiteDatabase db = getReadableDatabase();
 
         String[] projection = {
-                MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_ID,
-                COLUMN_NAME_TITLE
+                MediaReaderContract.MediaEntry.COLUMN_NAME_OWNERSHIP_STATUS
         };
 
         String selection = MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_ID + " = ?";
-        String[] selectionArgs = {reference};
+        String[] selectionArgs = {imdbId};
 
-        String sortOrder = COLUMN_NAME_TITLE + " DESC";
-
-        Cursor c = db.query(
-                MediaReaderContract.MediaEntry.TABLE_NAME,                     // The table to query
-                projection,                               // The columns to return
-                selection,                                // The columns for the WHERE clause
-                selectionArgs,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
+        Cursor cur = db.query(
+                MediaReaderContract.MediaEntry.TABLE_NAME,  // The table to query
+                projection,    // The columns to return
+                selection,     // The columns for the WHERE clause
+                selectionArgs, // The values for the WHERE clause
+                null,          // don't group the rows
+                null,          // don't filter by row groups
+                null           // The sort order
         );
 
-        int rowCount = c.getCount();
-        c.close();
-        return rowCount > 0;
+        if (cur.getCount() == 0) {
+            return Media.OwnershipType.NOT_OWNED;
+        }
+
+        cur.moveToNext();
+        Media.OwnershipType ownershipStatus = Media.OwnershipType.values()[cur.getInt(0)];
+        cur.close();
+
+        return ownershipStatus;
     }
 
     public List<Media> runMediaSearch(SearchParameters params) {
@@ -91,8 +92,8 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
                 MediaReaderContract.MediaEntry.COLUMN_NAME_POSTER_URL,
         };
 
-        String selection = "LOWER(" + MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE + ") REGEXP LOWER(?)";
-        String[] selectionArgs = {"\\b" + params.getSearchText() + "\\b"};
+        String selection = "LOWER(" + MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE + ") REGEXP ?";
+        String[] selectionArgs = {".*\\b" + params.getSearchText().toLowerCase() + "\\b.*"};
 
         String sortOrder = MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE;
 

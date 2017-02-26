@@ -16,10 +16,15 @@ import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import static com.marshl.discus.SearchParameters.SearchType.NOT_USER_OWNED;
+import static com.marshl.discus.SearchParameters.SearchType.USER_OWNED;
+
 public class MediaSearcher {
+    private static final String URL_ENCODING = "utf-8";
     private SearchParameters searchParams;
     private Activity context;
 
@@ -44,6 +49,19 @@ public class MediaSearcher {
                 throw new IllegalStateException("Unknown search type " + this.searchParams.getSearchType());
         }
 
+        MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this.context);
+
+        for (Iterator<Media> iterator = results.iterator(); iterator.hasNext(); ) {
+            Media media = iterator.next();
+            media.setOwnershipStatus(dbHelper.getMediaOwnershipStatus(media.getImdbId()));
+
+            if (this.searchParams.getSearchType() == NOT_USER_OWNED && media.getOwnershipStatus() == Media.OwnershipType.OWNED) {
+                iterator.remove();
+            } else if (this.searchParams.getSearchType() == USER_OWNED && media.getOwnershipStatus() != Media.OwnershipType.OWNED) {
+                iterator.remove();
+            }
+        }
+
         return results;
     }
 
@@ -51,14 +69,13 @@ public class MediaSearcher {
         Log.d("SearchResultsActivity", "Connecting...");
         HttpURLConnection urlConnection = null;
         try {
-            String encodedQuery = "http://www.omdbapi.com/?plot=full&r=json&s=" + URLEncoder.encode(this.searchParams.getSearchText(), "utf-8");
+            String encodedQuery = "http://www.omdbapi.com/?plot=full&r=json&s=" + URLEncoder.encode(this.searchParams.getSearchText(), URL_ENCODING);
             Log.d("MediaSearcher", "Url is: " + encodedQuery);
             URL url = new URL(encodedQuery);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
             return this.readResultStream(stream);
         } catch (IOException | ParseException ex) {
-            Log.e("runSearch", ex.toString());
             throw new MediaSearchException(ex, ex.toString());
         } finally {
             if (urlConnection != null) {
@@ -78,7 +95,7 @@ public class MediaSearcher {
         Log.d("MediaSearcher", "Looking up media with id " + imdbId);
         HttpURLConnection urlConnection;
         try {
-            String encodedQuery = "http://www.omdbapi.com/?i=" + URLEncoder.encode(imdbId, "utf-8");
+            String encodedQuery = "http://www.omdbapi.com/?i=" + URLEncoder.encode(imdbId, URL_ENCODING);
             Log.d("MediaSearcher", "running query " + encodedQuery);
             URL url = new URL(encodedQuery);
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -91,7 +108,7 @@ public class MediaSearcher {
     }
 
     private List<Media> readResultStream(InputStream stream) throws IOException, MediaSearchException, ParseException {
-        InputStreamReader reader = new InputStreamReader(stream, "utf-8");
+        InputStreamReader reader = new InputStreamReader(stream, URL_ENCODING);
         JsonReader jsonReader = new JsonReader(reader);
 
         List<Media> mediaList = new ArrayList<>();
