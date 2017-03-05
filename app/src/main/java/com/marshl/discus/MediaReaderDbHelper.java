@@ -75,12 +75,12 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
         return ownershipStatus;
     }
 
-    public List<Media> runMediaSearch(SearchParameters params) {
+    public ArrayList<Media> runMediaSearch(SearchParameters params) {
         if (params.getSearchType() != SearchParameters.SearchType.USER_OWNED) {
             throw new IllegalArgumentException("Search parameters must have search type of USER_OWNED");
         }
 
-        List<Media> results = new ArrayList<Media>();
+        ArrayList<Media> results = new ArrayList<Media>();
 
         SQLiteDatabase db = getReadableDatabase();
 

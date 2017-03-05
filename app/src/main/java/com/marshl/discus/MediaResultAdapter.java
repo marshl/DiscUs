@@ -1,47 +1,77 @@
 package com.marshl.discus;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.DataSetObserver;
-import android.util.Log;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MediaResultAdapter implements ListAdapter {
-    private Activity context;
+import java.util.ArrayList;
+import java.util.List;
 
-    private MediaSearcher searcher;
+public class MediaResultAdapter extends ArrayAdapter<Media> {
+    private Context context;
 
-    public MediaResultAdapter(Activity context, MediaSearcher searcher) {
-        this.context = context;
-        this.searcher = searcher;
+    private MediaSearcher mediaSearcher;
+    private List<Media> mediaList;
+
+    /*public MediaResultAdapter() {
+
     }
+
+    public MediaResultAdapter(Activity context, List<Media> mediaList, MediaSearcher mediaSearcher) {
+        this.context = context;
+        this.mediaSearcher = mediaSearcher;
+        this.mediaList = mediaList;
+    }*/
+
+    public void setMediaSearcher(MediaSearcher mediaSearcher) {
+        this.mediaSearcher = mediaSearcher;
+    }
+
+    public MediaResultAdapter(Context context, ArrayList<Media> items) {
+        super(context, 0, items);
+
+        this.context = context;
+        this.mediaList = items;
+    }
+
 
     @Override
     public void registerDataSetObserver(DataSetObserver observer) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void unregisterDataSetObserver(DataSetObserver observer) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public int getCount() {
-        return this.searcher.getResultCount();
+        if (this.mediaSearcher.hasMoreResults()) {
+            return this.mediaList.size() + 1;
+        } else {
+            return this.mediaList.size();
+        }
     }
 
     @Override
-    public Object getItem(int position) {
-        try {
-            return this.searcher.getMedia(position);
-        } catch (MediaSearchException ex) {
-            Log.e("MediaResultAdapter", ex.toString());
+    public Media getItem(int position) {
+        if (position == this.mediaList.size()) {
             return null;
+        } else {
+            return this.mediaList.get(position);
         }
     }
 
@@ -58,12 +88,17 @@ public class MediaResultAdapter implements ListAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        if (position == this.mediaList.size() && this.mediaSearcher.hasMoreResults()) {
+            return this.getResultsExpanderView(parent);
+        }
+
         if (convertView == null) {
-            LayoutInflater layoutInflater = this.context.getLayoutInflater();
+            LayoutInflater layoutInflater = LayoutInflater.from(this.context);
             convertView = layoutInflater.inflate(R.layout.fragment_media_list_item, parent, false);
         }
 
-        final Media media = (Media) this.getItem(position);
+        final Media media = this.mediaList.get(position);
         TextView titleTextView = (TextView) convertView.findViewById(R.id.media_list_item_title);
         titleTextView.setText(media.getTitle() + " (" + media.getYear() + ")");
 
@@ -87,6 +122,16 @@ public class MediaResultAdapter implements ListAdapter {
         return convertView;
     }
 
+    private View getResultsExpanderView(ViewGroup parent) {
+        LayoutInflater layoutInflater = LayoutInflater.from(this.context);
+        View view = layoutInflater.inflate(R.layout.fragment_media_list_item, parent, false);
+
+        TextView titleTextView = (TextView) view.findViewById(R.id.media_list_item_title);
+        titleTextView.setText(R.string.media_result_list_show_more);
+
+        return view;
+    }
+
     @Override
     public int getItemViewType(int position) {
         return 0;
@@ -94,12 +139,12 @@ public class MediaResultAdapter implements ListAdapter {
 
     @Override
     public int getViewTypeCount() {
-        return 1;
+        return 2;
     }
 
     @Override
     public boolean isEmpty() {
-        return this.getCount() != 0;
+        return this.mediaList.isEmpty();
     }
 
     @Override
@@ -111,4 +156,34 @@ public class MediaResultAdapter implements ListAdapter {
     public boolean isEnabled(int position) {
         return true;
     }
+
+    /*public class MoreMediaResultsTask extends AsyncTask<Object, Integer, List<Media>> {
+        private Exception exception;
+        private List<Media> mediaList;
+
+        @Override
+        protected List<Media> doInBackground(Object... params) {
+
+            try {
+                this.mediaList = MediaResultAdapter.this.mediaSearcher.runSearch();
+                return this.mediaList;
+            } catch (Exception ex) {
+                this.exception = ex;
+                this.mediaList = null;
+                return null;
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+        }
+
+        @Override
+        protected void onPostExecute(List<Media> result) {
+
+            MediaResultAdapter.this.mediaList.addAll(result);
+            super.onPostExecute(result);
+        }
+    }*/
 }

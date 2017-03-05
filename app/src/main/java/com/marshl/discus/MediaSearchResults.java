@@ -10,13 +10,20 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class MediaSearchResults extends AppCompatActivity {
 
-    private List<Media> mediaList;
+    private ArrayList<Media> mediaList;
 
     private ProgressDialog progressDialog;
+
+    private MediaSearcher mediaSearcher;
+    //private MediaSearchTask searchTask;
+    private MediaResultAdapter resultAdapter;
+    private ListView resultView;
+
+    private int pageNumber = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,41 +40,58 @@ public class MediaSearchResults extends AppCompatActivity {
         this.progressDialog.setCancelable(false); // disable dismiss by tapping outside of the dialog
         this.progressDialog.show();
 
+        this.mediaList = new ArrayList<>();
         Intent intent = this.getIntent();
-        SearchParameters params = intent.getParcelableExtra(SearchParameters.SEARCH_PARAM_PARCEL_NAME);
-        MediaSearchTask task = new MediaSearchTask();
-        task.execute(params);
+        final SearchParameters params = intent.getParcelableExtra(SearchParameters.SEARCH_PARAM_PARCEL_NAME);
+        this.mediaSearcher = new MediaSearcher(params, MediaSearchResults.this);
 
-        ListView resultList = (ListView) this.findViewById(R.id.media_result_list);
-        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        this.resultAdapter = new MediaResultAdapter(MediaSearchResults.this, this.mediaList);
+        this.resultAdapter.setMediaSearcher(this.mediaSearcher);
+
+        this.resultView = (ListView) this.findViewById(R.id.media_result_list);
+
+        this.resultView.setAdapter(this.resultAdapter);
+
+        this.resultView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Media media = (Media) parent.getAdapter().getItem(position);
-                MediaSearchResults.this.openMediaDetails(media);
+                if (media != null) {
+                    MediaSearchResults.this.openMediaDetails(media);
+                } else {
+                    MediaSearchTask searchTask = new MediaSearchTask();
+                    searchTask.execute(params);
+                }
             }
         });
+
+        MediaSearchTask searchTask = new MediaSearchTask();
+        searchTask.execute(params);
     }
 
     private void openMediaDetails(Media media) {
+
         MediaLookupTask task = new MediaLookupTask();
         task.execute(media.getImdbId());
     }
 
 
-    public class MediaSearchTask extends AsyncTask<SearchParameters, Integer, MediaSearcher> {
+    public class MediaSearchTask extends AsyncTask<SearchParameters, Integer, ArrayList<Media>> {
         private Exception exception;
 
         @Override
-        protected MediaSearcher doInBackground(SearchParameters... params) {
+        protected ArrayList<Media> doInBackground(SearchParameters... params) {
+
+            ArrayList<Media> mediaList;
 
             try {
-                MediaSearcher mediaSearcher = new MediaSearcher(params[0], MediaSearchResults.this);
-                mediaSearcher.runSearch();
-                return mediaSearcher;
+                mediaList = MediaSearchResults.this.mediaSearcher.runSearch();
             } catch (Exception ex) {
                 this.exception = ex;
-                return null;
+                mediaList = null;
             }
+
+            return mediaList;
         }
 
         @Override
@@ -76,7 +100,7 @@ public class MediaSearchResults extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(MediaSearcher searcher) {
+        protected void onPostExecute(ArrayList<Media> result) {
 
             if (this.exception != null) {
                 Toast toast = Toast.makeText(MediaSearchResults.this,
@@ -84,14 +108,31 @@ public class MediaSearchResults extends AppCompatActivity {
                         Toast.LENGTH_LONG);
                 toast.show();
             } else {
-                ListView resultView = (ListView) findViewById(R.id.media_result_list);
-                resultView.setAdapter(new MediaResultAdapter(MediaSearchResults.this, searcher));
+                //MediaSearchResults.this.mediaList.addAll(result);
+
+                final ArrayList<Media> r = result;
+                final int lastPosition = MediaSearchResults.this.resultView.getLastVisiblePosition();
+
+                MediaSearchResults.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Media m : r) {
+                            MediaSearchResults.this.resultAdapter.add(m);
+                        }
+                        MediaSearchResults.this.resultAdapter.notifyDataSetChanged();
+                        MediaSearchResults.this.resultView.requestLayout();
+                        MediaSearchResults.this.resultView.invalidateViews();
+                        //MediaSearchResults.this.resultView.getChildAt(lastPosition);
+                        //MediaSearchResults.this.resultView.getChildAt(lastPosition - 1);
+                    }
+                });
+
+                //MediaSearchResults.this.resultView.invalidate();
             }
-
             progressDialog.dismiss();
-            super.onPostExecute(searcher);
-        }
 
+            super.onPostExecute(result);
+        }
     }
 
     public class MediaLookupTask extends AsyncTask<String, Integer, Media> {
