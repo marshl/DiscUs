@@ -11,10 +11,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.Lock;
 
 public class MediaSearchResults extends AppCompatActivity {
 
+    private static final int MEDIA_DETAIL_REQUEST = 1;
     private ArrayList<Media> mediaList;
     private ProgressDialog progressDialog;
     private MediaSearcher mediaSearcher;
@@ -66,6 +66,28 @@ public class MediaSearchResults extends AppCompatActivity {
 
         MediaSearchTask searchTask = new MediaSearchTask();
         searchTask.execute(params);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MEDIA_DETAIL_REQUEST) {
+            if (resultCode == RESULT_OK) {
+
+                String imdbId = data.getStringExtra("IMDB_ID");
+                Media.OwnershipType ownership = Media.OwnershipType.values()[
+                        data.getIntExtra("OWNERSHIP", Media.OwnershipType.NOT_OWNED.ordinal())];
+
+                for (Media m : this.mediaList) {
+                    if (m.getImdbId().equals(imdbId)) {
+                        m.setOwnershipStatus(ownership);
+                        MediaSearchResults.this.resultAdapter.notifyDataSetChanged();
+                        MediaSearchResults.this.resultView.requestLayout();
+                        MediaSearchResults.this.resultView.invalidateViews();
+                    }
+                }
+            }
+        }
     }
 
     private void openMediaDetails(Media media) {
@@ -166,7 +188,7 @@ public class MediaSearchResults extends AppCompatActivity {
             } else {
                 Intent intent = new Intent(MediaSearchResults.this, MediaDetailActivity.class);
                 intent.putExtra(ParcelableMedia.MEDIA_PARCEL_NAME, new ParcelableMedia(media));
-                startActivity(intent);
+                startActivityForResult(intent, MEDIA_DETAIL_REQUEST);
             }
 
             super.onPostExecute(result);

@@ -1,7 +1,7 @@
 package com.marshl.discus;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -56,7 +56,7 @@ public class MediaDetailActivity extends AppCompatActivity {
         writerView.setText(this.media.getWriter());
 
         TextView metascoreView = (TextView) this.findViewById(R.id.media_metascore);
-        TextView metascoreLabelVew = (TextView)this.findViewById(R.id.media_metascore_label);
+        TextView metascoreLabelVew = (TextView) this.findViewById(R.id.media_metascore_label);
         if (media.getMetascore() != null && media.getMetascore() != 0) {
             metascoreView.setText(String.format(Locale.getDefault(), "%d", this.media.getMetascore()));
 
@@ -78,6 +78,15 @@ public class MediaDetailActivity extends AppCompatActivity {
 
             imdbRatingBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent data = new Intent();
+        data.putExtra("IMDB_ID", this.media.getImdbId());
+        data.putExtra("OWNERSHIP", this.media.getOwnershipStatus().ordinal());
+        setResult(RESULT_OK, data);
+        finish();
     }
 
     public void onAddToLibraryClick(View view) {
