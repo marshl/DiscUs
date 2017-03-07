@@ -1,18 +1,13 @@
 package com.marshl.discus;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,20 +18,6 @@ public class MediaResultAdapter extends ArrayAdapter<Media> {
     private MediaSearcher mediaSearcher;
     private List<Media> mediaList;
 
-    /*public MediaResultAdapter() {
-
-    }
-
-    public MediaResultAdapter(Activity context, List<Media> mediaList, MediaSearcher mediaSearcher) {
-        this.context = context;
-        this.mediaSearcher = mediaSearcher;
-        this.mediaList = mediaList;
-    }*/
-
-    public void setMediaSearcher(MediaSearcher mediaSearcher) {
-        this.mediaSearcher = mediaSearcher;
-    }
-
     public MediaResultAdapter(Context context, ArrayList<Media> items) {
         super(context, 0, items);
 
@@ -44,6 +25,9 @@ public class MediaResultAdapter extends ArrayAdapter<Media> {
         this.mediaList = items;
     }
 
+    public void setMediaSearcher(MediaSearcher mediaSearcher) {
+        this.mediaSearcher = mediaSearcher;
+    }
 
     @Override
     public void registerDataSetObserver(DataSetObserver observer) {
@@ -156,34 +140,4 @@ public class MediaResultAdapter extends ArrayAdapter<Media> {
     public boolean isEnabled(int position) {
         return true;
     }
-
-    /*public class MoreMediaResultsTask extends AsyncTask<Object, Integer, List<Media>> {
-        private Exception exception;
-        private List<Media> mediaList;
-
-        @Override
-        protected List<Media> doInBackground(Object... params) {
-
-            try {
-                this.mediaList = MediaResultAdapter.this.mediaSearcher.runSearch();
-                return this.mediaList;
-            } catch (Exception ex) {
-                this.exception = ex;
-                this.mediaList = null;
-                return null;
-            }
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-            super.onProgressUpdate(progress);
-        }
-
-        @Override
-        protected void onPostExecute(List<Media> result) {
-
-            MediaResultAdapter.this.mediaList.addAll(result);
-            super.onPostExecute(result);
-        }
-    }*/
 }

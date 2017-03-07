@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.util.JsonReader;
 import android.util.Log;
 
+import com.marshl.util.Connectivity;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.BufferedInputStream;
@@ -17,7 +19,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import static com.marshl.discus.SearchParameters.SearchType.NOT_USER_OWNED;
@@ -27,9 +28,6 @@ public class MediaSearcher {
     private static final String URL_ENCODING = "utf-8";
     private SearchParameters searchParams;
     private Activity context;
-    // Integer resultCount;
-    //private List<Media> mediaList;
-    //private boolean allResultsFound = false;
     private int resultsFoundSoFar = 0;
     private int totalResultCount = 0;
     private int currentSearchPage = 1;
@@ -38,14 +36,6 @@ public class MediaSearcher {
         this.searchParams = params;
         this.context = context;
     }
-
-    /*public int getResultCount() {
-        if (this.resultCount == null) {
-            throw new IllegalStateException("The result count cannot be used until a search has been run");
-        }
-
-        return this.resultCount;
-    }*/
 
     public boolean hasMoreResults() {
         return resultsFoundSoFar < totalResultCount;
@@ -114,17 +104,25 @@ public class MediaSearcher {
 
     public Media lookupMediaWithId(String imdbId) throws MediaSearchException {
         Log.d("MediaSearcher", "Looking up media with id " + imdbId);
-        HttpURLConnection urlConnection;
-        try {
-            String encodedQuery = "http://www.omdbapi.com/?i=" + URLEncoder.encode(imdbId, URL_ENCODING);
-            Log.d("MediaSearcher", "running query " + encodedQuery);
-            URL url = new URL(encodedQuery);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
-            return this.readLookupResultStream(stream);
-        } catch (IOException | ParseException ex) {
-            Log.e("lookupMediaWithId", ex.toString());
-            throw new MediaSearchException(ex, ex.toString());
+
+
+        if (Connectivity.isConnected(this.context)) {
+            HttpURLConnection urlConnection;
+            try {
+                String encodedQuery = "http://www.omdbapi.com/?i=" + URLEncoder.encode(imdbId, URL_ENCODING);
+                Log.d("MediaSearcher", "running query " + encodedQuery);
+                URL url = new URL(encodedQuery);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
+                return this.readLookupResultStream(stream);
+            } catch (IOException | ParseException ex) {
+                Log.e("lookupMediaWithId", ex.toString());
+                throw new MediaSearchException(ex, ex.toString());
+            }
+        } else {
+            MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this.context);
+            Media result = dbHelper.getMediaDetails(imdbId);
+            return result;
         }
     }
 

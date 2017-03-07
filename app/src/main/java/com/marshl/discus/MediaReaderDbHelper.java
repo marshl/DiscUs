@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class MediaReaderDbHelper extends SQLiteOpenHelper {
 
@@ -120,4 +120,73 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
 
         return results;
     }
+
+    public Media getMediaDetails(String imdbId) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String[] projection = {
+                MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_ID,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_YEAR,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_CONTENT_RATING,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_RELEASE_DATE,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_DURATION_MINUTES,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_GENRES,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_DIRECTOR,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_WRITER,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_ACTORS,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_PLOT,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_LANGUAGES,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_COUNTRY,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_AWARDS,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_POSTER_URL,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_METASCORE,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_RATING,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_VOTES,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_TYPE,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_OWNERSHIP_STATUS,
+                MediaReaderContract.MediaEntry.COLUMN_NAME_TOTAL_SEASONS,
+        };
+
+        String selection = MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_ID + "= ?";
+        String[] selectionArgs = {imdbId};
+
+        Cursor cur = db.query(
+                MediaReaderContract.MediaEntry.TABLE_NAME,                     // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+        );
+
+        cur.moveToNext();
+        Media media = new Media();
+        media.setImdbId(cur.getString(0));
+        media.setTitle(cur.getString(1));
+        media.setYear(cur.getString(2));
+        media.setContentRating(cur.getString(3));
+        media.setReleaseDate(new Date(cur.getLong(4)));
+        media.setDurationMinutes(cur.getInt(5));
+        media.setGenres(cur.getString(6));
+        media.setDirector(cur.getString(7));
+        media.setWriter(cur.getString(8));
+        media.setActors(cur.getString(9));
+        media.setPlot(cur.getString(10));
+        media.setLanguages(cur.getString(11));
+        media.setCountry(cur.getString(12));
+        media.setAwards(cur.getString(13));
+        media.setPosterUrl(cur.getString(14));
+        media.setMetascore(cur.getInt(15));
+        media.setImdbRating(cur.getFloat(16));
+        media.setImdbVotes(cur.getInt(17));
+        media.setType(cur.getString(18));
+        media.setOwnershipStatus(Media.OwnershipType.values()[cur.getInt(19)]);
+        media.setTotalSeasons(cur.getInt(20));
+
+        cur.close();
+        return media;
+    }
+
 }

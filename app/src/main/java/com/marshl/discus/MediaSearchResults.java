@@ -11,19 +11,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
 
 public class MediaSearchResults extends AppCompatActivity {
 
     private ArrayList<Media> mediaList;
-
     private ProgressDialog progressDialog;
-
     private MediaSearcher mediaSearcher;
-    //private MediaSearchTask searchTask;
     private MediaResultAdapter resultAdapter;
     private ListView resultView;
-
-    private int pageNumber = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +51,9 @@ public class MediaSearchResults extends AppCompatActivity {
         this.resultView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                progressDialog.show();
+
                 Media media = (Media) parent.getAdapter().getItem(position);
                 if (media != null) {
                     MediaSearchResults.this.openMediaDetails(media);
@@ -89,6 +88,7 @@ public class MediaSearchResults extends AppCompatActivity {
             } catch (Exception ex) {
                 this.exception = ex;
                 mediaList = null;
+                throw new RuntimeException(ex);
             }
 
             return mediaList;
@@ -108,29 +108,21 @@ public class MediaSearchResults extends AppCompatActivity {
                         Toast.LENGTH_LONG);
                 toast.show();
             } else {
-                //MediaSearchResults.this.mediaList.addAll(result);
-
                 final ArrayList<Media> r = result;
-                final int lastPosition = MediaSearchResults.this.resultView.getLastVisiblePosition();
-
                 MediaSearchResults.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         for (Media m : r) {
                             MediaSearchResults.this.resultAdapter.add(m);
                         }
+
                         MediaSearchResults.this.resultAdapter.notifyDataSetChanged();
                         MediaSearchResults.this.resultView.requestLayout();
                         MediaSearchResults.this.resultView.invalidateViews();
-                        //MediaSearchResults.this.resultView.getChildAt(lastPosition);
-                        //MediaSearchResults.this.resultView.getChildAt(lastPosition - 1);
                     }
                 });
-
-                //MediaSearchResults.this.resultView.invalidate();
             }
             progressDialog.dismiss();
-
             super.onPostExecute(result);
         }
     }
@@ -148,6 +140,7 @@ public class MediaSearchResults extends AppCompatActivity {
             } catch (Exception ex) {
                 this.exception = ex;
                 this.media = null;
+                throw new RuntimeException(ex);
             }
 
             return this.media;
@@ -162,6 +155,9 @@ public class MediaSearchResults extends AppCompatActivity {
         protected void onPostExecute(Media result) {
 
             super.onPostExecute(result);
+
+            progressDialog.dismiss();
+
             if (this.exception != null) {
                 Toast toast = Toast.makeText(MediaSearchResults.this,
                         "An error occurred when retrieving the results: " + exception.getMessage(),
@@ -172,6 +168,8 @@ public class MediaSearchResults extends AppCompatActivity {
                 intent.putExtra(ParcelableMedia.MEDIA_PARCEL_NAME, new ParcelableMedia(media));
                 startActivity(intent);
             }
+
+            super.onPostExecute(result);
         }
 
     }
