@@ -95,7 +95,7 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
         String selection = "LOWER(" + MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE + ") REGEXP ?";
         String[] selectionArgs = {".*\\b" + params.getSearchText().toLowerCase() + "\\b.*"};
 
-        String sortOrder = MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE;
+        String sortOrder = MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_VOTES + " DESC";
 
         Cursor cur = db.query(
                 MediaReaderContract.MediaEntry.TABLE_NAME,                     // The table to query
