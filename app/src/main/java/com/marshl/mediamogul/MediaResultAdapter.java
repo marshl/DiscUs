@@ -103,8 +103,8 @@ public class MediaResultAdapter extends ArrayAdapter<Media> {
 
         iconImageView.setImageResource(drawableId);
 
-        ImageView ownershipIconView  = (ImageView)convertView.findViewById(R.id.media_list_item_ownership_icon);
-        switch(media.getOwnershipStatus()) {
+        ImageView ownershipIconView = (ImageView) convertView.findViewById(R.id.media_list_item_ownership_icon);
+        switch (media.getOwnershipStatus()) {
             case OWNED:
                 ownershipIconView.setImageResource(R.drawable.ic_checkmark);
                 break;

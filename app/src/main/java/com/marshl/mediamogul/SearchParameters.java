@@ -17,6 +17,7 @@ public class SearchParameters implements Parcelable {
     };
     private String searchText;
     private SearchType searchType;
+
     public SearchParameters() {
         super();
     }

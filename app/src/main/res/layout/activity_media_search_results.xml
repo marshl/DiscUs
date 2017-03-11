@@ -11,9 +11,9 @@
     tools:context="com.marshl.mediamogul.MediaSearchResults">
 
     <ListView
+        android:id="@+id/media_result_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/media_result_list"
         android:layout_alignParentStart="true" />
 
 </RelativeLayout>

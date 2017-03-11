@@ -107,11 +107,11 @@
         android:id="@+id/media_metascore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/media_metascore_label"
         android:layout_below="@id/media_writer_layout"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/media_metascore_label"
         android:background="@android:color/holo_green_light"
-        android:padding="5dp"
-        android:layout_marginTop="5dp"/>
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/media_imdb_label"
@@ -128,13 +128,13 @@
         style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/media_imdb_label"
         android:layout_below="@id/media_metascore_label"
+        android:layout_toEndOf="@id/media_imdb_label"
         android:isIndicator="true"
         android:numStars="10"
-        android:stepSize="0.5"
         android:padding="5dp"
-        android:progressTint="@android:color/holo_orange_light" />
+        android:progressTint="@android:color/holo_orange_light"
+        android:stepSize="0.5" />
 
 
     <TextView
@@ -142,23 +142,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@id/media_imdb_rating"
         android:layout_below="@id/media_metascore_label"
+        android:layout_toEndOf="@id/media_imdb_rating"
         android:padding="5dp"
-        android:text="votes"/>
+        android:text="votes" />
 
-    <LinearLayout android:id="@+id/footer" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
-        <Button android:id="@+id/media_button_library_toggle" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_weight="1"
-            android:text="Add to Library"/>
+        <Button
+            android:id="@+id/media_button_library_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add to Library" />
 
-        <Button android:id="@+id/media_button_library_toggle" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_weight="1"
-            android:text="Add to Wishlist"
-            android:onClick="onAddToLibraryClick"/>
+        <Button
+            android:id="@+id/media_button_library_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onAddToLibraryClick"
+            android:text="Add to Wishlist" />
     </LinearLayout>
 
 </RelativeLayout>
