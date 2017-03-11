@@ -18,7 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:text="Released: " />
+        android:text="Released: "
+        android:textStyle="normal|bold" />
 
     <TextView
         android:id="@+id/media_release_date"
@@ -59,7 +60,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/media_plot"
-        android:text="Director: " />
+        android:text="Director: "
+        android:textStyle="normal|bold" />
 
     <TextView
         android:id="@+id/media_director"
@@ -81,13 +83,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="Writers: " />
+            android:text="Writers: "
+            android:textStyle="normal|bold" />
 
         <TextView
             android:id="@+id/media_writer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[Writier]" />
+            android:text="[Writer]" />
     </LinearLayout>
 
     <TextView
@@ -96,8 +99,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@id/media_writer_layout"
-        android:padding="5dp"
-        android:text="Metascore: "/>
+        android:paddingTop="10dp"
+        android:text="Metascore: "
+        android:textStyle="normal|bold" />
 
     <TextView
         android:id="@+id/media_metascore"
@@ -106,7 +110,8 @@
         android:layout_toEndOf="@+id/media_metascore_label"
         android:layout_below="@id/media_writer_layout"
         android:background="@android:color/holo_green_light"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:layout_marginTop="5dp"/>
 
     <TextView
         android:id="@+id/media_imdb_label"
@@ -114,8 +119,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@id/media_metascore_label"
-        android:padding="5dp"
-        android:text="Imdb:"/>
+        android:paddingTop="10dp"
+        android:text="IMDB:"
+        android:textStyle="normal|bold" />
 
     <RatingBar
         android:id="@+id/media_imdb_rating"
