@@ -16,6 +16,9 @@ import java.util.Locale;
 
 public class MediaDetailActivity extends AppCompatActivity {
 
+    public static final String RESULT_INTENT_IMDB_ID = "IMDB_ID";
+    public static final String RESULT_INTENT_OWNERSHIP = "OWNERSHIP";
+
     private ParcelableMedia media;
 
     @Override
@@ -83,8 +86,8 @@ public class MediaDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent data = new Intent();
-        data.putExtra("IMDB_ID", this.media.getImdbId());
-        data.putExtra("OWNERSHIP", this.media.getOwnershipStatus().ordinal());
+        data.putExtra(RESULT_INTENT_IMDB_ID, this.media.getImdbId());
+        data.putExtra(RESULT_INTENT_OWNERSHIP, this.media.getOwnershipStatus().ordinal());
         setResult(RESULT_OK, data);
         finish();
     }

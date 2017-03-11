@@ -74,13 +74,13 @@ public class MediaSearchResults extends AppCompatActivity {
         if (requestCode == MEDIA_DETAIL_REQUEST) {
             if (resultCode == RESULT_OK) {
 
-                String imdbId = data.getStringExtra("IMDB_ID");
+                String imdbId = data.getStringExtra(MediaDetailActivity.RESULT_INTENT_IMDB_ID);
                 Media.OwnershipType ownership = Media.OwnershipType.values()[
-                        data.getIntExtra("OWNERSHIP", Media.OwnershipType.NOT_OWNED.ordinal())];
+                        data.getIntExtra(MediaDetailActivity.RESULT_INTENT_OWNERSHIP, Media.OwnershipType.NOT_OWNED.ordinal())];
 
-                for (Media m : this.mediaList) {
-                    if (m.getImdbId().equals(imdbId)) {
-                        m.setOwnershipStatus(ownership);
+                for (Media media : this.mediaList) {
+                    if (media.getImdbId().equals(imdbId)) {
+                        media.setOwnershipStatus(ownership);
                         MediaSearchResults.this.resultAdapter.notifyDataSetChanged();
                         MediaSearchResults.this.resultView.requestLayout();
                         MediaSearchResults.this.resultView.invalidateViews();
@@ -91,7 +91,6 @@ public class MediaSearchResults extends AppCompatActivity {
     }
 
     private void openMediaDetails(Media media) {
-
         MediaLookupTask task = new MediaLookupTask();
         task.execute(media.getImdbId());
     }
