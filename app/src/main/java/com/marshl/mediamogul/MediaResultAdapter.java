@@ -1,4 +1,4 @@
-package com.marshl.discus;
+package com.marshl.mediamogul;
 
 import android.content.Context;
 import android.database.DataSetObserver;

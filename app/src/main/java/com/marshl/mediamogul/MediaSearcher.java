@@ -1,4 +1,4 @@
-package com.marshl.discus;
+package com.marshl.mediamogul;
 
 import android.app.Activity;
 import android.util.JsonReader;
@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
 
-import static com.marshl.discus.SearchParameters.SearchType.NOT_USER_OWNED;
-import static com.marshl.discus.SearchParameters.SearchType.USER_OWNED;
+import static com.marshl.mediamogul.SearchParameters.SearchType.NOT_USER_OWNED;
+import static com.marshl.mediamogul.SearchParameters.SearchType.USER_OWNED;
 
 public class MediaSearcher {
     private static final String URL_ENCODING = "utf-8";

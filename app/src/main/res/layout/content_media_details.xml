@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.marshl.discus.MediaDetailActivity"
+    tools:context="com.marshl.mediamogul.MediaDetailActivity"
     tools:showIn="@layout/activity_media_details">
 
     <TextView

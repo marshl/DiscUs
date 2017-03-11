@@ -1,20 +1,15 @@
-package com.marshl.discus;
+package com.marshl.mediamogul;
 
 import android.os.Parcel;
 
 import static junit.framework.Assert.assertEquals;
 import static org.apache.commons.lang3.Range.is;
-import static org.junit.Assert.*;
 
-import android.os.Parcel;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.SmallTest;
-import android.util.Pair;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

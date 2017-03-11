@@ -1,4 +1,4 @@
-package com.marshl.discus;
+package com.marshl.mediamogul;
 
 import android.content.Intent;
 import android.os.Bundle;

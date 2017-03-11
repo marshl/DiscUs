@@ -1,29 +1,29 @@
-package com.marshl.discus;
+package com.marshl.mediamogul;
 
 import android.content.ContentValues;
 import android.provider.BaseColumns;
 
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_ACTORS;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_AWARDS;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_CONTENT_RATING;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_COUNTRY;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_DIRECTOR;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_DURATION_MINUTES;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_GENRES;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_ID;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_RATING;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_VOTES;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_LANGUAGES;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_METASCORE;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_OWNERSHIP_STATUS;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_PLOT;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_POSTER_URL;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_RELEASE_DATE;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_TOTAL_SEASONS;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_TYPE;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_WRITER;
-import static com.marshl.discus.MediaReaderContract.MediaEntry.COLUMN_NAME_YEAR;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_ACTORS;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_AWARDS;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_CONTENT_RATING;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_COUNTRY;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_DIRECTOR;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_DURATION_MINUTES;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_GENRES;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_ID;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_RATING;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_VOTES;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_LANGUAGES;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_METASCORE;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_OWNERSHIP_STATUS;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_PLOT;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_POSTER_URL;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_RELEASE_DATE;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_TOTAL_SEASONS;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_TYPE;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_WRITER;
+import static com.marshl.mediamogul.MediaReaderContract.MediaEntry.COLUMN_NAME_YEAR;
 
 public final class MediaReaderContract {
     private MediaReaderContract() {

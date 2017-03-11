@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.marshl.discus">
+    package="com.marshl.mediamogul">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,12 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MediaDetailActivity"
+            android:name="com.marshl.mediamogul.MediaDetailActivity"
             android:label="@string/title_activity_media_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MediaSearchResults" />
+        <activity android:name="com.marshl.mediamogul.MediaSearchResults" />
         <activity
-            android:name=".MediaSearchActivity"
+            android:name="com.marshl.mediamogul.MediaSearchActivity"
             android:label="@string/title_activity_media_search"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">

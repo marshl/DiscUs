@@ -1,4 +1,4 @@
-package com.marshl.discus;
+package com.marshl.mediamogul;
 
 public class MediaSearchException extends Exception {
     public MediaSearchException() {
