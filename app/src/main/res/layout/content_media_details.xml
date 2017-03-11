@@ -147,20 +147,18 @@
         android:padding="5dp"
         android:text="votes"/>
 
-    <Button
-        android:id="@+id/media_button_library_toggle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/media_imdb_label"
-        android:text="Add/Remove from Library"
-        android:onClick="onAddToLibraryClick"/>
+    <LinearLayout android:id="@+id/footer" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
 
-    <Button
-        android:id="@+id/media_button_wishlist_toggle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/media_button_library_toggle"
-        android:text="Add/Remove to Wishlist" />
+        <Button android:id="@+id/media_button_library_toggle" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="Add to Library"/>
+
+        <Button android:id="@+id/media_button_library_toggle" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="Add to Wishlist"
+            android:onClick="onAddToLibraryClick"/>
+    </LinearLayout>
 
 </RelativeLayout>
