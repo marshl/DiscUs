@@ -110,22 +110,11 @@ public class MediaSearchActivity extends AppCompatActivity implements NetworkSta
 
     @Override
     public void networkAvailable() {
-
-        Toast toast = Toast.makeText(this,
-                "Connected to internet",
-                Toast.LENGTH_LONG);
-        toast.show();
-
         this.enableNetworkActions();
     }
 
     @Override
     public void networkUnavailable() {
-        Toast toast = Toast.makeText(this,
-                "No internet connection",
-                Toast.LENGTH_LONG);
-        toast.show();
-
         this.disableNetworkActions();
     }
 
