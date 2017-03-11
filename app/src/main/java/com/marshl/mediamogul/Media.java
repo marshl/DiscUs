@@ -54,6 +54,10 @@ public class Media {
         this.totalSeasons = other.totalSeasons;
     }
 
+    public boolean isGame() {
+        return this.getType() != null && this.getType().equals("game");
+    }
+
     public String getType() {
         return type;
     }

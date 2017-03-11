@@ -14,4 +14,14 @@
     <string name="search_progress_dialog_message">Please wait...</string>
     <string name="title_activity_media_results">Results</string>
     <string name="media_result_list_show_more">Tap to show more</string>
+    <string name="metascore_label">Metascore Rating:</string>
+    <string name="writers_label">Writers:</string>
+    <string name="director_label">Director:</string>
+    <string name="release_date_label">Released:</string>
+    <string name="imdb_label">IMDb Rating:</string>
+    <string name="imdb_rating">%.1f/10</string>
+    <plurals name="imdb_votes">
+        <item quantity="one">(%d vote)</item>
+        <item quantity="other">(%,d votes)</item>
+    </plurals>
 </resources>

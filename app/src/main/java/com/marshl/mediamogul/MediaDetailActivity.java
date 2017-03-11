@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.RatingBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class MediaDetailActivity extends AppCompatActivity {
@@ -31,7 +30,8 @@ public class MediaDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.setTitle(this.media.getTitle() + " (" + this.media.getYear() + ")");
+        TextView mediaTitleView = (TextView) this.findViewById(R.id.media_details_title);
+        mediaTitleView.setText(this.media.getTitle());
 
         TextView releaseDateView = (TextView) this.findViewById(R.id.media_release_date);
         if (this.media.getReleaseDate() != null) {
@@ -58,28 +58,30 @@ public class MediaDetailActivity extends AppCompatActivity {
         TextView writerView = (TextView) this.findViewById(R.id.media_writer);
         writerView.setText(this.media.getWriter());
 
-        TextView metascoreView = (TextView) this.findViewById(R.id.media_metascore);
-        TextView metascoreLabelVew = (TextView) this.findViewById(R.id.media_metascore_label);
-        if (media.getMetascore() != null && media.getMetascore() != 0) {
-            metascoreView.setText(String.format(Locale.getDefault(), "%d", this.media.getMetascore()));
 
-            int metascoreColor = MetascoreUtils.getMetascoreColor(this.media.getMetascore(), this.media.getType() != null && this.media.getType().equals("game"));
-            metascoreView.setBackgroundColor(metascoreColor);
+        if (media.getMetascore() != null && media.getMetascore() != 0) {
+            TextView metascoreView = (TextView) this.findViewById(R.id.media_metascore);
+            LinearLayout metascoreWrapper = (LinearLayout) this.findViewById(R.id.media_metascore_wrapper);
+
+            metascoreView.setText(String.format(Locale.getDefault(), "%d", this.media.getMetascore()));
+            int metascoreColor = MetascoreUtils.getMetascoreColor(this.media.getMetascore(), this.media.isGame());
+            int metascoreTextColor = MetascoreUtils.getMetascoreTextColor(this.media.getMetascore(), this.media.isGame());
+
+            metascoreWrapper.setBackgroundColor(metascoreColor);
+            metascoreView.setTextColor(metascoreTextColor);
         } else {
-            metascoreView.setVisibility(View.GONE);
-            metascoreLabelVew.setVisibility(View.GONE);
+            LinearLayout metascoreContainer = (LinearLayout) findViewById(R.id.media_metascore_container);
+            metascoreContainer.setVisibility(View.GONE);
         }
 
-        RatingBar imdbRatingBar = (RatingBar) this.findViewById(R.id.media_imdb_rating);
-        TextView imdbVotesView = (TextView) this.findViewById(R.id.media_imdb_votes);
         if (this.media.getImdbRating() != null) {
-            imdbRatingBar.setRating(this.media.getImdbRating());
-
-            DecimalFormat formatter = new DecimalFormat("#,###");
-            imdbVotesView.setText("(" + formatter.format(this.media.getImdbVotes()) + ")");
+            TextView imdbRating = (TextView) this.findViewById(R.id.media_imdb_rating);
+            TextView imdbVotesView = (TextView) this.findViewById(R.id.media_imdb_votes);
+            imdbRating.setText(getResources().getString(R.string.imdb_rating, media.getImdbRating()));
+            imdbVotesView.setText(getResources().getQuantityString(R.plurals.imdb_votes, this.media.getImdbVotes(), this.media.getImdbVotes()));
         } else {
-
-            imdbRatingBar.setVisibility(View.GONE);
+            View imdbContainer = this.findViewById(R.id.media_imdb_container);
+            imdbContainer.setVisibility(View.GONE);
         }
     }
 

@@ -8,6 +8,11 @@ public class MetascoreUtils {
     private static final int MIXED_COLOR = 0xFFFFCC33;
     private static final int FAVORABLE_COLOR = 0xFF66CC33;
 
+
+    private static final int UNFAVORABLE_TEXT_COLOR = 0xFFFFFFFF;
+    private static final int MIXED_TEXT_COLOR = 0xFFFFFFFF;
+    private static final int FAVORABLE_TEXT_COLOR = 0xFFFFFFFF;
+
     private MetascoreUtils() {
     }
 
@@ -28,6 +33,27 @@ public class MetascoreUtils {
                 return MIXED_COLOR;
             } else {
                 return FAVORABLE_COLOR;
+            }
+        }
+    }
+
+    public static int getMetascoreTextColor(int metascore, boolean isGame) {
+
+        if (isGame) {
+            if (metascore < 50) {
+                return UNFAVORABLE_TEXT_COLOR;
+            } else if (metascore < 75) {
+                return MIXED_TEXT_COLOR;
+            } else {
+                return FAVORABLE_TEXT_COLOR;
+            }
+        } else {
+            if (metascore < 40) {
+                return UNFAVORABLE_TEXT_COLOR;
+            } else if (metascore < 61) {
+                return MIXED_TEXT_COLOR;
+            } else {
+                return FAVORABLE_TEXT_COLOR;
             }
         }
     }

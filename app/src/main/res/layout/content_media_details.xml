@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_media_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,161 +14,233 @@
     tools:context="com.marshl.mediamogul.MediaDetailActivity"
     tools:showIn="@layout/activity_media_details">
 
-    <TextView
-        android:id="@+id/media_release_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:text="Released: "
-        android:textStyle="normal|bold" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/media_release_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/media_release_label"
-        android:layout_toEndOf="@+id/media_release_label"
-        android:text="[ReleaseDate]" />
-
-    <TextView
-        android:id="@+id/media_content_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/media_release_date"
-        android:layout_alignBottom="@+id/media_release_date"
-        android:layout_alignParentEnd="true"
-        android:text="[Content Rating]" />
-
-    <TextView
-        android:id="@+id/media_genre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/media_release_label"
-        android:text="[Genre]" />
-
-    <TextView
-        android:id="@+id/media_plot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/media_genre"
-        android:text="[Full Plot]" />
-
-    <TextView
-        android:id="@+id/media_director_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/media_plot"
-        android:text="Director: "
-        android:textStyle="normal|bold" />
-
-    <TextView
-        android:id="@+id/media_director"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/media_director_label"
-        android:layout_toEndOf="@+id/media_director_label"
-        android:text="[Director]" />
-
-    <LinearLayout
-        android:id="@+id/media_writer_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/media_director_label"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/media_writer_label"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            android:text="Writers: "
-            android:textStyle="normal|bold" />
+            <TextView
+                android:id="@+id/media_details_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textStyle="normal|bold" />
 
-        <TextView
-            android:id="@+id/media_writer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="[Writer]" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/media_release_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/media_details_title"
+                android:layout_marginTop="10dp"
+                android:text="@string/release_date_label"
+                android:textStyle="normal|bold" />
 
-    <TextView
-        android:id="@+id/media_metascore_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/media_writer_layout"
-        android:paddingTop="10dp"
-        android:text="Metascore: "
-        android:textStyle="normal|bold" />
+            <TextView
+                android:id="@+id/media_release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/media_release_label"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/media_release_label"
+                android:text="[ReleaseDate]" />
 
-    <TextView
-        android:id="@+id/media_metascore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/media_writer_layout"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/media_metascore_label"
-        android:background="@android:color/holo_green_light"
-        android:padding="5dp" />
+            <TextView
+                android:id="@+id/media_content_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/media_release_date"
+                android:layout_alignBottom="@id/media_release_date"
+                android:layout_alignParentEnd="true"
+                android:text="[Content Rating]" />
 
-    <TextView
-        android:id="@+id/media_imdb_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/media_metascore_label"
-        android:paddingTop="10dp"
-        android:text="IMDB:"
-        android:textStyle="normal|bold" />
+            <TextView
+                android:id="@+id/media_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/media_release_label"
+                android:layout_marginTop="5dp"
+                android:text="[Genre]" />
 
-    <RatingBar
-        android:id="@+id/media_imdb_rating"
-        style="@style/Widget.AppCompat.RatingBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/media_metascore_label"
-        android:layout_toEndOf="@id/media_imdb_label"
-        android:isIndicator="true"
-        android:numStars="10"
-        android:padding="5dp"
-        android:progressTint="@android:color/holo_orange_light"
-        android:stepSize="0.5" />
+            <TextView
+                android:id="@+id/media_plot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/media_genre"
+                android:layout_marginTop="5dp"
+                android:text="[Full Plot]" />
+
+            <LinearLayout
+                android:id="@+id/media_director_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/media_plot"
+                android:layout_marginTop="5dp">
 
 
-    <TextView
-        android:id="@+id/media_imdb_votes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/media_metascore_label"
-        android:layout_toEndOf="@id/media_imdb_rating"
-        android:padding="5dp"
-        android:text="votes" />
+                <TextView
+                    android:id="@+id/media_director_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/director_label"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/media_director"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="[Director]" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/media_writer_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/media_director_container"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/media_writer_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="@string/writers_label"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/media_writer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="[Writer]" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/media_metascore_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/media_writer_container"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/media_metascore_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/metascore_label"
+                    android:textStyle="normal|bold" />
+
+                <LinearLayout
+                    android:id="@+id/media_metascore_wrapper"
+                    android:background="@color/colorAccent"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:gravity="center"
+                    android:layout_marginStart="10dp">
+
+                    <TextView
+                        android:id="@+id/media_metascore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="96"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal|bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/media_imdb_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/media_metascore_container"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical">
+
+
+                <TextView
+                    android:id="@+id/media_imdb_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/imdb_label"
+                    android:textStyle="normal|bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_star"
+                    android:tint="@android:color/holo_orange_light" />
+
+                <TextView
+                    android:id="@+id/media_imdb_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@string/imdb_rating"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <TextView
+                    android:id="@+id/media_imdb_votes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@plurals/imdb_votes"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorControlHighlight" />
 
     <LinearLayout
         android:id="@+id/footer"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:divider="?attr/colorControlHighlight"
         android:orientation="horizontal">
 
+
         <Button
-            android:id="@+id/media_button_library_toggle"
+            android:id="@+id/media_button_wis_toggle"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Add to Library" />
+            android:text="Add to Library"
+            android:textColor="?attr/colorControlNormal" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?attr/colorControlHighlight" />
 
         <Button
             android:id="@+id/media_button_library_toggle"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onAddToLibraryClick"
-            android:text="Add to Wishlist" />
+            android:text="Add to Wishlist"
+            android:textColor="?attr/colorControlNormal" />
     </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>
