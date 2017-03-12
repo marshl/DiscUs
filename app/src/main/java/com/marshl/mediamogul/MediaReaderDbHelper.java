@@ -40,6 +40,8 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
     public void insertMediaRecord(Media media) throws SQLException {
         SQLiteDatabase db = getWritableDatabase();
 
+        db.delete(MediaReaderContract.MediaEntry.TABLE_NAME, MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_ID + " = ?", new String[]{media.getImdbId()});
+
         ContentValues values = MediaReaderContract.getContentValuesForMedia(media);
         db.insertOrThrow(MediaReaderContract.MediaEntry.TABLE_NAME, null, values);
     }
