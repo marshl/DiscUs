@@ -160,47 +160,66 @@
                         android:textStyle="normal|bold" />
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/media_metacritic_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/media_metacritic_link" />
+
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/media_imdb_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/media_metascore_container"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical">
+                android:layout_marginTop="10dp">
 
+                <LinearLayout
+                    android:id="@+id/media_imdb_container_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/media_imdb_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/imdb_label"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tint="@android:color/holo_orange_light"
+                        app:srcCompat="@drawable/ic_star" />
+
+                    <TextView
+                        android:id="@+id/media_imdb_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/imdb_rating"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <TextView
+                        android:id="@+id/media_imdb_votes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="@plurals/imdb_votes"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/media_imdb_label"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/media_imdb_link"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/imdb_label"
-                    android:textStyle="normal|bold" />
+                    android:layout_below="@id/media_imdb_container_1"
+                    android:text="@string/media_imdb_link" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_star"
-                    android:tint="@android:color/holo_orange_light" />
-
-                <TextView
-                    android:id="@+id/media_imdb_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="@string/imdb_rating"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-                <TextView
-                    android:id="@+id/media_imdb_votes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="@plurals/imdb_votes"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
-
-            </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
 

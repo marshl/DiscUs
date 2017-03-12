@@ -20,6 +20,8 @@
     <string name="release_date_label">Released:</string>
     <string name="imdb_label">IMDb Rating:</string>
     <string name="imdb_rating">%.1f/10</string>
+    <string name="media_metacritic_link">Tap to view on Metacritic</string>
+    <string name="media_imdb_link">Tap to view on IMDb</string>
     <plurals name="imdb_votes">
         <item quantity="one">(%d vote)</item>
         <item quantity="other">(%,d votes)</item>
