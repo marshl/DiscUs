@@ -24,6 +24,10 @@
     <string name="media_imdb_link">Tap to view on IMDb</string>
     <string name="media_writer">Written by %s</string>
     <string name="media_director">Directed by %s</string>
+    <string name="add_to_library">Add to Library</string>
+    <string name="add_to_wishlist">Add to Wishlist</string>
+    <string name="remove_from_library">Remove from Library</string>
+    <string name="remove_from_wishlist">Remove from Wishlist</string>
     <plurals name="imdb_votes">
         <item quantity="one">(%d vote)</item>
         <item quantity="other">(%,d votes)</item>

@@ -206,19 +206,19 @@
         style="?android:attr/buttonBarStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:divider="?attr/colorControlHighlight"
         android:orientation="horizontal">
 
-
         <Button
-            android:id="@+id/media_button_wis_toggle"
+            android:id="@+id/media_library_button"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Add to Library"
-            android:textColor="?attr/colorControlNormal" />
+            android:onClick="onAddToLibraryClick"
+            android:text="@string/add_to_library"
+            android:textColor="?attr/colorControlNormal"
+            android:background="@android:color/holo_blue_dark" />
 
         <View
             android:layout_width="1dp"
@@ -226,13 +226,14 @@
             android:background="?attr/colorControlHighlight" />
 
         <Button
-            android:id="@+id/media_button_library_toggle"
+            android:id="@+id/media_wishlist_button"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onAddToLibraryClick"
-            android:text="Add to Wishlist"
+            android:onClick="onAddToWishlistClick"
+            android:text="@string/add_to_wishlist"
             android:textColor="?attr/colorControlNormal" />
+
     </LinearLayout>
 </LinearLayout>
