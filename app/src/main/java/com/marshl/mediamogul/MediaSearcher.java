@@ -105,6 +105,8 @@ public class MediaSearcher {
     public Media lookupMediaWithId(String imdbId) throws MediaSearchException {
         Log.d("MediaSearcher", "Looking up media with id " + imdbId);
 
+        MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this.context);
+        Media localResult = dbHelper.getMediaDetails(imdbId);
 
         if (Connectivity.isConnected(this.context)) {
             HttpURLConnection urlConnection;
@@ -114,15 +116,19 @@ public class MediaSearcher {
                 URL url = new URL(encodedQuery);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
-                return this.readLookupResultStream(stream);
+                Media apiResult = this.readLookupResultStream(stream);
+                if (localResult != null) {
+                    apiResult.setOwnershipStatus(localResult.getOwnershipStatus());
+                } else {
+                    apiResult.setOwnershipStatus(Media.OwnershipType.NOT_OWNED);
+                }
+                return apiResult;
             } catch (IOException | ParseException ex) {
                 Log.e("lookupMediaWithId", ex.toString());
                 throw new MediaSearchException(ex, ex.toString());
             }
         } else {
-            MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this.context);
-            Media result = dbHelper.getMediaDetails(imdbId);
-            return result;
+            return localResult;
         }
     }
 

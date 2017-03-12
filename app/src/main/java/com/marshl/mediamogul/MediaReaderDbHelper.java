@@ -161,6 +161,11 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
                 null                                 // The sort order
         );
 
+        if (cur.getCount() == 0) {
+            cur.close();
+            return null;
+        }
+
         cur.moveToNext();
         Media media = new Media();
         media.setImdbId(cur.getString(0));
