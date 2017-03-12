@@ -107,10 +107,14 @@ public class MediaResultAdapter extends ArrayAdapter<Media> {
         switch (media.getOwnershipStatus()) {
             case OWNED:
                 ownershipIconView.setImageResource(R.drawable.ic_checkmark);
+                ownershipIconView.setVisibility(View.VISIBLE);
                 break;
             case ON_WISHLIST:
                 ownershipIconView.setImageResource(R.drawable.ic_thumb_up);
+                ownershipIconView.setVisibility(View.VISIBLE);
+                break;
             case NOT_OWNED:
+                ownershipIconView.setVisibility(View.INVISIBLE);
                 break;
         }
 
