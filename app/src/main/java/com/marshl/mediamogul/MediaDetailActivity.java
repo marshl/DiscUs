@@ -95,6 +95,17 @@ public class MediaDetailActivity extends AppCompatActivity {
                 }
             });
 
+        } else {
+            LinearLayout metascoreContainer = (LinearLayout) findViewById(R.id.media_metascore_container);
+            metascoreContainer.setVisibility(View.GONE);
+        }
+
+        if (this.media.getImdbRating() != null) {
+            TextView imdbRating = (TextView) this.findViewById(R.id.media_imdb_rating);
+            TextView imdbVotesView = (TextView) this.findViewById(R.id.media_imdb_votes);
+            imdbRating.setText(res.getString(R.string.imdb_rating, media.getImdbRating()));
+            imdbVotesView.setText(res.getQuantityString(R.plurals.imdb_votes, this.media.getImdbVotes(), this.media.getImdbVotes()));
+
             final TextView imdbLink = (TextView) this.findViewById(R.id.media_imdb_link);
             imdbLink.setText(this.getUrlLinkText(imdbLink.getText()), TextView.BufferType.SPANNABLE);
 
@@ -110,17 +121,6 @@ public class MediaDetailActivity extends AppCompatActivity {
                 }
             });
 
-
-        } else {
-            LinearLayout metascoreContainer = (LinearLayout) findViewById(R.id.media_metascore_container);
-            metascoreContainer.setVisibility(View.GONE);
-        }
-
-        if (this.media.getImdbRating() != null) {
-            TextView imdbRating = (TextView) this.findViewById(R.id.media_imdb_rating);
-            TextView imdbVotesView = (TextView) this.findViewById(R.id.media_imdb_votes);
-            imdbRating.setText(res.getString(R.string.imdb_rating, media.getImdbRating()));
-            imdbVotesView.setText(res.getQuantityString(R.plurals.imdb_votes, this.media.getImdbVotes(), this.media.getImdbVotes()));
         } else {
             View imdbContainer = this.findViewById(R.id.media_imdb_container);
             imdbContainer.setVisibility(View.GONE);
