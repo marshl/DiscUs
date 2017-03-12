@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_media_search"
@@ -11,68 +11,86 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.marshl.mediamogul.MediaSearchActivity"
-    tools:showIn="@layout/activity_media_search">
+    tools:showIn="@layout/activity_media_search"
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/search_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:ems="10"
-        android:hint="@string/search_text_hint"
-        android:imeOptions="actionSearch"
-        android:inputType="text" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/ownership_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/search_text"
-        android:text="@string/search_restriction" />
-
-    <RadioGroup
-        android:id="@+id/ownership_radio_group"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ownership_label"
-        android:orientation="vertical">
-
-        <RadioButton
-            android:id="@+id/ownership_owned_radio"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/search_restriction_own" />
+            android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/ownership_wishlist_radio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search_restriction_wishlist" />
+            <EditText
+                android:id="@+id/search_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:ems="10"
+                android:hint="@string/search_text_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="text" />
 
-        <RadioButton
-            android:id="@+id/ownership_not_owned_radio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search_restriction_dont_own" />
+            <TextView
+                android:id="@+id/ownership_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/search_text"
+                android:text="@string/search_restriction"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-        <RadioButton
-            android:id="@+id/ownership_both_radio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/search_restriction_none" />
-    </RadioGroup>
+            <RadioGroup
+                android:id="@+id/ownership_radio_group"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ownership_label"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/ownership_owned_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_restriction_own" />
+
+                <RadioButton
+                    android:id="@+id/ownership_wishlist_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_restriction_wishlist" />
+
+                <RadioButton
+                    android:id="@+id/ownership_not_owned_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_restriction_dont_own" />
+
+                <RadioButton
+                    android:id="@+id/ownership_both_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/search_restriction_none" />
+            </RadioGroup>
+        </RelativeLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorControlHighlight" />
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
+        android:id="@+id/search_button"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/ownership_radio_group"
-        android:layout_marginTop="12dp"
+        android:text="@string/search_button"
         android:onClick="onSearchButtonClick"
-        android:text="@string/search_button" />
+        android:textStyle="bold" />
 
-</RelativeLayout>
+</LinearLayout>

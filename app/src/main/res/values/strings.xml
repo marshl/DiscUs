@@ -28,7 +28,7 @@
     <string name="add_to_wishlist">Add to Wishlist</string>
     <string name="remove_from_library">Remove from Library</string>
     <string name="remove_from_wishlist">Remove from Wishlist</string>
-    <string name="search_restriction">Search for media that</string>
+    <string name="search_restriction">Search for media that:</string>
     <string name="search_restriction_own">I own</string>
     <string name="search_restriction_dont_own">I don\'t own</string>
     <string name="search_restriction_none">Any of the above</string>
