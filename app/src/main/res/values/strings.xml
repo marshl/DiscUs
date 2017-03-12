@@ -22,6 +22,8 @@
     <string name="imdb_rating">%.1f/10</string>
     <string name="media_metacritic_link">Tap to view on Metacritic</string>
     <string name="media_imdb_link">Tap to view on IMDb</string>
+    <string name="media_writer">Written by %s</string>
+    <string name="media_director">Directed by %s</string>
     <plurals name="imdb_votes">
         <item quantity="one">(%d vote)</item>
         <item quantity="other">(%,d votes)</item>

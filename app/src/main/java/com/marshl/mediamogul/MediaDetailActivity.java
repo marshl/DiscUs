@@ -1,6 +1,7 @@
 package com.marshl.mediamogul;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,8 @@ public class MediaDetailActivity extends AppCompatActivity {
 
         this.media = this.getIntent().getParcelableExtra(ParcelableMedia.MEDIA_PARCEL_NAME);
 
+        final Resources res = this.getResources();
+
         setContentView(R.layout.activity_media_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,10 +64,10 @@ public class MediaDetailActivity extends AppCompatActivity {
         plotView.setText(this.media.getPlot());
 
         TextView directorView = (TextView) this.findViewById(R.id.media_director);
-        directorView.setText(this.media.getDirector());
+        directorView.setText(res.getString(R.string.media_director, this.media.getDirector()));
 
         TextView writerView = (TextView) this.findViewById(R.id.media_writer);
-        writerView.setText(this.media.getWriter());
+        writerView.setText(res.getString(R.string.media_writer, this.media.getWriter()));
 
         if (media.getMetascore() != null && media.getMetascore() != 0) {
             final TextView metascoreView = (TextView) this.findViewById(R.id.media_metascore);
@@ -116,8 +119,8 @@ public class MediaDetailActivity extends AppCompatActivity {
         if (this.media.getImdbRating() != null) {
             TextView imdbRating = (TextView) this.findViewById(R.id.media_imdb_rating);
             TextView imdbVotesView = (TextView) this.findViewById(R.id.media_imdb_votes);
-            imdbRating.setText(getResources().getString(R.string.imdb_rating, media.getImdbRating()));
-            imdbVotesView.setText(getResources().getQuantityString(R.plurals.imdb_votes, this.media.getImdbVotes(), this.media.getImdbVotes()));
+            imdbRating.setText(res.getString(R.string.imdb_rating, media.getImdbRating()));
+            imdbVotesView.setText(res.getQuantityString(R.plurals.imdb_votes, this.media.getImdbVotes(), this.media.getImdbVotes()));
         } else {
             View imdbContainer = this.findViewById(R.id.media_imdb_container);
             imdbContainer.setVisibility(View.GONE);

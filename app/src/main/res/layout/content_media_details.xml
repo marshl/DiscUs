@@ -30,8 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:text="Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textStyle="normal|bold" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
             <TextView
                 android:id="@+id/media_release_label"
@@ -41,7 +40,7 @@
                 android:layout_below="@id/media_details_title"
                 android:layout_marginTop="10dp"
                 android:text="@string/release_date_label"
-                android:textStyle="normal|bold" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/media_release_date"
@@ -50,7 +49,8 @@
                 android:layout_alignBaseline="@+id/media_release_label"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/media_release_label"
-                android:text="[ReleaseDate]" />
+                android:text="[ReleaseDate]"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/media_content_rating"
@@ -59,7 +59,8 @@
                 android:layout_alignBaseline="@id/media_release_date"
                 android:layout_alignBottom="@id/media_release_date"
                 android:layout_alignParentEnd="true"
-                android:text="[Content Rating]" />
+                android:text="[Content Rating]"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/media_genre"
@@ -68,7 +69,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/media_release_label"
                 android:layout_marginTop="5dp"
-                android:text="[Genre]" />
+                android:text="[Genre]"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/media_plot"
@@ -77,61 +79,32 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/media_genre"
                 android:layout_marginTop="5dp"
-                android:text="[Full Plot]" />
+                android:text="[Full Plot]"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <LinearLayout
-                android:id="@+id/media_director_container"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/media_director"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/media_plot"
-                android:layout_marginTop="5dp">
-
-
-                <TextView
-                    android:id="@+id/media_director_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/director_label"
-                    android:textStyle="normal|bold" />
-
-                <TextView
-                    android:id="@+id/media_director"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="[Director]" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/media_writer_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/media_director_container"
                 android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                android:text="@string/media_director"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-                <TextView
-                    android:id="@+id/media_writer_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="@string/writers_label"
-                    android:textStyle="normal|bold" />
-
-                <TextView
-                    android:id="@+id/media_writer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="[Writer]" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/media_writer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/media_director"
+                android:layout_marginTop="5dp"
+                android:text="@string/media_writer"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <LinearLayout
                 android:id="@+id/media_metascore_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/media_writer_container"
+                android:layout_below="@id/media_writer"
                 android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -141,15 +114,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/metascore_label"
-                    android:textStyle="normal|bold" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 <LinearLayout
                     android:id="@+id/media_metascore_wrapper"
-                    android:background="@color/colorAccent"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:gravity="center"
-                    android:layout_marginStart="10dp">
+                    android:layout_marginStart="10dp"
+                    android:background="@color/colorAccent"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/media_metascore"
