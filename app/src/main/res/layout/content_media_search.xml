@@ -20,7 +20,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:ems="10"
-        android:hint="Title"
+        android:hint="@string/search_text_hint"
         android:imeOptions="actionSearch"
         android:inputType="text" />
 
@@ -30,33 +30,39 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/search_text"
-        android:text="Search for media that I" />
+        android:text="@string/search_restriction" />
 
     <RadioGroup
         android:id="@+id/ownership_radio_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ownership_label"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/ownership_owned_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Own" />
+            android:text="@string/search_restriction_own" />
+
+        <RadioButton
+            android:id="@+id/ownership_wishlist_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_restriction_wishlist" />
 
         <RadioButton
             android:id="@+id/ownership_not_owned_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Don't Own" />
+            android:text="@string/search_restriction_dont_own" />
 
         <RadioButton
             android:id="@+id/ownership_both_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Any" />
+            android:text="@string/search_restriction_none" />
     </RadioGroup>
 
     <Button
@@ -67,6 +73,6 @@
         android:layout_below="@id/ownership_radio_group"
         android:layout_marginTop="12dp"
         android:onClick="onSearchButtonClick"
-        android:text="Search" />
+        android:text="@string/search_button" />
 
 </RelativeLayout>

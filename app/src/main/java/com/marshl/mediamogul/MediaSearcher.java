@@ -53,6 +53,7 @@ public class MediaSearcher {
                 this.currentSearchPage += 1;
                 break;
             case USER_OWNED:
+            case ON_WISHLIST:
                 results = this.runDatabaseSearch();
                 this.resultsFoundSoFar = this.totalResultCount = results.size();
                 break;
@@ -98,7 +99,6 @@ public class MediaSearcher {
     private ArrayList<Media> runDatabaseSearch() {
         MediaReaderDbHelper dbHelper = new MediaReaderDbHelper(this.context);
         ArrayList<Media> results = dbHelper.runMediaSearch(this.searchParams);
-
         return results;
     }
 

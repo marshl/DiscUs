@@ -19,7 +19,6 @@ import com.marshl.util.NetworkStateReceiver;
 
 public class MediaSearchActivity extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
 
-    private RadioButton ownedSearchRadioButton;
     private RadioButton anySearchRadioButton;
     private RadioButton unownedSearchRadioButton;
     private RadioGroup ownershipRadioGroup;
@@ -33,7 +32,6 @@ public class MediaSearchActivity extends AppCompatActivity implements NetworkSta
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.ownedSearchRadioButton = (RadioButton) this.findViewById(R.id.ownership_owned_radio);
         this.anySearchRadioButton = (RadioButton) this.findViewById(R.id.ownership_both_radio);
         this.unownedSearchRadioButton = (RadioButton) this.findViewById(R.id.ownership_not_owned_radio);
         this.ownershipRadioGroup = (RadioGroup) this.findViewById(R.id.ownership_radio_group);
@@ -95,6 +93,10 @@ public class MediaSearchActivity extends AppCompatActivity implements NetworkSta
                 params.setSearchType(SearchParameters.SearchType.USER_OWNED);
                 break;
 
+            case R.id.ownership_wishlist_radio:
+                params.setSearchType(SearchParameters.SearchType.ON_WISHLIST);
+                break;
+
             case R.id.ownership_not_owned_radio:
                 params.setSearchType(SearchParameters.SearchType.NOT_USER_OWNED);
                 break;
@@ -114,9 +116,8 @@ public class MediaSearchActivity extends AppCompatActivity implements NetworkSta
             return;
         }
 
-
         intent.putExtra(SearchParameters.SEARCH_PARAM_PARCEL_NAME, params);
-        startActivity(intent);
+        this.startActivity(intent);
     }
 
     @Override

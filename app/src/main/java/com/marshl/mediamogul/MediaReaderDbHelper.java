@@ -44,6 +44,7 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
 
         ContentValues values = MediaReaderContract.getContentValuesForMedia(media);
         db.insertOrThrow(MediaReaderContract.MediaEntry.TABLE_NAME, null, values);
+        db.close();
     }
 
     public Media.OwnershipType getMediaOwnershipStatus(String imdbId) {
@@ -67,18 +68,21 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
         );
 
         if (cur.getCount() == 0) {
+            cur.close();
+            db.close();
             return Media.OwnershipType.NOT_OWNED;
         }
 
         cur.moveToNext();
         Media.OwnershipType ownershipStatus = Media.OwnershipType.values()[cur.getInt(0)];
         cur.close();
+        db.close();
 
         return ownershipStatus;
     }
 
     public ArrayList<Media> runMediaSearch(SearchParameters params) {
-        if (params.getSearchType() != SearchParameters.SearchType.USER_OWNED) {
+        if (params.getSearchType() != SearchParameters.SearchType.USER_OWNED && params.getSearchType() != SearchParameters.SearchType.ON_WISHLIST) {
             throw new IllegalArgumentException("Search parameters must have search type of USER_OWNED");
         }
 
@@ -94,8 +98,12 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
                 MediaReaderContract.MediaEntry.COLUMN_NAME_POSTER_URL,
         };
 
-        String selection = "LOWER(" + MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE + ") REGEXP ?";
-        String[] selectionArgs = {".*\\b" + params.getSearchText().toLowerCase() + "\\b.*"};
+        String selection = "LOWER(" + MediaReaderContract.MediaEntry.COLUMN_NAME_TITLE + ") REGEXP ? " +
+                "AND " + MediaReaderContract.MediaEntry.COLUMN_NAME_OWNERSHIP_STATUS + " = ?";
+        String[] selectionArgs = {
+                ".*\\b" + params.getSearchText().toLowerCase() + "\\b.*",
+                "" + (params.getSearchType() == SearchParameters.SearchType.USER_OWNED ? Media.OwnershipType.OWNED.ordinal() : Media.OwnershipType.ON_WISHLIST.ordinal())
+        };
 
         String sortOrder = MediaReaderContract.MediaEntry.COLUMN_NAME_IMDB_VOTES + " DESC";
 
@@ -119,6 +127,7 @@ public class MediaReaderDbHelper extends SQLiteOpenHelper {
             results.add(media);
         }
         cur.close();
+        db.close();
 
         return results;
     }

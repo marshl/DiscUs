@@ -57,6 +57,7 @@ public class SearchParameters implements Parcelable {
 
     public enum SearchType {
         USER_OWNED,
+        ON_WISHLIST,
         NOT_USER_OWNED,
         BOTH
     }
