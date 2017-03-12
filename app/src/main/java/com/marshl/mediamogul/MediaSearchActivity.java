@@ -104,6 +104,17 @@ public class MediaSearchActivity extends AppCompatActivity implements NetworkSta
                 break;
         }
 
+        if (searchText.length() == 0 &&
+                (params.getSearchType() == SearchParameters.SearchType.BOTH || params.getSearchType() == SearchParameters.SearchType.NOT_USER_OWNED)) {
+
+            Toast toast = Toast.makeText(this,
+                    "You must enter a title to search for",
+                    Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
+
         intent.putExtra(SearchParameters.SEARCH_PARAM_PARCEL_NAME, params);
         startActivity(intent);
     }
