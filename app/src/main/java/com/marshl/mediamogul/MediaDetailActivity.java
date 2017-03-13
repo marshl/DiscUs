@@ -2,6 +2,7 @@ package com.marshl.mediamogul;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
@@ -11,6 +12,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.URLSpan;
 import android.view.View;
+import android.webkit.WebResourceRequest;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +23,8 @@ import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Locale;
+
+import static android.R.string.no;
 
 public class MediaDetailActivity extends AppCompatActivity {
 
@@ -57,8 +61,6 @@ public class MediaDetailActivity extends AppCompatActivity {
             DateFormat formatter = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
             releaseDateView.setText(formatter.format(this.media.getReleaseDate()));
         } else {
-            TextView releaseDateLabel = (TextView) this.findViewById(R.id.media_release_label);
-            releaseDateLabel.setVisibility(View.GONE);
             releaseDateView.setVisibility(View.GONE);
         }
 
@@ -195,26 +197,40 @@ public class MediaDetailActivity extends AppCompatActivity {
 
         final Resources res = this.getResources();
 
+        final int highlightColor = ResourcesCompat.getColor(res, android.R.color.holo_blue_dark, null);
+        final int normalColor = ResourcesCompat.getColor(res, android.R.color.background_light, null);
+
+        final int textHighlightColor = ResourcesCompat.getColor(res, android.R.color.white, null);
+        final int textNormalColor = ResourcesCompat.getColor(res, android.R.color.black, null);
+
         switch (this.media.getOwnershipStatus()) {
             case OWNED:
-                this.libraryButton.setBackgroundColor(ResourcesCompat.getColor(res, android.R.color.holo_blue_dark, null));
+                this.libraryButton.setBackgroundColor(highlightColor);
+                this.libraryButton.setTextColor(textHighlightColor);
                 this.libraryButton.setText(res.getString(R.string.remove_from_library));
 
-                this.wishlistButton.setBackgroundColor(ResourcesCompat.getColor(res, android.R.color.background_light, null));
+                this.wishlistButton.setBackgroundColor(normalColor);
+                this.wishlistButton.setTextColor(textNormalColor);
                 this.wishlistButton.setText(res.getString(R.string.add_to_wishlist));
                 this.wishlistButton.setEnabled(false);
                 break;
             case NOT_OWNED:
-                this.libraryButton.setBackgroundColor(ResourcesCompat.getColor(res, android.R.color.background_light, null));
+                this.libraryButton.setBackgroundColor(normalColor);
+                this.libraryButton.setTextColor(textNormalColor);
                 this.libraryButton.setText(res.getString(R.string.add_to_library));
-                this.wishlistButton.setBackgroundColor(ResourcesCompat.getColor(res, android.R.color.background_light, null));
+
+                this.wishlistButton.setBackgroundColor(normalColor);
+                this.wishlistButton.setTextColor(textNormalColor);
                 this.wishlistButton.setText(res.getString(R.string.add_to_wishlist));
                 this.wishlistButton.setEnabled(true);
                 break;
             case ON_WISHLIST:
-                this.libraryButton.setBackgroundColor(ResourcesCompat.getColor(res, android.R.color.background_light, null));
+                this.libraryButton.setBackgroundColor(normalColor);
+                this.libraryButton.setTextColor(textNormalColor);
                 this.libraryButton.setText(res.getString(R.string.add_to_library));
-                this.wishlistButton.setBackgroundColor(ResourcesCompat.getColor(res, android.R.color.holo_blue_dark, null));
+
+                this.wishlistButton.setBackgroundColor(highlightColor);
+                this.wishlistButton.setTextColor(textHighlightColor);
                 this.wishlistButton.setText(res.getString(R.string.remove_from_wishlist));
                 this.wishlistButton.setEnabled(true);
                 break;

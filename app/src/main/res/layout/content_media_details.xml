@@ -33,22 +33,10 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
             <TextView
-                android:id="@+id/media_release_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@id/media_details_title"
-                android:layout_marginTop="10dp"
-                android:text="@string/release_date_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-            <TextView
                 android:id="@+id/media_release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/media_release_label"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/media_release_label"
+                android:layout_below="@id/media_details_title"
                 android:text="[ReleaseDate]"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -67,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/media_release_label"
+                android:layout_below="@id/media_release_date"
                 android:layout_marginTop="5dp"
                 android:text="[Genre]"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -77,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/media_genre"
+                android:layout_below="@id/media_genre"
                 android:layout_marginTop="5dp"
                 android:text="[Full Plot]"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -215,10 +203,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@android:color/holo_blue_dark"
             android:onClick="onAddToLibraryClick"
             android:text="@string/add_to_library"
-            android:textColor="?attr/colorControlNormal"
-            android:background="@android:color/holo_blue_dark" />
+            android:textColor="@android:color/white" />
 
         <View
             android:layout_width="1dp"
