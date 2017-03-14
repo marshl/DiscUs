@@ -109,7 +109,6 @@ public class MediaSearchResults extends AppCompatActivity {
             } catch (Exception ex) {
                 this.exception = ex;
                 mediaList = null;
-                throw new RuntimeException(ex);
             }
 
             return mediaList;
@@ -161,7 +160,6 @@ public class MediaSearchResults extends AppCompatActivity {
             } catch (Exception ex) {
                 this.exception = ex;
                 this.media = null;
-                throw new RuntimeException(ex);
             }
 
             return this.media;

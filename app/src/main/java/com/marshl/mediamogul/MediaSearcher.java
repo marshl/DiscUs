@@ -164,7 +164,13 @@ public class MediaSearcher {
                     break;
                 case "Error":
                     String errorMessage = jsonReader.nextString();
-                    throw new MediaSearchException(errorMessage);
+
+                    // Ignore the "no movie found" error
+                    if (!errorMessage.equals("Movie not found!")) {
+                        throw new MediaSearchException(errorMessage);
+                    }
+                    break;
+
                 default:
                     throw new UnsupportedOperationException("Unknown element name " + name);
             }
