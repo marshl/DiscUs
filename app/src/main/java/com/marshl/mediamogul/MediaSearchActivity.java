@@ -84,7 +84,7 @@ public class MediaSearchActivity extends AppCompatActivity implements NetworkSta
 
         SearchParameters params = new SearchParameters();
 
-        String searchText = searchTextView.getText().toString();
+        String searchText = searchTextView.getText().toString().trim();
         params.setSearchText(searchText);
 
         RadioGroup ownershipRadioGroup = (RadioGroup) findViewById(R.id.ownership_radio_group);
