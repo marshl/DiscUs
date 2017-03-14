@@ -139,6 +139,10 @@ public class MediaSearchResults extends AppCompatActivity {
                         MediaSearchResults.this.resultAdapter.notifyDataSetChanged();
                         MediaSearchResults.this.resultView.requestLayout();
                         MediaSearchResults.this.resultView.invalidateViews();
+
+                        if (MediaSearchResults.this.resultAdapter.getCount() == 0) {
+                            resultView.setEmptyView(findViewById(R.id.media_results_empty_view));
+                        }
                     }
                 });
             }
