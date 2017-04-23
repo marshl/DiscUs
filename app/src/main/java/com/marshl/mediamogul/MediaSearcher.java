@@ -199,23 +199,31 @@ public class MediaSearcher {
         jsonReader.beginObject();
         while (jsonReader.hasNext()) {
             String nameValue = jsonReader.nextName();
-            String stringValue = jsonReader.nextString();
-            Log.d(nameValue, stringValue);
-            stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
 
             switch (nameValue) {
-                case "Title":
+                case "Title": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setTitle(stringValue);
                     break;
-                case "Year":
+                }
+                case "Year": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setYear(stringValue);
                     break;
-                case "Rated":
+                }
+                case "Rated": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     if (!stringValue.equals("N/A")) {
                         media.setContentRating(stringValue);
                     }
                     break;
-                case "Released":
+                }
+                case "Released": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     try {
                         SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
                         media.setReleaseDate(format.parse(stringValue));
@@ -223,7 +231,10 @@ public class MediaSearcher {
                         media.setReleaseDate(null);
                     }
                     break;
-                case "Runtime":
+                }
+                case "Runtime": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     if (stringValue.length() == 0 || !stringValue.contains(" ")) {
                         media.setDurationMinutes(null);
                         break;
@@ -231,34 +242,64 @@ public class MediaSearcher {
                     String minutes = stringValue.substring(0, stringValue.indexOf(' '));
                     media.setDurationMinutes(Integer.parseInt(minutes));
                     break;
-                case "Genre":
+                }
+                case "Genre": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setGenres(stringValue);
                     break;
-                case "Director":
+                }
+                case "Director": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setDirector(stringValue);
                     break;
-                case "Writer":
+                }
+                case "Writer": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setWriter(stringValue);
                     break;
-                case "Actors":
+                }
+                case "Actors": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setActors(stringValue);
                     break;
-                case "Plot":
+                }
+                case "Plot": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setPlot(stringValue);
                     break;
-                case "Language":
+                }
+                case "Language": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setLanguages(stringValue);
                     break;
-                case "Country":
+                }
+                case "Country": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setCountry(stringValue);
                     break;
-                case "Awards":
+                }
+                case "Awards": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setAwards(stringValue);
                     break;
-                case "Poster":
+                }
+                case "Poster": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setPosterUrl(stringValue);
                     break;
-                case "Metascore":
+                }
+                case "Metascore": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     try {
                         int metascore = Integer.parseInt(stringValue);
                         media.setMetascore(metascore);
@@ -266,7 +307,10 @@ public class MediaSearcher {
                         media.setMetascore(0);
                     }
                     break;
-                case "imdbRating":
+                }
+                case "imdbRating": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     try {
                         float rating = Float.parseFloat(stringValue);
                         media.setImdbRating(rating);
@@ -274,7 +318,10 @@ public class MediaSearcher {
                         media.setImdbRating(null);
                     }
                     break;
-                case "imdbVotes":
+                }
+                case "imdbVotes": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     try {
                         int voteCount = Integer.parseInt(stringValue.replace(",", ""));
                         media.setImdbVotes(voteCount);
@@ -282,10 +329,16 @@ public class MediaSearcher {
                         media.setImdbVotes(null);
                     }
                     break;
-                case "imdbID":
+                }
+                case "imdbID": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setImdbId(stringValue);
                     break;
-                case "totalSeasons":
+                }
+                case "totalSeasons": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     try {
                         int voteCount = Integer.parseInt(stringValue);
                         media.setTotalSeasons(voteCount);
@@ -293,17 +346,66 @@ public class MediaSearcher {
                         media.setTotalSeasons(null);
                     }
                     break;
-                case "Type":
+                }
+                case "Type": {
+                    String stringValue = jsonReader.nextString();
+                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     media.setType(stringValue);
                     break;
+                }
+                case "Ratings": {
+                    this.parseRatingList(jsonReader, media);
+                    break;
+                }
                 case "Response":
+                    jsonReader.nextString();
                     break;
                 default:
-                    throw new UnsupportedOperationException("Unknown element value " + nameValue + ": " + stringValue);
+                    Log.d("MediaSearcher", "Unknown element " + nameValue);
+                    jsonReader.skipValue();
+                    break;
             }
         }
 
         jsonReader.endObject();
         return media;
     }
+
+    void parseRatingList(JsonReader jsonReader, Media media) throws IOException {
+        jsonReader.beginArray();
+
+        while (jsonReader.hasNext()) {
+            jsonReader.beginObject();
+
+            while (jsonReader.hasNext()) {
+                String sourceKey = jsonReader.nextName();
+                String source = jsonReader.nextString();
+
+                String valueKey = jsonReader.nextName();
+                String value = jsonReader.nextString();
+
+                switch (source) {
+                    case "Internet Movie Database": {
+                        String ratingValue = value.substring(0, value.indexOf('/'));
+                        media.setImdbRating(Float.parseFloat(ratingValue));
+                        break;
+                    }
+                    case "Rotten Tomatoes": {
+                        //TODO: Support Rotten Tomatoes
+                        break;
+                    }
+                    case "Metacritic": {
+                        String ratingValue = value.substring(0, value.indexOf('/'));
+                        media.setMetascore(Integer.parseInt(ratingValue));
+                        break;
+                    }
+                }
+            }
+
+            jsonReader.endObject();
+        }
+
+        jsonReader.endArray();
+    }
+
 }
