@@ -16,10 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Locale;
 
 import static com.marshl.mediamogul.SearchParameters.SearchType.NOT_USER_OWNED;
 import static com.marshl.mediamogul.SearchParameters.SearchType.USER_OWNED;
@@ -67,9 +65,9 @@ public class MediaSearcher {
             Media media = iterator.next();
             media.setOwnershipStatus(dbHelper.getMediaOwnershipStatus(media.getImdbId()));
 
-            if (this.searchParams.getSearchType() == NOT_USER_OWNED && media.getOwnershipStatus() == Media.OwnershipType.OWNED) {
+            if (this.searchParams.getSearchType() == NOT_USER_OWNED && media.getOwnershipStatus() == Media.OWNERSHIP_OWNED) {
                 iterator.remove();
-            } else if (this.searchParams.getSearchType() == USER_OWNED && media.getOwnershipStatus() != Media.OwnershipType.OWNED) {
+            } else if (this.searchParams.getSearchType() == USER_OWNED && media.getOwnershipStatus() != Media.OWNERSHIP_OWNED) {
                 iterator.remove();
             }
         }
@@ -120,7 +118,7 @@ public class MediaSearcher {
                 if (localResult != null) {
                     apiResult.setOwnershipStatus(localResult.getOwnershipStatus());
                 } else {
-                    apiResult.setOwnershipStatus(Media.OwnershipType.NOT_OWNED);
+                    apiResult.setOwnershipStatus(Media.OWNERSHIP_NOT_OWNED);
                 }
                 return apiResult;
             } catch (IOException | ParseException ex) {
@@ -204,130 +202,112 @@ public class MediaSearcher {
                 case "Title": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setTitle(stringValue);
+                    media.setValue(Media.TITLE_KEY, stringValue);
                     break;
                 }
                 case "Year": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setYear(stringValue);
+                    media.setValue(media.YEAR_KEY, stringValue);
                     break;
                 }
                 case "Rated": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     if (!stringValue.equals("N/A")) {
-                        media.setContentRating(stringValue);
+                        media.setValue(Media.CONTENT_RATING_KEY, stringValue);
                     }
                     break;
                 }
                 case "Released": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    try {
-                        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
-                        media.setReleaseDate(format.parse(stringValue));
-                    } catch (ParseException ex) {
-                        media.setReleaseDate(null);
-                    }
+                    media.setValue(Media.RELEASE_DATE_KEY, stringValue);
                     break;
                 }
                 case "Runtime": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
                     if (stringValue.length() == 0 || !stringValue.contains(" ")) {
-                        media.setDurationMinutes(null);
                         break;
                     }
                     String minutes = stringValue.substring(0, stringValue.indexOf(' '));
-                    media.setDurationMinutes(Integer.parseInt(minutes));
+                    media.setValue(Media.RUNTIME_KEY, minutes);
                     break;
                 }
                 case "Genre": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setGenres(stringValue);
+                    media.setValue(Media.GENRES_KEY, stringValue);
                     break;
                 }
                 case "Director": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setDirector(stringValue);
+                    media.setValue(Media.DIRECTOR_KEY, stringValue);
                     break;
                 }
                 case "Writer": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setWriter(stringValue);
+                    media.setValue(Media.WRITER_KEY, stringValue);
                     break;
                 }
                 case "Actors": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setActors(stringValue);
+                    media.setValue(Media.ACTOR_KEY, stringValue);
                     break;
                 }
                 case "Plot": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setPlot(stringValue);
+                    media.setValue(Media.PLOT_KEY, stringValue);
                     break;
                 }
                 case "Language": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setLanguages(stringValue);
+                    media.setValue(Media.LANGUAGE_KEY, stringValue);
                     break;
                 }
                 case "Country": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setCountry(stringValue);
+                    media.setValue(Media.COUNTRY_KEY, stringValue);
                     break;
                 }
                 case "Awards": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setAwards(stringValue);
+                    media.setValue(Media.AWARDS_KEY, stringValue);
                     break;
                 }
                 case "Poster": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setPosterUrl(stringValue);
+                    media.setValue(Media.POSTER_URL_KEY, stringValue);
                     break;
                 }
                 case "Metascore": {
                     String stringValue = jsonReader.nextString();
-                    stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    try {
-                        int metascore = Integer.parseInt(stringValue);
-                        media.setMetascore(metascore);
-                    } catch (NumberFormatException ex) {
-                        media.setMetascore(0);
+                    if (stringValue.equals("N/A")) {
+                        stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
+                        media.setValue(Media.METASCORE_KEY, stringValue);
                     }
                     break;
                 }
                 case "imdbRating": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    try {
-                        float rating = Float.parseFloat(stringValue);
-                        media.setImdbRating(rating);
-                    } catch (NumberFormatException ex) {
-                        media.setImdbRating(null);
-                    }
+                    media.setValue(Media.IMDB_RATING_KEY, stringValue);
                     break;
                 }
                 case "imdbVotes": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    try {
-                        int voteCount = Integer.parseInt(stringValue.replace(",", ""));
-                        media.setImdbVotes(voteCount);
-                    } catch (NumberFormatException ex) {
-                        media.setImdbVotes(null);
-                    }
+                    stringValue = stringValue.replace(",", "");
+                    media.setValue(Media.IMDB_VOTES_KEY, stringValue);
                     break;
                 }
                 case "imdbID": {
@@ -339,18 +319,13 @@ public class MediaSearcher {
                 case "totalSeasons": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    try {
-                        int voteCount = Integer.parseInt(stringValue);
-                        media.setTotalSeasons(voteCount);
-                    } catch (NumberFormatException ex) {
-                        media.setTotalSeasons(null);
-                    }
+                    media.setValue(Media.TOTAL_SEASONS_KEY, stringValue);
                     break;
                 }
                 case "Type": {
                     String stringValue = jsonReader.nextString();
                     stringValue = StringEscapeUtils.unescapeHtml4(stringValue);
-                    media.setType(stringValue);
+                    media.setValue(Media.TYPE_KEY, stringValue);
                     break;
                 }
                 case "Ratings": {
@@ -387,7 +362,7 @@ public class MediaSearcher {
                 switch (source) {
                     case "Internet Movie Database": {
                         String ratingValue = value.substring(0, value.indexOf('/'));
-                        media.setImdbRating(Float.parseFloat(ratingValue));
+                        media.setValue(Media.IMDB_RATING_KEY, ratingValue);
                         break;
                     }
                     case "Rotten Tomatoes": {
@@ -396,7 +371,7 @@ public class MediaSearcher {
                     }
                     case "Metacritic": {
                         String ratingValue = value.substring(0, value.indexOf('/'));
-                        media.setMetascore(Integer.parseInt(ratingValue));
+                        media.setValue(Media.METASCORE_KEY, ratingValue);
                         break;
                     }
                 }

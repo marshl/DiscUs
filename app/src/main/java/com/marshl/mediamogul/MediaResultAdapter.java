@@ -84,12 +84,12 @@ public class MediaResultAdapter extends ArrayAdapter<Media> {
 
         final Media media = this.mediaList.get(position);
         TextView titleTextView = (TextView) convertView.findViewById(R.id.media_list_item_title);
-        titleTextView.setText(media.getTitle() + " (" + media.getYear() + ")");
+        titleTextView.setText(media.getString(Media.TITLE_KEY) + " (" + media.getString(Media.YEAR_KEY) + ")");
 
         ImageView iconImageView = (ImageView) convertView.findViewById(R.id.media_list_item_icon);
 
         int drawableId = R.drawable.ic_unknown;
-        switch (media.getType()) {
+        switch (media.getString(Media.TYPE_KEY)) {
             case "series":
                 drawableId = R.drawable.ic_television;
                 break;
@@ -105,15 +105,15 @@ public class MediaResultAdapter extends ArrayAdapter<Media> {
 
         ImageView ownershipIconView = (ImageView) convertView.findViewById(R.id.media_list_item_ownership_icon);
         switch (media.getOwnershipStatus()) {
-            case OWNED:
+            case Media.OWNERSHIP_OWNED:
                 ownershipIconView.setImageResource(R.drawable.ic_checkmark);
                 ownershipIconView.setVisibility(View.VISIBLE);
                 break;
-            case ON_WISHLIST:
+            case Media.OWNERSHIP_ON_WISHLIST:
                 ownershipIconView.setImageResource(R.drawable.ic_thumb_up);
                 ownershipIconView.setVisibility(View.VISIBLE);
                 break;
-            case NOT_OWNED:
+            case Media.OWNERSHIP_NOT_OWNED:
                 ownershipIconView.setVisibility(View.INVISIBLE);
                 break;
         }

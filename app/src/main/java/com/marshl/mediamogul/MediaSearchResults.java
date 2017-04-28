@@ -75,8 +75,7 @@ public class MediaSearchResults extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 String imdbId = data.getStringExtra(MediaDetailActivity.RESULT_INTENT_IMDB_ID);
-                Media.OwnershipType ownership = Media.OwnershipType.values()[
-                        data.getIntExtra(MediaDetailActivity.RESULT_INTENT_OWNERSHIP, Media.OwnershipType.NOT_OWNED.ordinal())];
+                int ownership = data.getIntExtra(MediaDetailActivity.RESULT_INTENT_OWNERSHIP, Media.OWNERSHIP_NOT_OWNED);
 
                 for (Media media : this.mediaList) {
                     if (media.getImdbId().equals(imdbId)) {

@@ -2,7 +2,6 @@ package com.marshl.mediamogul;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
@@ -12,7 +11,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.URLSpan;
 import android.view.View;
-import android.webkit.WebResourceRequest;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,10 +19,6 @@ import android.widget.Toast;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.util.Locale;
-
-import static android.R.string.no;
 
 public class MediaDetailActivity extends AppCompatActivity {
 
@@ -54,67 +48,72 @@ public class MediaDetailActivity extends AppCompatActivity {
         this.libraryButton = (Button) this.findViewById(R.id.media_library_button);
 
         TextView mediaTitleView = (TextView) this.findViewById(R.id.media_details_title);
-        mediaTitleView.setText(this.media.getTitle());
+        mediaTitleView.setText(this.media.getString(Media.TITLE_KEY));
 
         TextView releaseDateView = (TextView) this.findViewById(R.id.media_release_date);
-        if (this.media.getReleaseDate() != null) {
-            DateFormat formatter = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-            releaseDateView.setText(formatter.format(this.media.getReleaseDate()));
+        if (this.media.hasKey(Media.RELEASE_DATE_KEY)) {
+            releaseDateView.setText(this.media.getString(Media.RELEASE_DATE_KEY));
         } else {
             releaseDateView.setVisibility(View.GONE);
         }
 
         TextView contentRatingView = (TextView) this.findViewById(R.id.media_content_rating);
-        contentRatingView.setText(this.media.getContentRating());
+        contentRatingView.setText(this.media.getString(media.CONTENT_RATING_KEY));
 
         TextView genreView = (TextView) this.findViewById(R.id.media_genre);
-        genreView.setText(this.media.getGenres());
+        genreView.setText(this.media.getString(Media.GENRES_KEY));
 
         TextView plotView = (TextView) this.findViewById(R.id.media_plot);
-        plotView.setText(this.media.getPlot());
+        plotView.setText(this.media.getString(Media.PLOT_KEY));
 
         TextView directorView = (TextView) this.findViewById(R.id.media_director);
-        directorView.setText(res.getString(R.string.media_director, this.media.getDirector()));
+        directorView.setText(res.getString(R.string.media_director, this.media.getString(Media.DIRECTOR_KEY)));
 
         TextView writerView = (TextView) this.findViewById(R.id.media_writer);
-        writerView.setText(res.getString(R.string.media_writer, this.media.getWriter()));
+        writerView.setText(res.getString(R.string.media_writer, this.media.getString(Media.WRITER_KEY)));
 
-        if (media.getMetascore() != null && media.getMetascore() != 0) {
+        if (media.hasKey(Media.METASCORE_KEY)) {
             final TextView metascoreView = (TextView) this.findViewById(R.id.media_metascore);
             final LinearLayout metascoreWrapper = (LinearLayout) this.findViewById(R.id.media_metascore_wrapper);
 
-            metascoreView.setText(String.format(Locale.getDefault(), "%d", this.media.getMetascore()));
-            final int metascoreColor = MetascoreUtils.getMetascoreColor(this.media.getMetascore(), this.media.isGame());
-            final int metascoreTextColor = MetascoreUtils.getMetascoreTextColor(this.media.getMetascore(), this.media.isGame());
+            metascoreView.setText(this.media.getString(Media.METASCORE_KEY));
+            try {
+                int metascore = this.media.getInt(Media.METASCORE_KEY);
+                final int metascoreColor = MetascoreUtils.getMetascoreColor(metascore, this.media.isGame());
+                final int metascoreTextColor = MetascoreUtils.getMetascoreTextColor(metascore, this.media.isGame());
 
-            metascoreWrapper.setBackgroundColor(metascoreColor);
-            metascoreView.setTextColor(metascoreTextColor);
+                metascoreWrapper.setBackgroundColor(metascoreColor);
+                metascoreView.setTextColor(metascoreTextColor);
 
-            final TextView metacriticLink = (TextView) this.findViewById(R.id.media_metacritic_link);
-            metacriticLink.setText(this.getUrlLinkText(metacriticLink.getText()), TextView.BufferType.SPANNABLE);
+                final TextView metacriticLink = (TextView) this.findViewById(R.id.media_metacritic_link);
+                metacriticLink.setText(this.getUrlLinkText(metacriticLink.getText()), TextView.BufferType.SPANNABLE);
 
-            metacriticLink.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.metacritic.com/search/all/" + URLEncoder.encode(media.getTitle(), URL_ENCODING) + "/results"));
-                        startActivity(browserIntent);
-                    } catch (UnsupportedEncodingException ex) {
+                metacriticLink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.metacritic.com/search/all/" + URLEncoder.encode(media.getString(Media.TITLE_KEY), URL_ENCODING) + "/results"));
+                            startActivity(browserIntent);
+                        } catch (UnsupportedEncodingException ex) {
 
+                        }
                     }
-                }
-            });
-
+                });
+            } catch (NumberFormatException ex) {
+                LinearLayout metascoreContainer = (LinearLayout) findViewById(R.id.media_metascore_container);
+                metascoreContainer.setVisibility(View.GONE);
+            }
         } else {
             LinearLayout metascoreContainer = (LinearLayout) findViewById(R.id.media_metascore_container);
             metascoreContainer.setVisibility(View.GONE);
         }
 
-        if (this.media.getImdbRating() != null) {
+        if (this.media.hasKey(Media.IMDB_RATING_KEY)) {
             TextView imdbRating = (TextView) this.findViewById(R.id.media_imdb_rating);
             TextView imdbVotesView = (TextView) this.findViewById(R.id.media_imdb_votes);
-            imdbRating.setText(res.getString(R.string.imdb_rating, media.getImdbRating()));
-            imdbVotesView.setText(res.getQuantityString(R.plurals.imdb_votes, this.media.getImdbVotes(), this.media.getImdbVotes()));
+            imdbRating.setText(res.getString(R.string.imdb_rating, media.getFloat(Media.IMDB_RATING_KEY)));
+            final int imdbVotes = this.media.getInt(Media.IMDB_VOTES_KEY);
+            imdbVotesView.setText(res.getQuantityString(R.plurals.imdb_votes, imdbVotes, imdbVotes));
 
             final TextView imdbLink = (TextView) this.findViewById(R.id.media_imdb_link);
             imdbLink.setText(this.getUrlLinkText(imdbLink.getText()), TextView.BufferType.SPANNABLE);
@@ -149,16 +148,16 @@ public class MediaDetailActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent data = new Intent();
         data.putExtra(RESULT_INTENT_IMDB_ID, this.media.getImdbId());
-        data.putExtra(RESULT_INTENT_OWNERSHIP, this.media.getOwnershipStatus().ordinal());
+        data.putExtra(RESULT_INTENT_OWNERSHIP, this.media.getOwnershipStatus());
         setResult(RESULT_OK, data);
         finish();
     }
 
     public void onAddToLibraryClick(View view) {
-        if (this.media.getOwnershipStatus() == Media.OwnershipType.OWNED) {
-            this.media.setOwnershipStatus(Media.OwnershipType.NOT_OWNED);
+        if (this.media.getOwnershipStatus() == Media.OWNERSHIP_OWNED) {
+            this.media.setOwnershipStatus(Media.OWNERSHIP_NOT_OWNED);
         } else {
-            this.media.setOwnershipStatus(Media.OwnershipType.OWNED);
+            this.media.setOwnershipStatus(Media.OWNERSHIP_OWNED);
         }
 
         this.insertIntoDatabase();
@@ -167,14 +166,14 @@ public class MediaDetailActivity extends AppCompatActivity {
 
     public void onAddToWishlistClick(View view) {
 
-        if (this.media.getOwnershipStatus() == Media.OwnershipType.OWNED) {
+        if (this.media.getOwnershipStatus() == Media.OWNERSHIP_OWNED) {
             return;
         }
 
-        if (this.media.getOwnershipStatus() == Media.OwnershipType.ON_WISHLIST) {
-            this.media.setOwnershipStatus(Media.OwnershipType.NOT_OWNED);
+        if (this.media.getOwnershipStatus() == Media.OWNERSHIP_ON_WISHLIST) {
+            this.media.setOwnershipStatus(Media.OWNERSHIP_NOT_OWNED);
         } else {
-            this.media.setOwnershipStatus(Media.OwnershipType.ON_WISHLIST);
+            this.media.setOwnershipStatus(Media.OWNERSHIP_ON_WISHLIST);
         }
         this.insertIntoDatabase();
         this.refreshButtonLayout();
@@ -204,7 +203,7 @@ public class MediaDetailActivity extends AppCompatActivity {
         final int textNormalColor = ResourcesCompat.getColor(res, android.R.color.black, null);
 
         switch (this.media.getOwnershipStatus()) {
-            case OWNED:
+            case Media.OWNERSHIP_OWNED:
                 this.libraryButton.setBackgroundColor(highlightColor);
                 this.libraryButton.setTextColor(textHighlightColor);
                 this.libraryButton.setText(res.getString(R.string.remove_from_library));
@@ -214,7 +213,7 @@ public class MediaDetailActivity extends AppCompatActivity {
                 this.wishlistButton.setText(res.getString(R.string.add_to_wishlist));
                 this.wishlistButton.setEnabled(false);
                 break;
-            case NOT_OWNED:
+            case Media.OWNERSHIP_NOT_OWNED:
                 this.libraryButton.setBackgroundColor(normalColor);
                 this.libraryButton.setTextColor(textNormalColor);
                 this.libraryButton.setText(res.getString(R.string.add_to_library));
@@ -224,7 +223,7 @@ public class MediaDetailActivity extends AppCompatActivity {
                 this.wishlistButton.setText(res.getString(R.string.add_to_wishlist));
                 this.wishlistButton.setEnabled(true);
                 break;
-            case ON_WISHLIST:
+            case Media.OWNERSHIP_ON_WISHLIST:
                 this.libraryButton.setBackgroundColor(normalColor);
                 this.libraryButton.setTextColor(textNormalColor);
                 this.libraryButton.setText(res.getString(R.string.add_to_library));

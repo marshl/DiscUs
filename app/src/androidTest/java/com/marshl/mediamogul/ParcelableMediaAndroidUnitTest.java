@@ -18,11 +18,14 @@ public class ParcelableMediaAndroidUnitTest {
     @Test
     public void logHistory_ParcelableWriteRead() {
         Media media = new Media();
-        media.setMetascore(TEST_METASCORE);
-        media.setImdbVotes(TEST_IMDB_VOTES);
+        media.setValue(Media.METASCORE_KEY, Integer.toString(TEST_METASCORE));
+        media.setValue(Media.IMDB_VOTES_KEY, Integer.toString(TEST_IMDB_VOTES));
         media.setImdbId(TEST_IMDB_ID);
 
         ParcelableMedia test = new ParcelableMedia(media);
+        assertEquals(TEST_METASCORE, test.getInt(Media.METASCORE_KEY));
+        assertEquals(TEST_IMDB_VOTES, test.getInt(Media.IMDB_VOTES_KEY));
+        assertEquals(TEST_IMDB_ID, test.getImdbId());
 
         Parcel parcel = Parcel.obtain();
         test.writeToParcel(parcel, 0);
@@ -30,8 +33,8 @@ public class ParcelableMediaAndroidUnitTest {
         parcel.setDataPosition(0);
 
         ParcelableMedia createdFromParcel = (ParcelableMedia) ParcelableMedia.CREATOR.createFromParcel(parcel);
-        assertEquals(test.getMetascore(), createdFromParcel.getMetascore());
-        assertEquals(test.getImdbVotes(), createdFromParcel.getImdbVotes());
-        assertEquals(test.getImdbId(), createdFromParcel.getImdbId());
+        assertEquals(TEST_METASCORE, createdFromParcel.getInt(Media.METASCORE_KEY));
+        assertEquals(TEST_IMDB_VOTES, createdFromParcel.getInt(Media.IMDB_VOTES_KEY));
+        assertEquals(TEST_IMDB_ID, createdFromParcel.getImdbId());
     }
 }

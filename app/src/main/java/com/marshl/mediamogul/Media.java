@@ -1,205 +1,93 @@
 package com.marshl.mediamogul;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Media {
 
-    private String title;
-    private String year;
-    private String contentRating;
-    private Date releaseDate;
-    private Integer durationMinutes;
-    private String genres;
-    private String director;
-    private String writer;
-    private String actors;
-    private String plot;
-    private String languages;
-    private String country;
-    private String awards;
-    private String posterUrl;
-    private Integer metascore;
-    private Float imdbRating;
-    private Integer imdbVotes;
-    private String imdbId;
-    private String type;
-    private Integer totalSeasons;
+    public static final String ACTOR_KEY = "actors";
+    public static final String AWARDS_KEY = "awards";
+    public static final String CONTENT_RATING_KEY = "content_rating";
+    public static final String COUNTRY_KEY = "country";
+    public static final String DIRECTOR_KEY = "director";
+    public static final String GENRES_KEY = "genres";
+    public static final String IMDB_RATING_KEY = "imdb_rating";
+    public static final String LANGUAGE_KEY = "language";
+    public static final String IMDB_VOTES_KEY = "imdb_votes";
+    public static final String METASCORE_KEY = "metascore";
+    public static final String PLOT_KEY = "plot";
+    public static final String POSTER_URL_KEY = "poster_url";
+    public static final String RELEASE_DATE_KEY = "release_date";
+    public static final String RUNTIME_KEY = "runtime";
+    public static final String TITLE_KEY = "title";
+    public static final String TOTAL_SEASONS_KEY = "total_seasons";
+    public static final String TYPE_KEY = "type";
+    public static final String WRITER_KEY = "writer";
+    public static final String YEAR_KEY = "year";
 
-    private OwnershipType ownershipStatus = OwnershipType.NOT_OWNED;
+    public static final int OWNERSHIP_OWNED = 1;
+    public static final int OWNERSHIP_NOT_OWNED = 2;
+    public static final int OWNERSHIP_ON_WISHLIST = 3;
+
+    private String imdbId;
+    private Map<String, String> elementMap;
+    private int ownershipStatus;
 
     public Media() {
+        this.elementMap = new HashMap<>();
+    }
+
+
+    public Media(String imdbId, int ownershipStatus) {
+        this.imdbId = imdbId;
+        this.ownershipStatus = ownershipStatus;
+        this.elementMap = new HashMap<>();
     }
 
     public Media(Media other) {
-        this.title = other.title;
-        this.year = other.year;
-        this.contentRating = other.contentRating;
-        this.releaseDate = other.releaseDate;
-        this.durationMinutes = other.durationMinutes;
-        this.genres = other.genres;
-        this.director = other.director;
-        this.writer = other.writer;
-        this.actors = other.actors;
-        this.plot = other.plot;
-        this.languages = other.languages;
-        this.country = other.country;
-        this.awards = other.awards;
-        this.posterUrl = other.posterUrl;
-        this.metascore = other.metascore;
-        this.imdbRating = other.imdbRating;
-        this.imdbVotes = other.imdbVotes;
         this.imdbId = other.imdbId;
-        this.type = other.type;
         this.ownershipStatus = other.ownershipStatus;
-        this.totalSeasons = other.totalSeasons;
+        this.elementMap = new HashMap<>(other.elementMap);
+    }
+
+    public Map<String, String> getElementMap() {
+        return elementMap;
+    }
+
+    public boolean hasKey(String key) {
+        return this.elementMap.containsKey(key);
+    }
+
+    public String getString(String key) {
+        return this.elementMap.get(key);
+    }
+
+    public int getInt(String key) {
+        return Integer.parseInt(this.getString(key));
+    }
+
+    public float getFloat(String key) {
+        return Float.parseFloat(this.getString(key));
+    }
+
+    public void setValue(String key, String value) {
+        if (this.elementMap.containsKey(key)) {
+            this.elementMap.remove(key);
+        }
+
+        this.elementMap.put(key, value);
     }
 
     public boolean isGame() {
-        return this.getType() != null && this.getType().equals("game");
+        return this.hasKey(TYPE_KEY) && this.getString(TYPE_KEY).equals("game");
     }
 
-    public String getType() {
-        return type;
+    public int getOwnershipStatus() {
+        return ownershipStatus;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Integer getImdbVotes() {
-        return imdbVotes;
-    }
-
-    public void setImdbVotes(Integer imdbVotes) {
-        this.imdbVotes = imdbVotes;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getYear() {
-        return this.year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public String getContentRating() {
-        return this.contentRating;
-    }
-
-    public void setContentRating(String contentRating) {
-        this.contentRating = contentRating;
-    }
-
-    public Date getReleaseDate() {
-        return this.releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public Integer getDurationMinutes() {
-        return this.durationMinutes;
-    }
-
-    public void setDurationMinutes(Integer durationMinutes) {
-        this.durationMinutes = durationMinutes;
-    }
-
-    public String getGenres() {
-        return this.genres;
-    }
-
-    public void setGenres(String genres) {
-        this.genres = genres;
-    }
-
-    public String getDirector() {
-        return this.director;
-    }
-
-    public void setDirector(String directory) {
-        this.director = directory;
-    }
-
-    public String getWriter() {
-        return this.writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public String getActors() {
-        return this.actors;
-    }
-
-    public void setActors(String actors) {
-        this.actors = actors;
-    }
-
-    public String getPlot() {
-        return this.plot;
-    }
-
-    public void setPlot(String plot) {
-        this.plot = plot;
-    }
-
-    public String getLanguages() {
-        return this.languages;
-    }
-
-    public void setLanguages(String languages) {
-        this.languages = languages;
-    }
-
-    public String getCountry() {
-        return this.country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getAwards() {
-        return this.awards;
-    }
-
-    public void setAwards(String awards) {
-        this.awards = awards;
-    }
-
-    public String getPosterUrl() {
-        return this.posterUrl;
-    }
-
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
-    }
-
-    public Integer getMetascore() {
-        return this.metascore;
-    }
-
-    public void setMetascore(Integer metascore) {
-        this.metascore = metascore;
-    }
-
-    public Float getImdbRating() {
-        return this.imdbRating;
-    }
-
-    public void setImdbRating(Float imdbRating) {
-        this.imdbRating = imdbRating;
+    public void setOwnershipStatus(int ownershipStatus) {
+        this.ownershipStatus = ownershipStatus;
     }
 
     public String getImdbId() {
@@ -209,27 +97,4 @@ public class Media {
     public void setImdbId(String imdbId) {
         this.imdbId = imdbId;
     }
-
-    public OwnershipType getOwnershipStatus() {
-        return ownershipStatus;
-    }
-
-    public void setOwnershipStatus(OwnershipType ownershipStatus) {
-        this.ownershipStatus = ownershipStatus;
-    }
-
-    public Integer getTotalSeasons() {
-        return this.totalSeasons;
-    }
-
-    public void setTotalSeasons(Integer totalSeasons) {
-        this.totalSeasons = totalSeasons;
-    }
-
-    public enum OwnershipType {
-        NOT_OWNED,
-        OWNED,
-        ON_WISHLIST,
-    }
-
 }
